@@ -21,7 +21,12 @@ export default function AlbumGuess() {
   useEffect(() => {
     const fetchAlbums = async () => {
       try {
-        const response = await fetch("/api/top-albums?limit=50"); // Request up to 50 albums
+        const accessToken = localStorage.getItem("spotify_access_token");
+        const response = await fetch("/.netlify/functions/top-albums?limit=50", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         const data = await response.json();
         const parsedAlbums = data.items.map((album: any) => ({
           title: album.name,
