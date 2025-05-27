@@ -29,8 +29,10 @@ export default function AlbumGuess() {
         });
         const data = await response.json();
         const parsedAlbums = data.items.map((item: any) => {
-          const album = item.album || item; // fallback to `item` if `item.album` is undefined
+          // Ensure album is always referencing the album object, not the artist
+          const album = item.album ? item.album : item;
           return {
+            // Explicitly use album.name (the album title), not artist name
             title: album.name || "Unknown Album",
             image: Array.isArray(album.images) && album.images.length > 0 ? album.images[0].url : "",
           };
