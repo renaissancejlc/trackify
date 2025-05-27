@@ -84,7 +84,7 @@ function HomeContent() {
             <p className="text-sm text-gray-700 italic mb-4">
               We missed your musical vibes in the clouds!
             </p>
-            <div className="flex flex-col sm:flex-row sm:justify-center gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 🌟 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
