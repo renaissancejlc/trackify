@@ -158,7 +158,7 @@ export default function AlbumGuess() {
             >
               Start Game
             </button>
-            <div className="absolute bottom-4 right-4 text-right">
+            <div className="absolute top-4 right-4 text-right z-30">
               <button
                 onClick={() => setUseArtistMode(!useArtistMode)}
                 className="px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-pink-800 rounded-full text-xs shadow-md opacity-80 hover:opacity-100 transition"

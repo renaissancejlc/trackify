@@ -41,7 +41,41 @@ const Callback = () => {
     }
   }, [navigate]);
 
-  return <p>Authenticating with Spotify...</p>;
+  return (
+    <div style={{ 
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      background: 'linear-gradient(to bottom, #1db954, #121212)',
+      color: '#fff',
+      fontFamily: "'Circular Std', sans-serif",
+      textAlign: 'center',
+      padding: '2rem'
+    }}>
+      <div style={{
+        fontSize: '2rem',
+        marginBottom: '1rem',
+        animation: 'pulse 2s infinite'
+      }}>
+        🌥️ Connecting you to the cloud...
+      </div>
+      <p style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>
+        Hold tight while we complete your Spotify authentication.
+      </p>
+      <p style={{ fontSize: '1rem' }}>
+        If this takes more than 10 seconds, you may need to return and sign in again.
+      </p>
+      <style>{`
+        @keyframes pulse {
+          0% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.8; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+      `}</style>
+    </div>
+  );
 };
 
 export default Callback;
