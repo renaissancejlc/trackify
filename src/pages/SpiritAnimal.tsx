@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../auth/AuthContext";
 
 interface AnimalProfile {
   name: string;
@@ -39,7 +38,7 @@ export default function SpiritAnimal() {
   const [animal, setAnimal] = useState<AnimalProfile | null>(null);
   const [mode, setMode] = useState<"overall" | "song" | "genre" | "mood">("overall");
   const [features, setFeatures] = useState<{ energy: number; valence: number; danceability: number } | null>(null);
-  const { accessToken } = useAuth();
+  const accessToken = localStorage.getItem("spotify_access_token");
 
   useEffect(() => {
     const fetchTopTrackFeatures = async () => {
