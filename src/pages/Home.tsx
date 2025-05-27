@@ -1,10 +1,32 @@
 import { useNavigate } from "react-router-dom";
+import { loginWithSpotify } from "../utils/SpotifyAuth";
+import { useEffect } from "react";
+import { SpotifyDataProvider } from "../context/SpotifyDataContext";
+
+import { useSpotifyData } from "../context/SpotifyDataContext";
 
 export default function Home() {
+  return (
+    <SpotifyDataProvider>
+      <HomeContent />
+    </SpotifyDataProvider>
+  );
+}
+
+function HomeContent() {
   const navigate = useNavigate();
 
+  const { topTracks, profile: userProfile } = useSpotifyData();
+
+  useEffect(() => {
+    const token = localStorage.getItem("spotify_access_token");
+    if (!token) {
+      loginWithSpotify();
+    }
+  }, []);
+
   const handleLogin = () => {
-    window.location.href = "https://accounts.spotify.com/authorize";
+    loginWithSpotify();
   };
 
   return (
@@ -47,6 +69,23 @@ export default function Home() {
         >
           Log in with Spotify
         </button>
+        {userProfile && (
+          <div className="mt-6 text-sm text-gray-800 bg-white/50 rounded-xl p-4">
+            <p><strong>Welcome,</strong> {userProfile.display_name}</p>
+            <p><strong>Email:</strong> {userProfile.email}</p>
+          </div>
+        )}
+
+        {topTracks && topTracks.length > 0 && (
+          <div className="mt-6 text-sm text-gray-800 bg-white/50 rounded-xl p-4">
+            <p><strong>Your Top Tracks:</strong></p>
+            <ul className="list-disc ml-6">
+              {topTracks.slice(0, 3).map((track: any) => (
+                <li key={track.id}>{track.name} — {track.artists[0].name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Feature previews */}
