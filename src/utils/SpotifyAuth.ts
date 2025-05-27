@@ -1,7 +1,7 @@
 // src/utils/spotifyAuth.ts
 
-const CLIENT_ID = '7db6372c56de40f2b4a7902ed5c0f931';
-const REDIRECT_URI = 'https://localhost:5173/callback'; // Or your deployed URL
+const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 const SCOPES = [
   'user-top-read',
   'user-read-private',
