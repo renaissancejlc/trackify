@@ -28,10 +28,13 @@ export default function AlbumGuess() {
           },
         });
         const data = await response.json();
-        const parsedAlbums = data.items.map((album: any) => ({
-          title: album.album.name,
-          image: Array.isArray(album.album.images) && album.album.images.length > 0 ? album.album.images[0].url : "",
-        }));
+        const parsedAlbums = data.items.map((item: any) => {
+          const album = item.album || item; // fallback to `item` if `item.album` is undefined
+          return {
+            title: album.name || "Unknown Album",
+            image: Array.isArray(album.images) && album.images.length > 0 ? album.images[0].url : "",
+          };
+        });
         setAlbums(parsedAlbums);
         if (parsedAlbums.length === 0) {
           console.warn("No albums returned from Spotify.");
