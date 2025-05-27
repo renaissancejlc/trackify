@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 
 interface Album {
   title: string;
-  artist: string;
   image: string;
 }
 
@@ -17,8 +16,7 @@ export default function AlbumGuess() {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(60);
   const [score, setScore] = useState(0);
-  const [history, setHistory] = useState<{ title: string; artist: string; image: string; result: "correct" | "wrong" }[]>([]);
-  const [gameMode, setGameMode] = useState<"album" | "artist">("album");
+  const [history, setHistory] = useState<{ title: string; image: string; result: "correct" | "wrong" }[]>([]);
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -32,7 +30,6 @@ export default function AlbumGuess() {
         const data = await response.json();
         const parsedAlbums = data.items.map((album: any) => ({
           title: album.name || "Unknown Album",
-          artist: album.artists?.[0]?.name || "Unknown Artist",
           image: album.image || "",
         }));
         setAlbums(parsedAlbums.sort(() => Math.random() - 0.5));
@@ -46,7 +43,7 @@ export default function AlbumGuess() {
     fetchAlbums();
   }, []);
 
-  const currentAlbum = albums[index] || { title: "", artist: "", image: "" };
+  const currentAlbum = albums[index] || { title: "", image: "" };
 
   useEffect(() => {
     if (!gameStarted || timer <= 0) return;
@@ -59,9 +56,9 @@ export default function AlbumGuess() {
   const handleGuess = () => {
     if (!guess.trim()) return;
     const normalizedGuess = guess.trim().toLowerCase();
-    const normalizedTarget = gameMode === "album" ? currentAlbum.title.toLowerCase() : currentAlbum.artist.toLowerCase();
+    const normalizedTitle = currentAlbum.title.toLowerCase();
 
-    if (normalizedGuess === normalizedTarget) {
+    if (normalizedGuess === normalizedTitle) {
       setResult("correct");
       setScore((prev) => prev + 1);
       setHistory((prev) => [...prev, { ...currentAlbum, result: "correct" }]);
@@ -171,7 +168,7 @@ export default function AlbumGuess() {
               </div>
             </div>
             <p className="text-sm text-pink-700 mb-2">
-              You’re on {gameMode === "album" ? "Album" : "Artist"} {index + 1} of {albums.length}
+              You’re on Album {index + 1} of {albums.length}
             </p>
             <div className="mb-4">
               <div className="p-2 border-8 border-yellow-200 rounded-xl shadow-lg bg-white/60 backdrop-blur-sm w-fit mx-auto" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/canvas-fine.png')" }}>
@@ -204,9 +201,7 @@ export default function AlbumGuess() {
             ) : (
               <div className="mt-4">
                 <p className={`text-lg font-bold ${result === "correct" ? "text-green-600" : "text-red-500"}`}>
-                  {result === "correct"
-                    ? "Correct!"
-                    : `Oops! That was "${gameMode === "album" ? currentAlbum.title : currentAlbum.artist}".`}
+                  {result === "correct" ? "Correct!" : `Oops! That was "${currentAlbum.title}".`}
                 </p>
                 <button
                   onClick={handleNext}
@@ -221,9 +216,6 @@ export default function AlbumGuess() {
           <>
             <h2 className="text-3xl font-bold text-pink-600 mb-4">⏰ Time's Up!</h2>
             <p className="text-xl text-purple-700 mb-2">You scored {score} points!</p>
-            <p className="text-md text-gray-700 mt-2 italic">
-              Was that too hard? Try again — or switch it up by guessing the <strong>{gameMode === "album" ? "artist name" : "album name"}</strong> instead!
-            </p>
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {history.map((album, i) => (
                 <div key={i} className="relative border-4 rounded-lg overflow-hidden shadow-lg" style={{ borderColor: album.result === "correct" ? "#10B981" : "#EF4444" }}>
@@ -234,38 +226,20 @@ export default function AlbumGuess() {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center">
-              <button
-                onClick={() => {
-                  setGameMode("album");
-                  setGameStarted(false);
-                  setTimer(60);
-                  setScore(0);
-                  setIndex(0);
-                  setResult(null);
-                  setGuess("");
-                  setHistory([]);
-                }}
-                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
-              >
-                🔁 Try Again (Album Name)
-              </button>
-              <button
-                onClick={() => {
-                  setGameMode("artist");
-                  setGameStarted(false);
-                  setTimer(60);
-                  setScore(0);
-                  setIndex(0);
-                  setResult(null);
-                  setGuess("");
-                  setHistory([]);
-                }}
-                className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full"
-              >
-                🎤 Try Again (Artist Name)
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                setGameStarted(false);
+                setTimer(60);
+                setScore(0);
+                setIndex(0);
+                setResult(null);
+                setGuess("");
+                setHistory([]);
+              }}
+              className="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
+            >
+              Play Again
+            </button>
           </>
         )}
       </div>
