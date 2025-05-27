@@ -28,6 +28,7 @@ export async function handler(event, context) {
           id: album.id,
           name: album.name,
           image: album.images?.[0]?.url || "",
+          artist: track.artists?.[0]?.name || "Unknown Artist",
         });
       }
     });

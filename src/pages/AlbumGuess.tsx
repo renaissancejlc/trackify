@@ -161,7 +161,7 @@ export default function AlbumGuess() {
             <div className="absolute top-4 right-4 text-right z-30">
               <button
                 onClick={() => setUseArtistMode(!useArtistMode)}
-                className="px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-pink-800 rounded-full text-xs shadow-md opacity-80 hover:opacity-100 transition"
+                className="fixed bottom-4 right-4 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-pink-800 rounded-full text-xs shadow-md opacity-80 hover:opacity-100 transition z-50"
               >
                 {useArtistMode ? "Album Mode" : "Too hard? Try Artist Guess"}
               </button>
@@ -256,6 +256,21 @@ export default function AlbumGuess() {
               className="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
             >
               Play Again
+            </button>
+            <button
+              onClick={() => {
+                setGameStarted(false);
+                setTimer(60);
+                setScore(0);
+                setIndex(0);
+                setResult(null);
+                setGuess("");
+                setHistory([]);
+                setUseArtistMode(true);
+              }}
+              className="mt-2 px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-pink-900 font-semibold rounded-full"
+            >
+              Try Again in Artist Mode
             </button>
           </>
         )}
