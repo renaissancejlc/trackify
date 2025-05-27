@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import Home from  './pages/Home';
 import MatchingGame from './pages/MatchingGame';
 import AboutMe from './pages/AboutMe';
+import Callback from './pages/Callback';
 
 const App = () => {
   return (
@@ -26,7 +27,7 @@ const App = () => {
               <Route path="/tarot" element={<TarotReading />} />
               <Route path="/match" element={<MatchingGame />} />
               <Route path="/about" element={<AboutMe />} />
-
+              <Route path="/callback" element={<Callback />} />
             </Routes>
           </main>
         </div>
