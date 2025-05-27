@@ -44,58 +44,58 @@ export default function SpiritAnimal() {
   const accessToken = localStorage.getItem("spotify_access_token");
 
   useEffect(() => {
-    const fetchTopTrackFeatures = async () => {
-      if (!accessToken) return;
-
-      try {
-        const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=5", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const topTracksData = await topTrackRes.json();
-        const items = topTracksData.items || [];
-        setTopTracks(items);
-
-        const trackId = items?.[0]?.id;
-        if (!trackId) return;
-
-        const featuresRes = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const featuresData = await featuresRes.json();
-
-        setFeatures({
-          energy: featuresData.energy,
-          valence: featuresData.valence,
-          danceability: featuresData.danceability,
-        });
-
-        // Extract genres from artists
-        const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
-        const uniqueIds = [...new Set(artistIds)].slice(0, 5);
-        const genrePromises = (uniqueIds as string[]).map((id) =>
-          fetch(`https://api.spotify.com/v1/artists/${id}`, {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }).then(res => res.json())
-        );
-        const artistData = await Promise.all(genrePromises);
-        const allGenres = artistData.flatMap(a => a.genres || []);
-        const uniqueGenres = [...new Set(allGenres)];
-        setTopGenres(uniqueGenres.slice(0, 5));
-        generateAnimal();
-
-      } catch (err) {
-        console.error("Error fetching Spotify data:", err);
-      }
-    };
-
     fetchTopTrackFeatures();
   }, [accessToken, mode]);
+
+  async function fetchTopTrackFeatures() {
+    if (!accessToken) return;
+
+    try {
+      const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=5", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const topTracksData = await topTrackRes.json();
+      const items = topTracksData.items || [];
+      setTopTracks(items);
+
+      const trackId = items?.[0]?.id;
+      if (!trackId) return;
+
+      const featuresRes = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const featuresData = await featuresRes.json();
+
+      setFeatures({
+        energy: featuresData.energy,
+        valence: featuresData.valence,
+        danceability: featuresData.danceability,
+      });
+
+      // Extract genres from artists
+      const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
+      const uniqueIds = [...new Set(artistIds)].slice(0, 5);
+      const genrePromises = (uniqueIds as string[]).map((id) =>
+        fetch(`https://api.spotify.com/v1/artists/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }).then(res => res.json())
+      );
+      const artistData = await Promise.all(genrePromises);
+      const allGenres = artistData.flatMap(a => a.genres || []);
+      const uniqueGenres = [...new Set(allGenres)];
+      setTopGenres(uniqueGenres.slice(0, 5));
+      generateAnimal();
+
+    } catch (err) {
+      console.error("Error fetching Spotify data:", err);
+    }
+  }
 
   const generateAnimal = () => {
     if (!features) return;
@@ -193,7 +193,7 @@ export default function SpiritAnimal() {
               key={type}
               onClick={() => {
                 setMode(type);
-                generateAnimal();
+                fetchTopTrackFeatures();
               }}
               className={`px-4 py-2 rounded-full font-semibold shadow-md transition ${
                 mode === type
