@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../auth/AuthContext";
 
 interface AnimalProfile {
   name: string;
@@ -37,12 +38,48 @@ const spiritAnimals: AnimalProfile[] = [
 export default function SpiritAnimal() {
   const [animal, setAnimal] = useState<AnimalProfile | null>(null);
   const [mode, setMode] = useState<"overall" | "song" | "genre" | "mood">("overall");
+  const [features, setFeatures] = useState<{ energy: number; valence: number; danceability: number } | null>(null);
+  const { accessToken } = useAuth();
+
+  useEffect(() => {
+    const fetchTopTrackFeatures = async () => {
+      if (!accessToken) return;
+
+      try {
+        const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=1", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const topTracksData = await topTrackRes.json();
+        const trackId = topTracksData.items?.[0]?.id;
+
+        if (!trackId) return;
+
+        const featuresRes = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const featuresData = await featuresRes.json();
+
+        setFeatures({
+          energy: featuresData.energy,
+          valence: featuresData.valence,
+          danceability: featuresData.danceability,
+        });
+      } catch (err) {
+        console.error("Error fetching Spotify audio features:", err);
+      }
+    };
+
+    fetchTopTrackFeatures();
+  }, [accessToken, mode]);
 
   const generateAnimal = () => {
-    // Mock audio features (in future: pull from Spotify API)
-    const energy = Math.random();
-    const valence = Math.random();
-    const danceability = Math.random();
+    if (!features) return;
+
+    const { energy, valence, danceability } = features;
 
     let selected: AnimalProfile;
 
@@ -129,7 +166,7 @@ export default function SpiritAnimal() {
               key={type}
               onClick={() => {
                 setMode(type);
-                generateAnimal(); // Same logic for now
+                generateAnimal();
               }}
               className={`px-4 py-2 rounded-full font-semibold shadow-md transition ${
                 mode === type
