@@ -84,7 +84,21 @@ export default function AlbumGuess() {
   );
 
   if (!albums.length) {
-    return <div className="text-center text-pink-700 mt-20">Loading your albums...</div>;
+    return (
+      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
+        {/* Paint splatter accents */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+        <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+
+        <div className="relative z-10 text-center">
+          <h1 className="text-4xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
+            🎧 Warming up the turntables...
+          </h1>
+          <p className="text-lg text-purple-700">Fetching your top album covers. Let the vibe paint itself 🎨</p>
+          <div className="mt-8 w-20 h-20 border-8 border-dashed border-pink-400 rounded-full animate-spin" />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -251,7 +265,14 @@ export default function AlbumGuess() {
           50% { transform: translateY(-6px); }
         }
         .animate-bounce-soft {
-          animation: bounceSoft 4s ease-in-out infinite;s
+          animation: bounceSoft 4s ease-in-out infinite;
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 1; }
+        }
+        .animate-pulse {
+          animation: pulse 2s ease-in-out infinite;
         }
       `}</style>
     </div>
