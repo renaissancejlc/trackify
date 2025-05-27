@@ -32,7 +32,7 @@ export default function AlbumGuess() {
           title: album.name || "Unknown Album",
           image: album.image || "",
         }));
-        setAlbums(parsedAlbums);
+        setAlbums(parsedAlbums.sort(() => Math.random() - 0.5));
         if (parsedAlbums.length === 0) {
           console.warn("No albums returned from Spotify.");
         }
