@@ -29,8 +29,8 @@ export default function AlbumGuess() {
         });
         const data = await response.json();
         const parsedAlbums = data.items.map((album: any) => ({
-          title: album.name,
-          image: Array.isArray(album.images) && album.images.length > 0 ? album.images[0].url : "",
+          title: album.album.name,
+          image: Array.isArray(album.album.images) && album.album.images.length > 0 ? album.album.images[0].url : "",
         }));
         setAlbums(parsedAlbums);
         if (parsedAlbums.length === 0) {
