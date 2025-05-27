@@ -16,12 +16,26 @@ export default function TarotReading() {
 
   const generateAlbumMeaning = (title: string): string => {
     const meanings = [
-      "Reflects a period of emotional depth and introspection.",
-      "A vibrant time of connection, spark, and creative expression.",
-      "Memories from the past influencing current decisions.",
-      "A moment of clarity and radiant self-awareness.",
-      "Quiet transformation and inner peace are on the horizon.",
-      "Chaos and excitement might cloud your judgment—stay grounded."
+      "A chapter closed, echoing lessons of resilience from heartbreak.",
+      "The spark of self-belief ignites a new creative journey.",
+      "You’re carrying emotions that don’t belong to you—release them.",
+      "Loyalty and nostalgia are guiding your current path forward.",
+      "An unexpected opportunity is hiding in your daily routine.",
+      "Passion is driving you—be careful not to burn out.",
+      "Trust your instincts over the noise of others' opinions.",
+      "A transformation awaits, but it demands sacrifice first.",
+      "Silence and solitude are needed to hear your inner truth.",
+      "Balance your dreams with action—one without the other fails.",
+      "What you're building now will outlast your present fears.",
+      "An old connection may resurface to deliver closure or clarity.",
+      "Romantic ideals may clash with reality—discern fantasy from truth.",
+      "Let go of control; flow with the rhythm of change.",
+      "A season of healing is near—nurture what was once neglected.",
+      "Your voice matters more than you realize. Speak your truth.",
+      "Cycles repeat until the lesson is learned. Reflect deeply.",
+      "A restless spirit seeks adventure—satisfy it wisely.",
+      "Someone is watching you thrive—share your success generously.",
+      "The universe rewards your courage. Take the leap."
     ];
     return meanings[Math.floor(Math.random() * meanings.length)];
   };
@@ -171,9 +185,18 @@ export default function TarotReading() {
                 🪶 Interpret My Reading
               </summary>
               <div className="mt-4 space-y-4 text-gray-300">
-                <p><strong>🕰 Past:</strong> {drawnCards[0].meaning}</p>
-                <p><strong>🧭 Present:</strong> {drawnCards[1].meaning}</p>
-                <p><strong>🔮 Future:</strong> {drawnCards[2].meaning}</p>
+                <p>
+                  Your <strong>past</strong> was shaped by <em>{drawnCards[0].title}</em>, reflecting a time where {drawnCards[0].meaning.toLowerCase()}.
+                </p>
+                <p>
+                  In the <strong>present</strong>, <em>{drawnCards[1].title}</em> calls your attention to {drawnCards[1].meaning.toLowerCase()}—a pivotal moment to pause and reflect.
+                </p>
+                <p>
+                  As you step into the <strong>future</strong>, <em>{drawnCards[2].title}</em> hints that {drawnCards[2].meaning.toLowerCase()}—an omen of what lies ahead.
+                </p>
+                <p className="italic text-indigo-400">
+                  Together, these signs weave a unique path shaped by rhythm, memory, and transformation.
+                </p>
               </div>
             </details>
           </div>
