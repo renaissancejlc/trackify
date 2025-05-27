@@ -76,7 +76,7 @@ export default function SpiritAnimal() {
         // Extract genres from artists
         const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
         const uniqueIds = [...new Set(artistIds)].slice(0, 5);
-        const genrePromises = uniqueIds.map((id: string) =>
+        const genrePromises = (uniqueIds as string[]).map((id) =>
           fetch(`https://api.spotify.com/v1/artists/${id}`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
