@@ -33,7 +33,7 @@ export default function AlbumGuess() {
         const parsedAlbums = data.items.map((album: any) => ({
           title: album.name || "Unknown Album",
           image: album.image || "",
-          artist: album.artists?.[0]?.name ?? album.artist?.name ?? "Unknown Artist",
+          artist: album.artists?.[0]?.name ?? "Unknown Artist",
         }));
         setAlbums(parsedAlbums.sort(() => Math.random() - 0.5));
         if (parsedAlbums.length === 0) {
