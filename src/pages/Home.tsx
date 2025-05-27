@@ -70,20 +70,25 @@ function HomeContent() {
           Log in with Spotify
         </button>
         {userProfile && (
-          <div className="mt-6 text-sm text-gray-800 bg-white/50 rounded-xl p-4">
-            <p><strong>Welcome,</strong> {userProfile.display_name}</p>
-            <p><strong>Email:</strong> {userProfile.email}</p>
-          </div>
-        )}
-
-        {topTracks && topTracks.length > 0 && (
-          <div className="mt-6 text-sm text-gray-800 bg-white/50 rounded-xl p-4">
-            <p><strong>Your Top Tracks:</strong></p>
-            <ul className="list-disc ml-6">
-              {topTracks.slice(0, 3).map((track: any) => (
-                <li key={track.id}>{track.name} — {track.artists[0].name}</li>
-              ))}
-            </ul>
+          <div className="mt-8 bg-white/60 rounded-3xl p-6 shadow-xl text-center max-w-lg w-full backdrop-blur-md">
+            <h2 className="text-2xl font-bold text-pink-700 mb-2">
+              Welcome back, {userProfile.display_name}! ☁️
+            </h2>
+            <p className="text-sm text-gray-700 italic mb-4">
+              We missed your musical vibes in the clouds!
+            </p>
+            <div className="flex flex-col sm:flex-row sm:justify-center gap-4">
+              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+                {/* TODO: Replace with real genre data by fetching artist details from Spotify API */}
+                🌟 Top Genre: <strong>Fetching artist genre requires separate API call</strong>
+              </div>
+              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+                🔁 Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
+              </div>
+              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+                🎤 Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
+              </div>
+            </div>
           </div>
         )}
       </div>
