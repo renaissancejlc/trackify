@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -20,4 +21,8 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   scroll-behavior: smooth;
+}
+
+.font-tarot {
+  font-family: 'Uncial Antiqua', cursive;
 }
