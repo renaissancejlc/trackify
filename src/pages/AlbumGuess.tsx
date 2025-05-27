@@ -151,12 +151,6 @@ export default function AlbumGuess() {
             </h1>
             <p className="text-gray-700 mb-4">Can you name the album based on its blurred cover?</p>
             <button
-              onClick={() => setGameMode(gameMode === "album" ? "artist" : "album")}
-              className="mb-4 px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-full"
-            >
-              Is guessing the {gameMode === "album" ? "album" : "artist"} too hard? Try guessing the {gameMode === "album" ? "artist" : "album"}!
-            </button>
-            <button
               onClick={() => setGameStarted(true)}
               className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full"
             >
