@@ -33,7 +33,7 @@ export default function AlbumGuess() {
         const parsedAlbums = data.items.map((album: any) => ({
           title: album.name || "Unknown Album",
           image: album.image || "",
-          artist: album.artists?.[0]?.name || "Unknown Artist",
+          artist: album.artists?.[0]?.name ?? album.artist?.name ?? "Unknown Artist",
         }));
         setAlbums(parsedAlbums.sort(() => Math.random() - 0.5));
         if (parsedAlbums.length === 0) {
@@ -149,7 +149,7 @@ export default function AlbumGuess() {
         {!gameStarted && timer === 60 ? (
           <>
             <h1 className="text-3xl font-bold mb-6 text-pink-700 drop-shadow">
-              🎨 Guess That Album
+              🎨 Guess That {useArtistMode ? "Artist" : "Album"}
             </h1>
             <p className="text-gray-700 mb-4">Can you name the album based on its blurred cover?</p>
             <button
@@ -158,12 +158,14 @@ export default function AlbumGuess() {
             >
               Start Game
             </button>
-            <button
-              onClick={() => setUseArtistMode(!useArtistMode)}
-              className="mt-2 px-4 py-2 bg-yellow-300 hover:bg-yellow-400 text-pink-800 rounded-full text-sm"
-            >
-              {useArtistMode ? "Switch to Album Guess Mode" : "Too hard? Try Artist Guess Mode"}
-            </button>
+            <div className="absolute bottom-4 right-4 text-right">
+              <button
+                onClick={() => setUseArtistMode(!useArtistMode)}
+                className="px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-pink-800 rounded-full text-xs shadow-md opacity-80 hover:opacity-100 transition"
+              >
+                {useArtistMode ? "Album Mode" : "Too hard? Try Artist Guess"}
+              </button>
+            </div>
           </>
         ) : timer > 0 ? (
           <>
