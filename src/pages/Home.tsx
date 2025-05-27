@@ -18,6 +18,13 @@ function HomeContent() {
 
   const { topTracks, profile: userProfile, topGenre } = useSpotifyData();
 
+  function calculatePopularityScore(tracks: any[]) {
+    if (!tracks || tracks.length === 0) return "N/A";
+    const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
+    const avg = total / tracks.length;
+    return `${Math.round(avg)} / 100`;
+  }
+
   useEffect(() => {
     const token = localStorage.getItem("spotify_access_token");
     if (!token) {
@@ -86,6 +93,9 @@ function HomeContent() {
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 🎤 Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
+              </div>
+              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+                📊 Popularity Score: <strong>{calculatePopularityScore(topTracks)}</strong>
               </div>
             </div>
           </div>
