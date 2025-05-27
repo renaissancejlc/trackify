@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Macondo+Swash+Caps&display=swap');
 
 html {
   scroll-behavior: smooth;
@@ -24,5 +24,5 @@ body {
 }
 
 .font-tarot {
-  font-family: 'Uncial Antiqua', cursive;
+  font-family: 'Macondo Swash Caps', cursive;
 }
