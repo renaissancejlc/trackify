@@ -5,22 +5,11 @@ interface Album {
   image: string;
 }
 
-const albums: Album[] = [
-  {
-    title: "Neon Pulse",
-    image: "https://via.placeholder.com/300/111111/FFFFFF?text=Neon+Pulse",
-  },
-  {
-    title: "Storm Season",
-    image: "https://via.placeholder.com/300/222222/FFFFFF?text=Storm+Season",
-  },
-  {
-    title: "Lush Language",
-    image: "https://via.placeholder.com/300/333333/FFFFFF?text=Lush+Language",
-  },
-];
+// This will be dynamically loaded from user data
+// const albums: Album[] = [];
 
 export default function AlbumGuess() {
+  const [albums, setAlbums] = useState<Album[]>([]);
   const [index, setIndex] = useState(0);
   const [guess, setGuess] = useState("");
   const [result, setResult] = useState<"correct" | "wrong" | null>(null);
@@ -29,7 +18,27 @@ export default function AlbumGuess() {
   const [score, setScore] = useState(0);
   const [history, setHistory] = useState<{ title: string; image: string; result: "correct" | "wrong" }[]>([]);
 
-  const currentAlbum = albums[index];
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const response = await fetch("/api/top-albums?limit=50"); // Request up to 50 albums
+        const data = await response.json();
+        const parsedAlbums = data.items.map((album: any) => ({
+          title: album.name,
+          image: Array.isArray(album.images) && album.images.length > 0 ? album.images[0].url : "",
+        }));
+        setAlbums(parsedAlbums);
+        if (parsedAlbums.length === 0) {
+          console.warn("No albums returned from Spotify.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch albums", error);
+      }
+    };
+    fetchAlbums();
+  }, []);
+
+  const currentAlbum = albums[index] || { title: "", image: "" };
 
   useEffect(() => {
     if (!gameStarted || timer <= 0) return;
@@ -40,6 +49,7 @@ export default function AlbumGuess() {
   }, [gameStarted, timer]);
 
   const handleGuess = () => {
+    if (!guess.trim()) return;
     const normalizedGuess = guess.trim().toLowerCase();
     const normalizedTitle = currentAlbum.title.toLowerCase();
 
@@ -72,6 +82,10 @@ export default function AlbumGuess() {
       })),
     []
   );
+
+  if (!albums.length) {
+    return <div className="text-center text-pink-700 mt-20">Loading your albums...</div>;
+  }
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">

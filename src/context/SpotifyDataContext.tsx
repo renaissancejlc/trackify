@@ -21,13 +21,14 @@ interface SpotifyTrack {
     name: string;
     images: { url: string }[];
   };
-  artists: { name: string }[];
+  artists: { name: string; id: string }[];
 }
 
 interface SpotifyData {
   profile: SpotifyUserProfile | null;
   topTracks: SpotifyTrack[];
   topArtists: SpotifyArtist[];
+  topGenre: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -36,6 +37,7 @@ const SpotifyDataContext = createContext<SpotifyData>({
   profile: null,
   topTracks: [],
   topArtists: [],
+  topGenre: null,
   loading: true,
   error: null,
 });
@@ -46,6 +48,7 @@ export const SpotifyDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [profile, setProfile] = useState<SpotifyUserProfile | null>(null);
   const [topTracks, setTopTracks] = useState<SpotifyTrack[]>([]);
   const [topArtists, setTopArtists] = useState<SpotifyArtist[]>([]);
+  const [topGenre, setTopGenre] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -80,6 +83,21 @@ export const SpotifyDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
         setProfile(profileData);
         setTopTracks(tracksData.items);
         setTopArtists(artistsData.items);
+
+        if (tracksData.items.length > 0) {
+          const topArtistId = tracksData.items[0].artists[0].id;
+
+          try {
+            const artistRes = await fetch(`https://api.spotify.com/v1/artists/${topArtistId}`, { headers });
+            if (artistRes.ok) {
+              const artistData = await artistRes.json();
+              setTopGenre(artistData.genres?.[0] ?? null);
+            }
+          } catch (genreErr) {
+            console.error("Failed to fetch genre:", genreErr);
+          }
+        }
+
         setLoading(false);
       } catch (err: any) {
         setError(err.message || "Unknown error");
@@ -91,7 +109,7 @@ export const SpotifyDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
   }, []);
 
   return (
-    <SpotifyDataContext.Provider value={{ profile, topTracks, topArtists, loading, error }}>
+    <SpotifyDataContext.Provider value={{ profile, topTracks, topArtists, topGenre, loading, error }}>
       {children}
     </SpotifyDataContext.Provider>
   );

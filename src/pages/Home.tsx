@@ -16,7 +16,7 @@ export default function Home() {
 function HomeContent() {
   const navigate = useNavigate();
 
-  const { topTracks, profile: userProfile } = useSpotifyData();
+  const { topTracks, profile: userProfile, topGenre } = useSpotifyData();
 
   useEffect(() => {
     const token = localStorage.getItem("spotify_access_token");
@@ -79,8 +79,7 @@ function HomeContent() {
             </p>
             <div className="flex flex-col sm:flex-row sm:justify-center gap-4">
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
-                {/* TODO: Replace with real genre data by fetching artist details from Spotify API */}
-                🌟 Top Genre: <strong>Fetching artist genre requires separate API call</strong>
+                🌟 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 🔁 Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
