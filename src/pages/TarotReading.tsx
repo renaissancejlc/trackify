@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import TarotCard from "../components/TarotCard";
 
 interface AlbumCard {
   title: string;
@@ -6,51 +7,65 @@ interface AlbumCard {
   meaning: string;
 }
 
-const mockAlbums: AlbumCard[] = [
-  {
-    title: "Melancholy Dreams",
-    image: "https://via.placeholder.com/150/1a1a1a/ffffff?text=Melancholy+Dreams",
-    meaning: "Reflects a period of emotional depth and introspection.",
-  },
-  {
-    title: "Electric Love",
-    image: "https://via.placeholder.com/150/292929/ffffff?text=Electric+Love",
-    meaning: "A vibrant time of connection, spark, and creative expression.",
-  },
-  {
-    title: "Echoes of You",
-    image: "https://via.placeholder.com/150/3a3a3a/ffffff?text=Echoes+of+You",
-    meaning: "Memories from the past influencing current decisions.",
-  },
-  {
-    title: "Golden Hour",
-    image: "https://via.placeholder.com/150/444444/ffffff?text=Golden+Hour",
-    meaning: "A moment of clarity and radiant self-awareness.",
-  },
-  {
-    title: "Waves & Silence",
-    image: "https://via.placeholder.com/150/555555/ffffff?text=Waves+%26+Silence",
-    meaning: "Quiet transformation and inner peace are on the horizon.",
-  },
-  {
-    title: "Neon Nights",
-    image: "https://via.placeholder.com/150/666666/ffffff?text=Neon+Nights",
-    meaning: "Chaos and excitement might cloud your judgment—stay grounded.",
-  },
-];
-
 export default function TarotReading() {
+  const accessToken = localStorage.getItem("spotify_access_token");
+  const [topAlbums, setTopAlbums] = useState<AlbumCard[]>([]);
   const [drawnCards, setDrawnCards] = useState<AlbumCard[]>([]);
   const chimeRef = useRef<HTMLAudioElement>(null);
   const ambientRef = useRef<HTMLAudioElement>(null);
-  const allCards = useRef<AlbumCard[]>([]);
+
+  const generateAlbumMeaning = (title: string): string => {
+    const meanings = [
+      "Reflects a period of emotional depth and introspection.",
+      "A vibrant time of connection, spark, and creative expression.",
+      "Memories from the past influencing current decisions.",
+      "A moment of clarity and radiant self-awareness.",
+      "Quiet transformation and inner peace are on the horizon.",
+      "Chaos and excitement might cloud your judgment—stay grounded."
+    ];
+    return meanings[Math.floor(Math.random() * meanings.length)];
+  };
+
+  useEffect(() => {
+    const loadTopAlbums = async () => {
+      if (!accessToken) return;
+      try {
+        const response = await fetch("https://api.spotify.com/v1/me/top/artists?limit=10", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const data = await response.json();
+        const albums: AlbumCard[] = data.items.flatMap((artist: any) =>
+          artist.albums?.map((album: any) => ({
+            title: album.name,
+            image: album.images?.[0]?.url,
+            meaning: generateAlbumMeaning(album.name),
+          })) || []
+        );
+
+        // Fallback: if artist.albums is not available, just return artist images
+        if (albums.length === 0) {
+          const fallbackAlbums: AlbumCard[] = data.items.map((artist: any) => ({
+            title: artist.name,
+            image: artist.images?.[0]?.url,
+            meaning: generateAlbumMeaning(artist.name),
+          }));
+          setTopAlbums(fallbackAlbums);
+        } else {
+          setTopAlbums(albums);
+        }
+      } catch (error) {
+        console.error("Failed to fetch top albums:", error);
+      }
+    };
+    loadTopAlbums();
+  }, [accessToken]);
 
   const drawNextCard = () => {
-    if (drawnCards.length >= 3) return;
-    if (allCards.current.length === 0) {
-      allCards.current = [...mockAlbums].sort(() => 0.5 - Math.random()).slice(0, 3);
-    }
-    const next = allCards.current[drawnCards.length];
+    if (drawnCards.length >= 3 || topAlbums.length < 3) return;
+    const next = topAlbums[drawnCards.length];
     setDrawnCards([...drawnCards, next]);
     if (chimeRef.current) chimeRef.current.play();
   };
@@ -101,6 +116,12 @@ export default function TarotReading() {
         .animate-reveal-card {
           animation: revealCard 0.6s ease-out;
         }
+        .vintage-card-img {
+          filter: sepia(0.4) contrast(1.1) brightness(0.95);
+          border: 2px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+          border-radius: 0.5rem;
+        }
       `}</style>
       <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-t from-purple-950 via-indigo-900 to-black text-white px-4 py-10">
         {/* Twinkling stars background layer */}
@@ -131,19 +152,14 @@ export default function TarotReading() {
         {drawnCards.length > 0 && (
           <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-3 justify-center">
             {drawnCards.map((card, idx) => (
-              <div
+              <TarotCard
                 key={["Past", "Present", "Future"][idx]}
-                className="bg-indigo-950 p-4 rounded-xl shadow-2xl border border-purple-800 backdrop-blur-lg animate-reveal-card"
-              >
-                <h2 className="text-xl font-semibold mb-2 text-purple-400">{["Past", "Present", "Future"][idx]}</h2>
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-40 object-cover rounded mb-3"
-                />
-                <h3 className="text-lg font-bold mb-1">{card.title}</h3>
-                <p className="text-gray-300 text-sm">{card.meaning}</p>
-              </div>
+                position={["Past", "Present", "Future"][idx] as "Past" | "Present" | "Future"}
+                title={card.title}
+                image={card.image}
+                vintageClassName="vintage-card-img"
+                meaning={card.meaning}
+              />
             ))}
           </div>
         )}
