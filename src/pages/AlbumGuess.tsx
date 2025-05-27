@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 
 interface Album {
   title: string;
+  artist?: string;
   image: string;
 }
 
@@ -16,7 +17,8 @@ export default function AlbumGuess() {
   const [gameStarted, setGameStarted] = useState(false);
   const [timer, setTimer] = useState(60);
   const [score, setScore] = useState(0);
-  const [history, setHistory] = useState<{ title: string; image: string; result: "correct" | "wrong" }[]>([]);
+  const [history, setHistory] = useState<{ title: string; image: string; artist?: string; result: "correct" | "wrong" }[]>([]);
+  const [useArtistMode, setUseArtistMode] = useState(false);
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -31,6 +33,7 @@ export default function AlbumGuess() {
         const parsedAlbums = data.items.map((album: any) => ({
           title: album.name || "Unknown Album",
           image: album.image || "",
+          artist: album.artists?.[0]?.name || "Unknown Artist",
         }));
         setAlbums(parsedAlbums.sort(() => Math.random() - 0.5));
         if (parsedAlbums.length === 0) {
@@ -56,7 +59,9 @@ export default function AlbumGuess() {
   const handleGuess = () => {
     if (!guess.trim()) return;
     const normalizedGuess = guess.trim().toLowerCase();
-    const normalizedTitle = currentAlbum.title.toLowerCase();
+    const normalizedTitle = useArtistMode
+      ? (currentAlbum.artist?.toLowerCase() || "")
+      : currentAlbum.title.toLowerCase();
 
     if (normalizedGuess === normalizedTitle) {
       setResult("correct");
@@ -153,6 +158,12 @@ export default function AlbumGuess() {
             >
               Start Game
             </button>
+            <button
+              onClick={() => setUseArtistMode(!useArtistMode)}
+              className="mt-2 px-4 py-2 bg-yellow-300 hover:bg-yellow-400 text-pink-800 rounded-full text-sm"
+            >
+              {useArtistMode ? "Switch to Album Guess Mode" : "Too hard? Try Artist Guess Mode"}
+            </button>
           </>
         ) : timer > 0 ? (
           <>
@@ -201,7 +212,11 @@ export default function AlbumGuess() {
             ) : (
               <div className="mt-4">
                 <p className={`text-lg font-bold ${result === "correct" ? "text-green-600" : "text-red-500"}`}>
-                  {result === "correct" ? "Correct!" : `Oops! That was "${currentAlbum.title}".`}
+                  {result === "correct"
+                    ? "Correct!"
+                    : useArtistMode
+                    ? `Oops! That artist was "${currentAlbum.artist}".`
+                    : `Oops! That was "${currentAlbum.title}".`}
                 </p>
                 <button
                   onClick={handleNext}
@@ -221,7 +236,7 @@ export default function AlbumGuess() {
                 <div key={i} className="relative border-4 rounded-lg overflow-hidden shadow-lg" style={{ borderColor: album.result === "correct" ? "#10B981" : "#EF4444" }}>
                   <img src={album.image} alt={album.title} className="w-full h-40 object-cover" />
                   <div className="absolute bottom-0 left-0 right-0 bg-white/80 text-center text-xs font-medium text-gray-700 py-1">
-                    {album.title}
+                    {useArtistMode ? album.artist : album.title}
                   </div>
                 </div>
               ))}
