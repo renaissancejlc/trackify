@@ -97,10 +97,9 @@ export default function AlbumGuess() {
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
 
           <div className="relative z-10 text-center">
-            <h1 className="text-4xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
-              🎧 Warming up the turntables...
+            <h1 className="text-3xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
+              Loading your top albums...
             </h1>
-            <p className="text-lg text-purple-700">Fetching your top album covers. Let the vibe paint itself 🎨</p>
             <div className="flex justify-center mt-8">
               <div className="w-20 h-20 border-8 border-dashed border-pink-400 rounded-full animate-spin" />
             </div>
