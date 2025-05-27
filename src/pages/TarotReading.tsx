@@ -211,9 +211,10 @@ export default function TarotReading() {
           {/* Soft glow aura behind character */}
           <div className="absolute -top-4 -left-4 w-28 h-28 bg-purple-500 opacity-30 rounded-full blur-2xl z-0" />
           <div className="relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center">
-            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
             {!drawnCards.length && "Seek the truth within... and your albums shall reveal it."}
-            {drawnCards.length > 0 && "The veil is lifted. Let us interpret the signs."}
+            {drawnCards.length === 1 && "The past is a mirror. What do you see reflected?"}
+            {drawnCards.length === 2 && "Now is the moment that shapes all moments."}
+            {drawnCards.length === 3 && "Destiny whispers in riddles. Are you ready to listen?"}
           </div>
         </div>
         {/* Audio elements for sound effects */}
