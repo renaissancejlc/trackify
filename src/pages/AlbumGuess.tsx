@@ -90,24 +90,29 @@ export default function AlbumGuess() {
 
   if (!albums.length) {
     return (
-      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
-        {/* Paint splatter accents */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
-        <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+      <div className="font-spotify">
+        <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
+          {/* Paint splatter accents */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
 
-        <div className="relative z-10 text-center">
-          <h1 className="text-4xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
-            🎧 Warming up the turntables...
-          </h1>
-          <p className="text-lg text-purple-700">Fetching your top album covers. Let the vibe paint itself 🎨</p>
-          <div className="mt-8 w-20 h-20 border-8 border-dashed border-pink-400 rounded-full animate-spin" />
+          <div className="relative z-10 text-center">
+            <h1 className="text-4xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
+              🎧 Warming up the turntables...
+            </h1>
+            <p className="text-lg text-purple-700">Fetching your top album covers. Let the vibe paint itself 🎨</p>
+            <div className="flex justify-center mt-8">
+              <div className="w-20 h-20 border-8 border-dashed border-pink-400 rounded-full animate-spin" />
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
+    <div className="font-spotify">
+      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
       {/* Dripping vertical time bar */}
       {gameStarted && timer > 0 && (
         <div className="absolute right-4 top-8 h-[80vh] w-3 bg-white/30 rounded-full border border-white/60 overflow-hidden z-20">
@@ -256,30 +261,31 @@ export default function AlbumGuess() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes floatPaint {
-          0%   { transform: translateY(0px) scale(1); opacity: 0.7; }
-          50%  { transform: translateY(-10px) scale(1.05); opacity: 1; }
-          100% { transform: translateY(0px) scale(1); opacity: 0.7; }
-        }
-        .animate-splat {
-          animation: floatPaint 8s ease-in-out infinite;
-        }
-        @keyframes bounceSoft {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-6px); }
-        }
-        .animate-bounce-soft {
-          animation: bounceSoft 4s ease-in-out infinite;
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 0.8; }
-          50% { opacity: 1; }
-        }
-        .animate-pulse {
-          animation: pulse 2s ease-in-out infinite;
-        }
-      `}</style>
+        <style>{`
+          @keyframes floatPaint {
+            0%   { transform: translateY(0px) scale(1); opacity: 0.7; }
+            50%  { transform: translateY(-10px) scale(1.05); opacity: 1; }
+            100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+          }
+          .animate-splat {
+            animation: floatPaint 8s ease-in-out infinite;
+          }
+          @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+          }
+          .animate-bounce-soft {
+            animation: bounceSoft 4s ease-in-out infinite;
+          }
+          @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+          }
+          .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+          }
+        `}</style>
+      </div>
     </div>
   );
 }
