@@ -209,17 +209,19 @@ export default function TarotReading() {
         )}
 
         {drawnCards.length > 0 && (
-          <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-3 justify-center">
-            {drawnCards.map((card, idx) => (
-              <TarotCard
-                key={["Past", "Present", "Future"][idx]}
-                position={["Past", "Present", "Future"][idx] as "Past" | "Present" | "Future"}
-                title={card.title}
-                image={card.image}
-                vintageClassName="vintage-card-img"
-                meaning={card.meaning}
-              />
-            ))}
+          <div className="relative p-10 rounded-3xl bg-gradient-to-br from-red-900 via-purple-950 to-black shadow-2xl border-4 border-yellow-900">
+            <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-3 justify-center z-10 relative">
+              {drawnCards.map((card, idx) => (
+                <TarotCard
+                  key={["Past", "Present", "Future"][idx]}
+                  position={["Past", "Present", "Future"][idx] as "Past" | "Present" | "Future"}
+                  title={card.title}
+                  image={card.image}
+                  vintageClassName="vintage-card-img"
+                  meaning={card.meaning}
+                />
+              ))}
+            </div>
           </div>
         )}
 
