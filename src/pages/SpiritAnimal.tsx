@@ -87,6 +87,7 @@ export default function SpiritAnimal() {
         const allGenres = artistData.flatMap(a => a.genres || []);
         const uniqueGenres = [...new Set(allGenres)];
         setTopGenres(uniqueGenres.slice(0, 5));
+        generateAnimal();
 
       } catch (err) {
         console.error("Error fetching Spotify data:", err);
