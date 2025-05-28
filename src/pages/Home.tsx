@@ -125,7 +125,7 @@ function HomeContent() {
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-200 via-white to-pink-200 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-200 via-white to-pink-200 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               🦊
             </div>
           </div>
@@ -137,7 +137,7 @@ function HomeContent() {
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-200 via-white to-blue-200 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-200 via-white to-blue-200 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               💿
             </div>
           </div>
@@ -149,7 +149,7 @@ function HomeContent() {
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-200 via-white to-blue-200 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-200 via-white to-blue-200 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               🔮
             </div>
           </div>
@@ -161,7 +161,7 @@ function HomeContent() {
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-100 via-white to-pink-200 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-100 via-white to-pink-200 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               📅
             </div>
           </div>
@@ -173,7 +173,7 @@ function HomeContent() {
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-200 via-white to-purple-200 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-200 via-white to-purple-200 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               🎬
             </div>
           </div>
@@ -185,7 +185,7 @@ function HomeContent() {
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 via-white to-blue-100 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 via-white to-blue-100 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               ❓
             </div>
           </div>
@@ -260,21 +260,23 @@ function HomeContent() {
         `}
       </style>
       {/* Social footer */}
-      <p className="text-center text-xs italic text-gray-500 mb-2">Connect with me</p>
-      <footer className="mt-20 mb-8 flex justify-center gap-6 text-gray-500 text-xl">
-        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <Github className="hover:text-[#1DB954]" />
-        </a>
-        <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-          <Twitter className="hover:text-[#1DB954]" />
-        </a>
-        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <Linkedin className="hover:text-[#1DB954]" />
-        </a>
-        <a href="mailto:youremail@example.com" aria-label="Email">
-          <Mail className="hover:text-[#1DB954]" />
-        </a>
-      </footer>
+      <div className="w-full mt-24 flex flex-col items-center z-10 relative">
+        <p className="text-center text-xs italic text-gray-500 mb-2">Connect with me</p>
+        <footer className="mb-8 flex justify-center gap-6 text-gray-500 text-xl">
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <Github className="hover:text-[#1DB954]" />
+          </a>
+          <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <Twitter className="hover:text-[#1DB954]" />
+          </a>
+          <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <Linkedin className="hover:text-[#1DB954]" />
+          </a>
+          <a href="mailto:youremail@example.com" aria-label="Email">
+            <Mail className="hover:text-[#1DB954]" />
+          </a>
+        </footer>
+      </div>
     </div>
   );
 }
