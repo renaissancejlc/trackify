@@ -199,7 +199,7 @@ export default function AlbumGuess() {
                 <img
                   src={currentAlbum.image}
                   alt="Blurred Album"
-                  className={`w-60 h-60 object-cover rounded-md shadow ${result === null ? "blur-md" : ""} sepia contrast-125 saturate-50`}
+                  className={`w-60 h-60 object-cover rounded-md shadow ${result === null ? "blur-md" : ""}`}
                 />
               </div>
             </div>
