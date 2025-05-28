@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
   const token = event.headers.authorization?.split("Bearer ")[1];

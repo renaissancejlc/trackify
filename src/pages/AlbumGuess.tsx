@@ -31,11 +31,21 @@ export default function AlbumGuess() {
           },
         });
         const data = await response.json();
-        const parsedItems = data.items.map((item: any) => ({
-          title: useArtistMode ? "Top Artist" : item.name || "Unknown Album",
-          artist: useArtistMode ? item.name || "Unknown Artist" : item.artist || "Unknown Artist",
-          image: item.image || "",
-        }));
+        const parsedItems = data.items.map((item: any) => {
+          if (useArtistMode) {
+            return {
+              title: item.name || "Unknown Artist",
+              artist: item.name || "Unknown Artist",
+              image: item.image || "",
+            };
+          } else {
+            return {
+              title: item.name || "Unknown Album",
+              artist: item.artists?.[0]?.name || "Unknown Artist",
+              image: item.image || "",
+            };
+          }
+        });
         setAlbums(parsedItems.sort(() => Math.random() - 0.5));
         if (parsedItems.length === 0) {
           console.warn("No items returned from Spotify.");

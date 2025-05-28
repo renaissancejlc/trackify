@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 
 export async function handler(event, context) {
   const accessToken = event.headers.authorization?.split(" ")[1];
