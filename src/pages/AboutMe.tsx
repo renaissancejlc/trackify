@@ -3,6 +3,7 @@ import { BookOpen, FileText, Github, Linkedin, Music2, Youtube, Globe, HeartHand
 import CloudBackground from '../components/CloudBackground';
 import TerminalFrame from '../components/TerminalFrame';
 import NowPlayingCard from '../components/NowPlayingCard';
+import ThisIsCard from '../components/ThisIsCard';
 
 const AboutMe = () => {
 return (
@@ -40,6 +41,19 @@ return (
       title="Dreams" 
       artist="Fleetwood Mac" 
       albumArt="https://i.scdn.co/image/ab67616d0000b273bce49e5d084b04f06cba43f2" 
+    />
+  </motion.div>
+
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.2, duration: 0.8 }}
+    viewport={{ once: true }}
+    className="mb-12 max-w-xl mx-auto"
+  >
+    <ThisIsCard
+      artist="Fleetwood Mac"
+      imageUrl="https://i.scdn.co/image/ab67616d0000b273bce49e5d084b04f06cba43f2"
     />
   </motion.div>
 
