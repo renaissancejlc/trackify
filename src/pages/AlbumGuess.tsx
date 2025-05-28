@@ -19,16 +19,11 @@ export default function AlbumGuess() {
   const [score, setScore] = useState(0);
   const [history, setHistory] = useState<{ title: string; image: string; artist?: string; result: "correct" | "wrong" }[]>([]);
   const [useArtistMode, setUseArtistMode] = useState(false);
-  const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accessToken = localStorage.getItem("spotify_access_token");
-        if (!accessToken) {
-          setAuthError(true);
-          return;
-        }
         const endpoint = useArtistMode ? "/.netlify/functions/top-artists" : "/.netlify/functions/top-albums";
         const response = await fetch(`${endpoint}?limit=50`, {
           headers: {
@@ -56,7 +51,6 @@ export default function AlbumGuess() {
           console.warn("No items returned from Spotify.");
         }
       } catch (error) {
-        setAuthError(true);
         console.error("Failed to fetch data", error);
       }
     };
@@ -113,15 +107,17 @@ export default function AlbumGuess() {
   if (!albums.length) {
     return (
       <div className="font-spotify">
-        <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden px-4">
-          {/* <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" /> */}
-          {/* <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" /> */}
+        <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
+          {/* Paint splatter accents */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+
           <div className="relative z-10 text-center">
-            <h1 className="text-3xl font-bold text-black drop-shadow mb-4">
+            <h1 className="text-3xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
               Loading your top albums...
             </h1>
             <div className="flex justify-center mt-8">
-              <div className="w-20 h-20 border-8 border-dashed border-black rounded-full animate-spin" />
+              <div className="w-20 h-20 border-8 border-dashed border-pink-400 rounded-full animate-spin" />
             </div>
           </div>
         </div>
@@ -131,21 +127,22 @@ export default function AlbumGuess() {
 
   return (
     <div className="font-spotify">
-      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-white overflow-hidden px-4">
+      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
       {/* Dripping vertical time bar */}
-      {/* {gameStarted && timer > 0 && (
+      {gameStarted && timer > 0 && (
         <div className="absolute right-4 top-8 h-[80vh] w-3 bg-white/30 rounded-full border border-white/60 overflow-hidden z-20">
           <div
             className="bg-pink-500 w-full transition-all duration-100"
             style={{ height: `${(timer / 60) * 100}%` }}
           />
         </div>
-      )} */}
+      )}
       {/* Paint splatter accents */}
-      {/* <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" /> */}
-      {/* <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" /> */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+
       {/* Timed animated splatters */}
-      {/* {splatterPositions.map((pos, i) => (
+      {splatterPositions.map((pos, i) => (
         <div
           key={i}
           className="absolute w-12 h-12 rounded-full opacity-60 blur-sm animate-splat pointer-events-none"
@@ -157,47 +154,40 @@ export default function AlbumGuess() {
             transform: `rotate(${pos.rotate}) scale(${pos.scale})`,
           }}
         />
-      ))} */}
+      ))}
+
       <div className="relative z-10 text-center">
         {!gameStarted && (timer === 60 || timer === 0) ? (
           <>
-            <h1 className="text-3xl font-bold mb-6 text-black drop-shadow">
+            <h1 className="text-3xl font-bold mb-6 text-pink-700 drop-shadow">
               🎨 Guess That {useArtistMode ? "Artist" : "Album"}
             </h1>
-            <p className="text-black mb-4">Can you name the album based on its blurred cover?</p>
-            {authError && (
-              <p className="text-black font-semibold mb-2">
-                Please log in with Spotify to play the game.
-              </p>
-            )}
+            <p className="text-gray-700 mb-4">Can you name the album based on its blurred cover?</p>
             <button
-              onClick={() => {
-                if (authError) return;
-                setGameStarted(true);
-              }}
-              className="px-6 py-3 bg-black hover:bg-black text-white font-bold rounded-full"
+              onClick={() => setGameStarted(true)}
+              className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full"
             >
               Start Game
             </button>
           </>
         ) : timer > 0 ? (
           <>
-            <h2 className="text-xl font-semibold text-black mb-2">Time Left: {timer}s</h2>
-            <h3 className="text-lg mb-4 text-black">Score: {score}</h3>
+            <h2 className="text-xl font-semibold text-pink-600 mb-2">Time Left: {timer}s</h2>
+            <h3 className="text-lg mb-4 text-purple-800">Score: {score}</h3>
             {/* Paint bucket score meter */}
             <div className="relative w-12 h-24 mx-auto mb-6">
-              <div className="absolute bottom-0 w-full bg-black transition-all duration-300 rounded-b-md"
+              <div className="absolute bottom-0 w-full bg-pink-500 transition-all duration-300 rounded-b-md"
                 style={{ height: `${Math.min(score * 10, 100)}%` }} />
-              <div className="absolute inset-0 border-4 border-black rounded-b-xl bg-white/40 backdrop-blur-sm" />
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold text-black">
+              <div className="absolute inset-0 border-4 border-pink-800 rounded-b-xl bg-white/40 backdrop-blur-sm" />
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold text-pink-800">
                 {score} 🎨
               </div>
             </div>
-            <p className="text-sm text-black mb-2">
+            <p className="text-sm text-pink-700 mb-2">
               You’re on Album {index + 1} of {albums.length}
             </p>
             <div className="mb-4">
-              <div className="p-2 border-8 border-black rounded-xl shadow-lg bg-white/60 backdrop-blur-sm w-fit mx-auto">
+              <div className="p-2 border-8 border-yellow-200 rounded-xl shadow-lg bg-white/60 backdrop-blur-sm w-fit mx-auto" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/canvas-fine.png')" }}>
                 <img
                   src={currentAlbum.image}
                   alt="Blurred Album"
@@ -208,37 +198,25 @@ export default function AlbumGuess() {
 
             {result === null ? (
               <>
-                <div className="relative w-64 mx-auto mb-2">
-                  <input
-                    placeholder="Your guess..."
-                    value={guess}
-                    onChange={(e) => setGuess(e.target.value)}
-                    className="px-4 py-2 rounded-lg bg-white text-black w-full border border-black shadow-sm mb-0"
-                  />
-                  <ul className="absolute z-30 bg-white w-full border border-black shadow-lg max-h-40 overflow-y-auto rounded-b-lg">
-                    {albums
-                      .filter((album) =>
-                        (useArtistMode ? album.artist || "" : album.title)
-                          .toLowerCase()
-                          .includes(guess.toLowerCase())
-                      )
-                      .map((album, idx) => (
-                        <li
-                          key={idx}
-                          onClick={() =>
-                            setGuess(useArtistMode ? album.artist || "" : album.title)
-                          }
-                          className="px-4 py-1 hover:bg-black hover:text-white cursor-pointer text-sm text-black"
-                        >
-                          {useArtistMode ? album.artist : album.title}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
+                <input
+                  list="guesses"
+                  placeholder="Your guess..."
+                  value={guess}
+                  onChange={(e) => setGuess(e.target.value)}
+                  className="px-4 py-2 rounded bg-white text-black w-64 border border-gray-400 mb-2"
+                />
+                <datalist id="guesses">
+                  {albums.map((album, idx) => (
+                    <option
+                      key={idx}
+                      value={useArtistMode ? album.artist || "" : album.title}
+                    />
+                  ))}
+                </datalist>
                 <div>
                   <button
                     onClick={handleGuess}
-                    className="px-6 py-2 bg-black hover:bg-black rounded-full text-white font-semibold"
+                    className="px-6 py-2 bg-pink-500 hover:bg-pink-600 rounded-full text-white font-semibold"
                   >
                     Submit
                   </button>
@@ -246,7 +224,7 @@ export default function AlbumGuess() {
               </>
             ) : (
               <div className="mt-4">
-                <p className={`text-lg font-bold ${result === "correct" ? "text-black" : "text-black"}`}>
+                <p className={`text-lg font-bold ${result === "correct" ? "text-green-600" : "text-red-500"}`}>
                   {result === "correct"
                     ? "Correct!"
                     : useArtistMode
@@ -255,7 +233,7 @@ export default function AlbumGuess() {
                 </p>
                 <button
                   onClick={handleNext}
-                  className="mt-3 px-6 py-2 bg-black hover:bg-black rounded-full text-white font-semibold"
+                  className="mt-3 px-6 py-2 bg-purple-500 hover:bg-purple-600 rounded-full text-white font-semibold"
                 >
                   Next
                 </button>
@@ -264,13 +242,13 @@ export default function AlbumGuess() {
           </>
         ) : (
           <>
-            <h2 className="text-3xl font-bold text-black mb-4">⏰ Time's Up!</h2>
-            <p className="text-xl text-black mb-2">You scored {score} points!</p>
+            <h2 className="text-3xl font-bold text-pink-600 mb-4">⏰ Time's Up!</h2>
+            <p className="text-xl text-purple-700 mb-2">You scored {score} points!</p>
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {history.map((album, i) => (
                 <div key={i} className="relative border-4 rounded-lg overflow-hidden shadow-lg" style={{ borderColor: album.result === "correct" ? "#10B981" : "#EF4444" }}>
-                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover" />
-                  <div className="absolute bottom-0 left-0 right-0 bg-white/80 text-center text-xs font-medium text-black py-1">
+                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover sepia contrast-125 saturate-50" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-white/80 text-center text-xs font-medium text-gray-700 py-1">
                     {useArtistMode ? album.artist : album.title}
                   </div>
                 </div>
@@ -289,7 +267,7 @@ export default function AlbumGuess() {
                   setUseArtistMode(false);
                   setAlbums([]); // trigger re-fetch
                 }}
-                className="px-6 py-2 bg-black hover:bg-black text-white font-semibold rounded-full"
+                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
               >
                 Play Again in Album Mode
               </button>
@@ -305,7 +283,7 @@ export default function AlbumGuess() {
                   setUseArtistMode(true);
                   setAlbums([]); // trigger re-fetch
                 }}
-                className="px-6 py-2 bg-black hover:bg-black text-white font-semibold rounded-full"
+                className="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-pink-900 font-semibold rounded-full"
               >
                 Play Again in Artist Mode
               </button>
@@ -318,13 +296,13 @@ export default function AlbumGuess() {
       {!gameStarted && (
         <button
           onClick={() => setUseArtistMode(!useArtistMode)}
-          className="fixed bottom-2 right-2 px-2 py-1 bg-white hover:bg-black text-black hover:text-white rounded text-[10px] shadow-sm opacity-40 hover:opacity-90 transition-all z-50"
+          className="fixed bottom-2 right-2 px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-pink-800 rounded text-[10px] shadow-sm opacity-40 hover:opacity-90 transition-all z-50"
         >
           {useArtistMode ? "Album Mode" : "Too hard? Try Artist Mode"}
         </button>
       )}
+
       {/* Art Character Guide */}
-      {/* 
       <div className="absolute bottom-8 left-6 z-20 animate-bounce-soft text-[2.75rem] select-none flex flex-col items-center space-y-2">
         <div className="drop-shadow text-white leading-none flex flex-col items-center">
           🧑‍🎨
@@ -339,8 +317,41 @@ export default function AlbumGuess() {
           {timer === 0 && "🖼 Let’s frame your final score!"}
         </div>
       </div>
-      */}
-      {/* Removed custom style block for minimalist look */}
+
+        <style>{`
+          @keyframes floatPaint {
+            0%   { transform: translateY(0px) scale(1); opacity: 0.7; }
+            50%  { transform: translateY(-10px) scale(1.05); opacity: 1; }
+            100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+          }
+          .animate-splat {
+            animation: floatPaint 8s ease-in-out infinite;
+          }
+          @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+          }
+          .animate-bounce-soft {
+            animation: bounceSoft 4s ease-in-out infinite;
+          }
+          @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+          }
+          .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+          }
+          /* Remove browser default dropdown arrow for datalist input */
+          input[list]::-webkit-calendar-picker-indicator {
+            display: none !important;
+          }
+          datalist option {
+            color: black;
+            background-color: white;
+            font-size: 14px;
+            padding: 4px;
+          }
+        `}</style>
       </div>
     </div>
   );
