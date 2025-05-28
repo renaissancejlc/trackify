@@ -101,9 +101,7 @@ return (
           {[
             { label: 'LinkedIn', url: 'https://www.linkedin.com/in/renaissancejlc/', icon: <Linkedin className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
             { label: 'GitHub', url: 'https://github.com/renaissancejlc', icon: <Github className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
-            { label: 'Resume', url: '/resume.pdf', icon: <FileText className="w-4 h-4 text-green-300 group-hover:scale-110 transition" />, newTab: true },            { label: 'YouTube', url: 'http://youtube.com/@Nowbrowncow', icon: <Youtube className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
             { label: 'Blog', url: 'https://renaissancecodes.wordpress.com/', icon: <BookOpen className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
-            { label: 'TikTok', url: 'https://tiktok.com/@nowbrowncow', icon: <Music2 className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
           ].map((link) => (
             <a
               key={link.label}
