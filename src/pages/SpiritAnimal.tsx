@@ -62,8 +62,14 @@ export default function SpiritAnimal() {
 
       const trackId = items?.[0]?.id;
       if (!trackId) return;
-
-      const featuresRes = await fetch(`/.netlify/functions/audio-features?trackId=${trackId}`);
+      const featuresRes = await fetch(
+        `/.netlify/functions/audio-features?trackId=${trackId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       const featuresData = await featuresRes.json();
 
       if (
