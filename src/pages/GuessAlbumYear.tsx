@@ -46,12 +46,10 @@ export default function GuessAlbumYearGame() {
     fetchAlbums();
   }, []);
 
-  const currentAlbum = albums[currentIndex];
-
   const handleGuessSubmit = () => {
     const guessedYear = parseInt(guess);
-    if (!isNaN(guessedYear) && currentAlbum) {
-      const correct = guessedYear === currentAlbum.releaseYear;
+    if (!isNaN(guessedYear) && albums[currentIndex]) {
+      const correct = guessedYear === albums[currentIndex].releaseYear;
       setIsCorrect(correct);
       if (correct) {
         setScore(score + 1);
@@ -79,39 +77,46 @@ export default function GuessAlbumYearGame() {
       <div className="w-full max-w-2xl bg-white/50 backdrop-blur-md border border-purple-200 rounded-xl p-10 shadow-lg">
         {albums.length > 0 && currentIndex < albums.length ? (
           <>
-            <div className="flex justify-center mb-4">
-              <Polaroid image={currentAlbum.image} caption={currentAlbum.name} />
-            </div>
-            <input
-              type="number"
-              placeholder="Enter year"
-              value={guess}
-              onChange={(e) => setGuess(e.target.value)}
-              className="px-4 py-2 border rounded-md text-center mb-4"
-              readOnly={showResult}
-            />
-            {!showResult ? (
-              <button
-                onClick={handleGuessSubmit}
-                className="bg-purple-600 text-white px-6 py-2 rounded shadow hover:bg-purple-700"
-              >
-                Submit Guess
-              </button>
-            ) : (
-              <>
-                <p className="mt-4 text-lg font-medium text-gray-700">
-                  {isCorrect
-                    ? "✅ Correct!"
-                    : `❌ Incorrect. The album was released in ${currentAlbum.releaseYear}.`}
-                </p>
-                <button
-                  onClick={nextAlbum}
-                  className="mt-4 bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700"
-                >
-                  Next Album
-                </button>
-              </>
-            )}
+            {(() => {
+              const currentAlbum = albums[currentIndex];
+              return (
+                <>
+                  <div className="flex justify-center mb-4">
+                    <Polaroid image={currentAlbum.image} caption={currentAlbum.name} />
+                  </div>
+                  <input
+                    type="number"
+                    placeholder="Enter year"
+                    value={guess}
+                    onChange={(e) => setGuess(e.target.value)}
+                    className="px-4 py-2 border rounded-md text-center mb-4"
+                    readOnly={showResult}
+                  />
+                  {!showResult ? (
+                    <button
+                      onClick={handleGuessSubmit}
+                      className="bg-purple-600 text-white px-6 py-2 rounded shadow hover:bg-purple-700"
+                    >
+                      Submit Guess
+                    </button>
+                  ) : (
+                    <>
+                      <p className="mt-4 text-lg font-medium text-gray-700">
+                        {isCorrect
+                          ? "✅ Correct!"
+                          : `❌ Incorrect. The album was released in ${currentAlbum.releaseYear}.`}
+                      </p>
+                      <button
+                        onClick={nextAlbum}
+                        className="mt-4 bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700"
+                      >
+                        Next Album
+                      </button>
+                    </>
+                  )}
+                </>
+              );
+            })()}
           </>
         ) : (
           <div className="text-center">
