@@ -21,11 +21,11 @@ const ThisIsMePlaylistCard = () => {
       className="bg-[#1C1F26]/80 border border-white/10 backdrop-blur rounded-xl shadow-xl overflow-hidden max-w-xl mx-auto mb-12"
     >
       <div className="px-6 py-4 bg-gradient-to-r from-green-400/10 to-green-300/5 border-b border-white/10">
-        <h3 className="text-lg text-green-300 font-semibold font-sans">This Is Reny</h3>
-        <p className="text-xs text-slate-400">The origin story, in three tracks 🎶</p>
+        <h3 className="text-lg text-green-300 font-semibold font-sans">This Is the Developer</h3>
+        <p className="text-xs text-slate-400">The background, in three tracks 🎶</p>
       </div>
 
-      <PlaylistTrack title="This web app was a passion project — a creative playground to explore music data, aesthetic design, and interactive fun with the Spotify API." />
+      <PlaylistTrack title="This web app was a personal project — a creative playground to explore music data, aesthetic design, and interactive fun with the Spotify API." />
       <PlaylistTrack title="It's powered by modern web tech: React (Vite), TypeScript, Tailwind CSS, Framer Motion, Lucide Icons — and some good old-fashioned imagination." />
       <PlaylistTrack title="If you enjoyed the experience, your support means the world. I'd love to keep building beautiful, thoughtful projects like this." />
     </motion.div>
