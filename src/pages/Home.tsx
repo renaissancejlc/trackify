@@ -86,7 +86,7 @@ function HomeContent() {
         <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
           <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
             <div className="text-[2.75rem] animate-slow-float">☁️</div>
-            <div className="-mt-3 text-sm text-[#1DB954] hover:text-[#1DB954] transition-colors duration-300">^‿^</div>
+            <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">^‿^</div>
           </div>
           <div className="relative px-4 py-2 bg-white/80 text-pink-700 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
@@ -321,11 +321,27 @@ function HomeContent() {
         `}
       </style>
       {/* Now Playing Simulator */}
-      <SpotifyBar
-        trackTitle={topTracks?.[0]?.name || 'Unknown Track'}
-        artist={topTracks?.[0]?.artists?.[0]?.name || 'Unknown Artist'}
-        albumArtUrl={topTracks?.[0]?.album?.images?.[0]?.url || ''}
-      />
+      <SpotifyBar>
+        <div className="z-10 mt-12 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
+            <img
+              src={topTracks?.[0]?.album?.images?.[0]?.url}
+              alt="Now Playing Album"
+              className="object-cover w-full h-full rounded-full"
+            />
+          </div>
+          <div className="text-sm text-gray-700">
+            <p className="font-semibold">Now Playing:</p>
+            <p>
+              {topTracks?.[0]?.name || "Unknown Track"} –{" "}
+              {topTracks?.[0]?.artists?.[0]?.name || "Unknown Artist"}
+            </p>
+          </div>
+          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
+          </div>
+        </div>
+      </SpotifyBar>
 
       {/* Daily Track Challenge */}
       <DailyTrackChallenge userProfile={userProfile} topTracks={topTracks} />
