@@ -19,11 +19,17 @@ export default function AlbumGuess() {
   const [score, setScore] = useState(0);
   const [history, setHistory] = useState<{ title: string; image: string; artist?: string; result: "correct" | "wrong" }[]>([]);
   const [useArtistMode, setUseArtistMode] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accessToken = localStorage.getItem("spotify_access_token");
+        if (!accessToken) {
+          setAuthError(true);
+          return;
+        }
+        setAuthError(false);
         const endpoint = useArtistMode ? "/.netlify/functions/top-artists" : "/.netlify/functions/top-albums";
         const response = await fetch(`${endpoint}?limit=50`, {
           headers: {
@@ -111,6 +117,20 @@ export default function AlbumGuess() {
           {/* Paint splatter accents */}
           <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+
+          {/* Spirit Guide */}
+          <div className="absolute bottom-8 left-6 z-20 animate-bounce-soft text-[2.75rem] select-none flex flex-col items-center space-y-2">
+            <div className="drop-shadow text-white leading-none flex flex-col items-center">
+              🧑‍🎨
+              <div className="-mt-2 text-sm">＊◕‿◕＊</div>
+            </div>
+            <div className={`relative px-4 py-2 bg-white/80 text-pink-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${authError ? "animate-pulse" : ""}`}>
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
+              {authError
+                ? "🎭 Log in with Spotify to begin your artful guessing journey!"
+                : "Mixing colors and vibes… loading your albums!"}
+            </div>
+          </div>
 
           <div className="relative z-10 text-center">
             <h1 className="text-3xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
@@ -208,9 +228,9 @@ export default function AlbumGuess() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
-                          if (result === null) {
+                          if (!result) {
                             handleGuess();
-                          } else {
+                          } else if (result) {
                             handleNext();
                           }
                         }

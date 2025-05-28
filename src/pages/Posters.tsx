@@ -37,10 +37,17 @@ const mockSongs: Song[] = [
 export default function Posters() {
   const [posterType, setPosterType] = useState<"movie" | "concert">("movie");
   const [selectedSongs, setSelectedSongs] = useState<Song[] | null>(null);
+  const [authError, setAuthError] = useState(false);
 
   const generatePoster = () => {
+    const accessToken = localStorage.getItem("spotify_access_token");
+    if (!accessToken) {
+      setAuthError(true);
+      return;
+    }
     const shuffled = [...mockSongs].sort(() => 0.5 - Math.random());
     setSelectedSongs(shuffled.slice(0, 3));
+    setAuthError(false);
   };
 
   return (
@@ -106,7 +113,9 @@ export default function Posters() {
         </div>
         <div className="relative px-4 py-2 bg-white/80 text-yellow-900 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center">
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-          Let’s make your taste worthy of a marquee.
+          {authError
+            ? "🎟️ You’ll need to log in with Spotify to start the show!"
+            : "Let’s make your taste worthy of a marquee."}
         </div>
       </div>
     </div>

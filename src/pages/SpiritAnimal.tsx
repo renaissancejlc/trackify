@@ -41,6 +41,8 @@ export default function SpiritAnimal() {
   const [topGenres, setTopGenres] = useState<string[]>([]);
   const [mode, setMode] = useState<"overall" | "song" | "genre" | "mood">("overall");
   const [features, setFeatures] = useState<{ energy: number; valence: number; danceability: number } | null>(null);
+  const [guideMessage, setGuideMessage] = useState("🌿 Welcome, wanderer. Ready to meet your inner animal?");
+  const [guideGrowKey, setGuideGrowKey] = useState(0);
   const accessToken = localStorage.getItem("spotify_access_token");
 
   useEffect(() => {
@@ -48,7 +50,11 @@ export default function SpiritAnimal() {
   }, [accessToken, mode]);
 
   async function fetchTopTrackFeatures() {
-    if (!accessToken) return;
+    if (!accessToken) {
+      setGuideMessage("🔒 Log in with Spotify to discover your spirit animal!");
+      setGuideGrowKey(prev => prev + 1);
+      return;
+    }
 
     try {
       const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=5", {
@@ -278,16 +284,26 @@ export default function SpiritAnimal() {
             {mode === "mood" && "~ᴥ~"}
           </div>
         </div>
-        <div className="relative px-4 py-2 bg-white/80 text-green-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
+        <div
+          key={guideGrowKey}
+          className={`relative px-4 py-2 bg-white/80 text-green-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px] ${
+            guideMessage.includes("Log in with Spotify") ? "animate-guide-grow" : ""
+          }`}
+        >
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-          {mode === "overall" && "🌿 Welcome, wanderer. Ready to meet your inner animal?"}
-          {mode === "song" && "🎵 Let's see what your favorite track reveals!"}
-          {mode === "genre" && "🎧 Your genre tastes are calling..."}
-          {mode === "mood" && "🌈 Feelings don’t lie. Let’s see your emotional match."}
+          {guideMessage}
         </div>
       </div>
 
       <style>{`
+        @keyframes guideGrow {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+        .animate-guide-grow {
+          animation: guideGrow 1s ease-in-out;
+        }
         @keyframes fadeInZoom {
           0% { transform: scale(0.8); opacity: 0; }
           100% { transform: scale(1); opacity: 1; }
