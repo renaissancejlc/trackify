@@ -62,7 +62,9 @@ export default function SpiritAnimal() {
 
       const trackId = items?.[0]?.id;
       if (!trackId) return;
-      const featuresRes = await fetch(
+      // Updated fetch call for audio features with Authorization header
+      const accessToken = localStorage.getItem("spotify_access_token");
+      const res = await fetch(
         `/.netlify/functions/audio-features?trackId=${trackId}`,
         {
           headers: {
@@ -70,7 +72,7 @@ export default function SpiritAnimal() {
           },
         }
       );
-      const featuresData = await featuresRes.json();
+      const featuresData = await res.json();
 
       if (
         typeof featuresData.energy === "number" &&

@@ -1,3 +1,4 @@
+const https = require("https");
 exports.handler = async function (event) {
   const token = event.headers.authorization?.split("Bearer ")[1];
 
@@ -18,20 +19,31 @@ exports.handler = async function (event) {
   }
 
   try {
-    const response = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const audioFeaturesUrl = `https://api.spotify.com/v1/audio-features/${trackId}`;
+
+    const data = await new Promise((resolve, reject) => {
+      const req = https.get(audioFeaturesUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }, (res) => {
+        let body = "";
+        res.on("data", chunk => body += chunk);
+        res.on("end", () => {
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            try {
+              resolve(JSON.parse(body));
+            } catch (err) {
+              reject(new Error("Failed to parse JSON response"));
+            }
+          } else {
+            reject(new Error(`Failed to fetch audio features: ${res.statusCode}`));
+          }
+        });
+      });
+
+      req.on("error", reject);
     });
-
-    if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: "Failed to fetch audio features" }),
-      };
-    }
-
-    const data = await response.json();
 
     return {
       statusCode: 200,
