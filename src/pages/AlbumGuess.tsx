@@ -19,11 +19,16 @@ export default function AlbumGuess() {
   const [score, setScore] = useState(0);
   const [history, setHistory] = useState<{ title: string; image: string; artist?: string; result: "correct" | "wrong" }[]>([]);
   const [useArtistMode, setUseArtistMode] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const accessToken = localStorage.getItem("spotify_access_token");
+        if (!accessToken) {
+          setAuthError(true);
+          return;
+        }
         const endpoint = useArtistMode ? "/.netlify/functions/top-artists" : "/.netlify/functions/top-albums";
         const response = await fetch(`${endpoint}?limit=50`, {
           headers: {
@@ -51,6 +56,7 @@ export default function AlbumGuess() {
           console.warn("No items returned from Spotify.");
         }
       } catch (error) {
+        setAuthError(true);
         console.error("Failed to fetch data", error);
       }
     };
@@ -163,8 +169,16 @@ export default function AlbumGuess() {
               🎨 Guess That {useArtistMode ? "Artist" : "Album"}
             </h1>
             <p className="text-gray-700 mb-4">Can you name the album based on its blurred cover?</p>
+            {authError && (
+              <p className="text-red-600 font-semibold mb-2">
+                Please log in with Spotify to play the game.
+              </p>
+            )}
             <button
-              onClick={() => setGameStarted(true)}
+              onClick={() => {
+                if (authError) return;
+                setGameStarted(true);
+              }}
               className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full"
             >
               Start Game

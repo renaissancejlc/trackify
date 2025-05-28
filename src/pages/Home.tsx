@@ -103,6 +103,15 @@ function HomeContent() {
             <p className="text-sm text-gray-600 mt-2">
               This score reflects how <strong>popular</strong> or <strong>obscure</strong> your top tracks are compared to global streaming trends.
             </p>
+            <button
+              onClick={() => {
+                localStorage.removeItem("spotify_access_token");
+                window.location.reload();
+              }}
+              className="mt-4 text-sm text-red-600 hover:text-red-800 underline"
+            >
+              Log out
+            </button>
           </div>
         )}
       </div>
