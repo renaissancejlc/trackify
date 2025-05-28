@@ -63,18 +63,22 @@ export default function SpiritAnimal() {
       const trackId = items?.[0]?.id;
       if (!trackId) return;
 
-      const featuresRes = await fetch(`/.netlify/functions/audio-features?trackId=${trackId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const featuresRes = await fetch(`/.netlify/functions/audio-features?trackId=${trackId}`);
       const featuresData = await featuresRes.json();
 
-      setFeatures({
-        energy: featuresData.energy,
-        valence: featuresData.valence,
-        danceability: featuresData.danceability,
-      });
+      if (
+        typeof featuresData.energy === "number" &&
+        typeof featuresData.valence === "number" &&
+        typeof featuresData.danceability === "number"
+      ) {
+        setFeatures({
+          energy: featuresData.energy,
+          valence: featuresData.valence,
+          danceability: featuresData.danceability,
+        });
+      } else {
+        console.error("Invalid audio features response:", featuresData);
+      }
 
       // Extract genres from artists
       const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
