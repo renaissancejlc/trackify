@@ -217,7 +217,7 @@ export default function TarotReading() {
                   position={["Past", "Present", "Future"][idx] as "Past" | "Present" | "Future"}
                   title={card.title}
                   image={card.image}
-                  vintageClassName="vintage-card-img sepia contrast-125 saturate-50"
+                  vintageClassName="sepia contrast-125 saturate-50 brightness-[0.85] grayscale-[0.15] blur-[0.3px]"
                   meaning={card.meaning}
                 />
               ))}
