@@ -24,11 +24,15 @@ const AnimalBackground = () => {
       angle: Math.random() * 2 * Math.PI,
       speed: Math.random() * 0.4 + 0.2,
       opacity: 0,
-      hue: 35 + Math.random() * 40, // earthy yellow-orange hues
+      hue: Math.random() < 0.5 ? 90 + Math.random() * 40 : 20 + Math.random() * 20, // green or brown
     }));
 
     const draw = () => {
-      ctx.fillStyle = "#fdf8ef"; // warm sand-colored background
+      // Sky gradient
+      const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      skyGradient.addColorStop(0, "#b3e5fc"); // light blue sky
+      skyGradient.addColorStop(0.6, "#fdf8ef"); // fade to ground color
+      ctx.fillStyle = skyGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach(p => {
@@ -53,7 +57,7 @@ const AnimalBackground = () => {
 
         p.angle += 0.005;
         p.x += p.speed * 0.5;
-        p.y += Math.sin(p.angle) * 0.3;
+        p.y += Math.cos(p.angle) * 0.25;
 
         if (p.x > canvas.width + p.size) {
           p.x = -p.size;
