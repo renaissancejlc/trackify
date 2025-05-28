@@ -21,32 +21,33 @@ export default function AlbumGuess() {
   const [useArtistMode, setUseArtistMode] = useState(false);
 
   useEffect(() => {
-    const fetchAlbums = async () => {
+    const fetchData = async () => {
       try {
         const accessToken = localStorage.getItem("spotify_access_token");
-        const response = await fetch("/.netlify/functions/top-albums?limit=50", {
+        const endpoint = useArtistMode ? "/.netlify/functions/top-artists" : "/.netlify/functions/top-albums";
+        const response = await fetch(`${endpoint}?limit=50`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         const data = await response.json();
-        const parsedAlbums = data.items.map((album: any) => ({
-          title: album.name || "Unknown Album",
-          image: album.image || "",
-          artist: album.artist || "Unknown Artist",
+        const parsedItems = data.items.map((item: any) => ({
+          title: useArtistMode ? "Top Artist" : item.name || "Unknown Album",
+          artist: useArtistMode ? item.name || "Unknown Artist" : item.artist || "Unknown Artist",
+          image: item.image || "",
         }));
-        setAlbums(parsedAlbums.sort(() => Math.random() - 0.5));
-        if (parsedAlbums.length === 0) {
-          console.warn("No albums returned from Spotify.");
+        setAlbums(parsedItems.sort(() => Math.random() - 0.5));
+        if (parsedItems.length === 0) {
+          console.warn("No items returned from Spotify.");
         }
       } catch (error) {
-        console.error("Failed to fetch albums", error);
+        console.error("Failed to fetch data", error);
       }
     };
-    fetchAlbums();
-  }, []);
+    fetchData();
+  }, [useArtistMode]);
 
-  const currentAlbum = albums[index] || { title: "", image: "" };
+  const currentAlbum = albums[index] || { title: "", image: "", artist: "" };
 
   useEffect(() => {
     if (!gameStarted || timer <= 0) return;

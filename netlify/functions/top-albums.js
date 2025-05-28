@@ -1,4 +1,4 @@
-// netlify/functions/top-artists.js
+import fetch from "node-fetch";
 
 export async function handler(event, context) {
   const accessToken = event.headers.authorization?.split(" ")[1];
@@ -11,7 +11,7 @@ export async function handler(event, context) {
   }
 
   try {
-    const response = await fetch("https://api.spotify.com/v1/me/top/artists?limit=50", {
+    const response = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=50", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -19,16 +19,25 @@ export async function handler(event, context) {
 
     const data = await response.json();
 
-    const artists = data.items.map((artist) => ({
-      id: artist.id,
-      name: artist.name,
-      image: artist.images?.[0]?.url || "",
-      genres: artist.genres || [],
-    }));
+    const albumsMap = new Map();
+
+    data.items.forEach((track) => {
+      const album = track.album;
+      if (!albumsMap.has(album.id)) {
+        albumsMap.set(album.id, {
+          id: album.id,
+          name: album.name,
+          image: album.images?.[0]?.url || "",
+          artist: album.artists?.[0]?.name || "Unknown Artist",
+        });
+      }
+    });
+
+    const albums = Array.from(albumsMap.values());
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ items: artists }),
+      body: JSON.stringify({ items: albums }),
     };
   } catch (err) {
     return {

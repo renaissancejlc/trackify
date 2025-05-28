@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 const fetch = require("node-fetch");
 
 exports.handler = async function (event, context) {
@@ -29,8 +28,10 @@ exports.handler = async function (event, context) {
 
     const data = await response.json();
     const items = data.items.map((artist) => ({
+      id: artist.id,
       name: artist.name || "Unknown Artist",
       image: artist.images?.[0]?.url || "",
+      genres: artist.genres || [],
     }));
 
     return {
