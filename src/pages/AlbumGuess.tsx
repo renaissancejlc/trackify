@@ -198,48 +198,49 @@ export default function AlbumGuess() {
 
             {result === null ? (
               <>
-                <div className="flex flex-col items-center w-full">
-                  <div className="flex flex-col items-center w-full">
-                    <div className="relative w-full max-w-xs mb-2">
-                      <input
-                        type="text"
-                        placeholder="Your guess..."
-                        value={guess}
-                        onChange={(e) => setGuess(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") handleGuess();
-                        }}
-                        className="px-4 py-2 rounded bg-white text-black w-full border border-gray-400"
-                      />
-                      {guess.length > 0 && (
-                        <ul className="absolute left-0 top-full mt-1 w-full bg-white border border-gray-400 shadow-md z-10 max-h-40 overflow-y-auto text-sm">
-                          {albums
-                            .filter(album =>
-                              (useArtistMode ? album.artist ?? "" : album.title ?? "")
-                                .toLowerCase()
-                                .includes(guess.toLowerCase())
-                            )
-                            .map((album, idx) => (
-                              <li
-                                key={idx}
-                                className="px-3 py-1 hover:bg-gray-200 cursor-pointer text-black"
-                                onClick={() =>
-                                  setGuess(useArtistMode ? album.artist || "" : album.title)
-                                }
-                              >
-                                {useArtistMode ? album.artist : album.title}
-                              </li>
-                            ))}
-                        </ul>
-                      )}
-                    </div>
-                    <button
-                      onClick={handleGuess}
-                      className="px-6 py-2 bg-pink-500 hover:bg-pink-600 rounded-full text-white font-semibold"
-                    >
-                      Submit
-                    </button>
+                <div className="flex items-center justify-center w-full mb-2 space-x-2 max-w-xs">
+                  <div className="relative w-full">
+                    <input
+                      type="text"
+                      placeholder="Your guess..."
+                      value={guess}
+                      onChange={(e) => setGuess(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleGuess();
+                        }
+                      }}
+                      className="px-4 py-2 rounded bg-white text-black w-full border border-gray-400"
+                    />
+                    {guess.length > 0 && (
+                      <ul className="absolute left-0 top-full mt-1 w-full bg-white border border-gray-400 shadow-md z-10 max-h-40 overflow-y-auto text-sm">
+                        {albums
+                          .filter(album =>
+                            (useArtistMode ? album.artist ?? "" : album.title ?? "")
+                              .toLowerCase()
+                              .includes(guess.toLowerCase())
+                          )
+                          .map((album, idx) => (
+                            <li
+                              key={idx}
+                              className="px-3 py-1 hover:bg-gray-200 cursor-pointer text-black"
+                              onClick={() =>
+                                setGuess(useArtistMode ? album.artist || "" : album.title)
+                              }
+                            >
+                              {useArtistMode ? album.artist : album.title}
+                            </li>
+                          ))}
+                      </ul>
+                    )}
                   </div>
+                  <button
+                    onClick={handleGuess}
+                    className="px-4 py-2 bg-pink-500 hover:bg-pink-600 rounded-full text-white font-semibold"
+                  >
+                    Submit
+                  </button>
                 </div>
               </>
             ) : (
