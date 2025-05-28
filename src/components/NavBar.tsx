@@ -6,11 +6,9 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const links = [
-    { name: 'Posters', path: '/posters' },
     { name: 'Spirit Animal', path: '/spirit' },
     { name: 'Album Guess', path: '/guess' },
     { name: 'Tarot Reading', path: '/tarot' },
-    { name: 'Guess Year', path: '/year' },
     { name: 'About', path: '/about' },
   ];
 
