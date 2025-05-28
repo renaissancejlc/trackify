@@ -31,33 +31,6 @@ return (
           Initializing identity module… Here's a bit about the human behind the terminal.
         </motion.p>
 
-        <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.15, duration: 0.8 }}
-    viewport={{ once: true }}
-    className="mb-12 max-w-xl mx-auto"
-  >
-    <NowPlayingCard 
-      title="Dreams" 
-      artist="Fleetwood Mac" 
-      albumArt="https://i.scdn.co/image/ab67616d0000b273bce49e5d084b04f06cba43f2" 
-    />
-  </motion.div>
-
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.2, duration: 0.8 }}
-    viewport={{ once: true }}
-    className="mb-12 max-w-xl mx-auto"
-  >
-    <ThisIsCard
-      artist="Fleetwood Mac"
-      imageUrl="https://i.scdn.co/image/ab67616d0000b273bce49e5d084b04f06cba43f2"
-    />
-  </motion.div>
-
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -100,26 +73,6 @@ return (
       </code>
     </a>
   ))}
-</motion.div>
-        <motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.1, duration: 0.8 }}
-  viewport={{ once: true }}
-  className="text-slate-300 text-base max-w-2xl mx-auto text-center space-y-6 mb-12"
->
-  <p>
-    This web app was a passion project — a creative playground to explore music data, aesthetic design, and interactive fun with the Spotify API. 
-    Every animation and interface choice was crafted with intention xand joy.
-  </p>
-  <p>
-    It's powered by modern web tech: React (Vite), TypeScript, Tailwind CSS, Framer Motion, Lucide Icons, and some good old-fashioned imagination. 
-    It’s hosted on Netlify and fueled by creativity.
-  </p>
-  <p>
-    If you enjoyed the experience and would like to support future builds like this, your encouragement or a small donation would mean the world.
-    I’d love to keep building beautiful, thoughtful projects like this.
-  </p>
 </motion.div>
 
         <motion.p
