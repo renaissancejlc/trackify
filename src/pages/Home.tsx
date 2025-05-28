@@ -7,6 +7,18 @@ import HomeBackground from "../components/HomeBackground";
 import { useSpotifyData } from "../context/SpotifyDataContext";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 
+
+function getRandomGreeting() {
+  const greetings = [
+    "☁️ Long time no float!",
+    "🎧 Let’s spin some vibes!",
+    "✨ Your soundtrack awaits!",
+    "🎶 Back in the groove!",
+    "🌈 Welcome to your vibe zone!",
+  ];
+  return greetings[Math.floor(Math.random() * greetings.length)];
+}
+
 export default function Home() {
   return (
     <SpotifyDataProvider>
@@ -39,7 +51,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-t from-pink-100 via-white to-blue-100 px-4">
+    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-y-auto scroll-smooth bg-gradient-to-t from-pink-100 via-white to-blue-100 px-4">
       <HomeBackground />
       {/* Animated pink clouds background */}
       <div className="absolute inset-0 z-0 animate-clouds bg-[url('https://www.transparenttextures.com/patterns/clouds.png')] opacity-20 bg-repeat" />
@@ -50,14 +62,16 @@ function HomeContent() {
       </div>
 
       {/* Cloud Companion */}
-      <div className="absolute top-[15%] right-[6%] z-20 animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
-        <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
-          <div className="text-[2.75rem]">☁️</div>
-          <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">^‿^</div>
-        </div>
-        <div className="relative px-4 py-2 bg-white/80 text-pink-700 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-          ✨ Ready to float through your favorite songs?
+      <div className="sticky top-16 z-20 transition-transform duration-500 ease-out">
+        <div className="absolute top-[15%] right-[6%] animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
+          <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
+            <div className="text-[2.75rem] animate-slow-float">☁️</div>
+            <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">^‿^</div>
+          </div>
+          <div className="relative px-4 py-2 bg-white/80 text-pink-700 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
+            ✨ Ready to float through your favorite songs?
+          </div>
         </div>
       </div>
 
@@ -84,7 +98,7 @@ function HomeContent() {
         {userProfile && (
           <div className="mt-8 bg-white/60 rounded-3xl p-6 shadow-xl text-center max-w-lg w-full backdrop-blur-md">
             <h2 className="text-2xl font-bold text-pink-700 mb-2">
-              Welcome back, {userProfile.display_name}! ☁️
+              {getRandomGreeting()} {userProfile.display_name}!
             </h2>
             <p className="text-sm text-gray-700 italic mb-4">
               We missed your musical vibes in the clouds!
@@ -257,8 +271,70 @@ function HomeContent() {
           .animate-wiggle {
             animation: wiggle 2.5s ease-in-out infinite;
           }
+
+          @keyframes slowFloat {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+          }
+
+          .animate-slow-float {
+            animation: slowFloat 8s ease-in-out infinite;
+          }
+
+          /* Now Playing Simulator Animations */
+          @keyframes spinSlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .animate-spin-slow {
+            animation: spinSlow 20s linear infinite;
+          }
+
+          @keyframes playbar {
+            0% { width: 0%; }
+            100% { width: 100%; }
+          }
+          .animate-playbar {
+            animation: playbar 5s linear infinite;
+          }
         `}
       </style>
+      {/* Now Playing Simulator */}
+      <div className="z-10 mt-12 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
+        <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
+          <img
+            src={topTracks?.[0]?.album?.images?.[0]?.url}
+            alt="Now Playing Album"
+            className="object-cover w-full h-full rounded-full"
+          />
+        </div>
+        <div className="text-sm text-gray-700">
+          <p className="font-semibold">Now Playing:</p>
+          <p>
+            {topTracks?.[0]?.name || "Unknown Track"} –{" "}
+            {topTracks?.[0]?.artists?.[0]?.name || "Unknown Artist"}
+          </p>
+        </div>
+        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
+        </div>
+      </div>
+
+      {/* Daily Track Challenge */}
+      <div className="z-10 mt-16 max-w-lg w-full p-6 bg-white/70 rounded-3xl shadow-xl text-center backdrop-blur-md border border-white/30">
+        <h3 className="text-lg font-semibold text-pink-700 mb-2">🎵 Daily Track Challenge</h3>
+        <p className="text-sm text-gray-700 mb-4">
+          Can you name this top song from just 5 seconds?
+        </p>
+        <button className="bg-[#1DB954] hover:bg-[#1ed760] text-white px-6 py-2 rounded-full text-sm font-semibold shadow">
+          Play Challenge
+        </button>
+        <p className="text-xs text-gray-600 mt-3 italic">
+          Earn badges like <strong>Cloudwalker</strong> and <strong>Vibe Oracle</strong>!
+        </p>
+      </div>
+
       {/* Social footer */}
       <div className="w-full mt-24 flex flex-col items-center z-10 relative">
         <p className="text-center text-xs italic text-gray-500 mb-2">Connect with me</p>
