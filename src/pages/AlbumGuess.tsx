@@ -243,35 +243,38 @@ export default function AlbumGuess() {
                 </div>
               ))}
             </div>
-            <button
-              onClick={() => {
-                setGameStarted(false);
-                setTimer(60);
-                setScore(0);
-                setIndex(0);
-                setResult(null);
-                setGuess("");
-                setHistory([]);
-              }}
-              className="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
-            >
-              Play Again
-            </button>
-            <button
-              onClick={() => {
-                setGameStarted(false);
-                setTimer(60);
-                setScore(0);
-                setIndex(0);
-                setResult(null);
-                setGuess("");
-                setHistory([]);
-                setUseArtistMode(true);
-              }}
-              className="mt-2 px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-pink-900 font-semibold rounded-full"
-            >
-              Try Again in Artist Mode
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
+              <button
+                onClick={() => {
+                  setGameStarted(false);
+                  setTimer(60);
+                  setScore(0);
+                  setIndex(0);
+                  setResult(null);
+                  setGuess("");
+                  setHistory([]);
+                  setUseArtistMode(false);
+                }}
+                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
+              >
+                Play Again in Album Mode
+              </button>
+              <button
+                onClick={() => {
+                  setGameStarted(false);
+                  setTimer(60);
+                  setScore(0);
+                  setIndex(0);
+                  setResult(null);
+                  setGuess("");
+                  setHistory([]);
+                  setUseArtistMode(true);
+                }}
+                className="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-pink-900 font-semibold rounded-full"
+              >
+                Play Again in Artist Mode
+              </button>
+            </div>
           </>
         )}
       </div>
