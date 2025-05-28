@@ -1,0 +1,29 @@
+.polaroid-container {
+  background: white;
+  padding: 10px 10px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #ddd;
+  display: inline-block;
+  text-align: center;
+  font-family: 'Macondo Swash Caps', cursive;
+  transform: rotate(-2deg);
+  margin: 20px;
+}
+
+.polaroid-photo img {
+  width: 100%;
+  display: block;
+  filter: sepia(0.2) contrast(1.2) saturate(0.6) brightness(0.95) grayscale(0.1);
+  border-bottom: 1px solid #eee;
+}
+
+.polaroid-caption {
+  padding-top: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.handwriting {
+  font-family: 'Macondo Swash Caps', cursive;
+  font-style: italic;
+}
