@@ -70,12 +70,14 @@ function HomeContent() {
           Dive into a playful music experience! Generate posters, discover your spirit animal,
           predict your music future, and test your album knowledge.
         </p>
-        <button
-          onClick={handleLogin}
-          className="bg-[#1DB954] hover:bg-[#1ed760] transition text-white px-6 py-3 rounded-full font-semibold shadow-lg"
-        >
-          Log in with Spotify
-        </button>
+        {!userProfile && (
+          <button
+            onClick={handleLogin}
+            className="bg-[#1DB954] hover:bg-[#1ed760] transition text-white px-6 py-3 rounded-full font-semibold shadow-lg"
+          >
+            Log in with Spotify
+          </button>
+        )}
         {userProfile && (
           <div className="mt-8 bg-white/60 rounded-3xl p-6 shadow-xl text-center max-w-lg w-full backdrop-blur-md">
             <h2 className="text-2xl font-bold text-pink-700 mb-2">

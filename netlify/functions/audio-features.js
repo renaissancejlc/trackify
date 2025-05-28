@@ -1,7 +1,13 @@
+import fetch from "node-fetch";
+
 // netlify/functions/audio-features.js
 
 export async function handler(event) {
-  const accessToken = event.headers.authorization?.split(" ")[1];
+  const authHeader = event.headers.authorization;
+  const accessToken = authHeader?.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : null;
+
   const trackId = event.queryStringParameters?.trackId;
 
   if (!accessToken || !trackId) {
