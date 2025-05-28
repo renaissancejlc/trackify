@@ -38,6 +38,10 @@ export default function GuessAlbumYearGame() {
         }).filter((album: Album) => album.releaseYear !== null);
 
         setAlbums(parsedAlbums);
+        setCurrentIndex(0);
+        setScore(0);
+        setShowResult(false);
+        setIsCorrect(null);
       } catch (error) {
         console.error("Error fetching albums:", error);
       }
@@ -66,15 +70,15 @@ export default function GuessAlbumYearGame() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-tr from-blue-100 via-pink-100 to-purple-200 flex flex-col items-center justify-center text-center px-4 py-10">
-      <h1 className="text-4xl font-bold text-purple-700 drop-shadow mb-4">
-        📅 Guess the Album Year
+    <div className="min-h-screen w-full bg-[url('/images/retro-wallpaper.jpg')] bg-cover bg-fixed flex flex-col items-center justify-center text-center px-4 py-10 font-serif text-gray-900">
+      <h1 className="text-5xl font-black text-yellow-400 drop-shadow-lg tracking-widest mb-2">
+        🎶 Vintage Vinyl Year Guess
       </h1>
-      <p className="text-purple-500 text-lg mb-6">
-        Can you guess the release year of these iconic albums?
+      <p className="text-orange-100 text-xl italic mb-6">
+        Dig through the crates and guess the year these albums dropped!
       </p>
 
-      <div className="w-full max-w-2xl bg-white/50 backdrop-blur-md border border-purple-200 rounded-xl p-10 shadow-lg">
+      <div className="w-full max-w-2xl bg-[#fdf6e3]/90 border-4 border-dashed border-yellow-300 rounded-xl p-10 shadow-2xl backdrop-blur-sm">
         {albums.length > 0 && currentIndex < albums.length ? (
           <>
             {(() => {
@@ -82,7 +86,7 @@ export default function GuessAlbumYearGame() {
               return (
                 <>
                   <div className="flex justify-center mb-4">
-                    <Polaroid image={currentAlbum.image} caption={currentAlbum.name} />
+                    <Polaroid image={currentAlbum.image} caption={currentAlbum.name} captionStyle="macondo-swash-caps-regular text-xl text-purple-900" />
                   </div>
                   <input
                     type="number"
@@ -95,7 +99,7 @@ export default function GuessAlbumYearGame() {
                   {!showResult ? (
                     <button
                       onClick={handleGuessSubmit}
-                      className="bg-purple-600 text-white px-6 py-2 rounded shadow hover:bg-purple-700"
+                      className="bg-red-700 text-white font-bold px-6 py-2 rounded shadow-lg hover:bg-red-800 tracking-wider"
                     >
                       Submit Guess
                     </button>
@@ -108,7 +112,7 @@ export default function GuessAlbumYearGame() {
                       </p>
                       <button
                         onClick={nextAlbum}
-                        className="mt-4 bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700"
+                        className="mt-4 bg-green-700 text-white font-bold px-6 py-2 rounded shadow-lg hover:bg-green-800 tracking-wider"
                       >
                         Next Album
                       </button>
@@ -120,18 +124,20 @@ export default function GuessAlbumYearGame() {
           </>
         ) : (
           <div className="text-center">
-            <p className="text-2xl text-purple-700 font-semibold mb-4">
+            <p className="text-3xl text-red-700 font-black mb-2 drop-shadow">
               🎉 Game Over!
             </p>
-            <p className="text-lg text-gray-800 mb-2">
+            <p className="text-lg text-gray-800 italic mb-2">
               Your score: {score} / {albums.length}
             </p>
             <button
               onClick={() => {
                 setCurrentIndex(0);
                 setScore(0);
+                setShowResult(false);
+                setIsCorrect(null);
               }}
-              className="bg-green-600 text-white px-6 py-2 rounded shadow hover:bg-green-700"
+              className="bg-green-700 text-white font-bold px-6 py-2 rounded shadow-lg hover:bg-green-800 tracking-wider"
             >
               Play Again
             </button>
