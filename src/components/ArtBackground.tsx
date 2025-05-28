@@ -28,7 +28,8 @@ const ArtBackground = () => {
     }));
 
     const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#fdfdfd"; // light canvas-like background
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       strokes.forEach(stroke => {
         const gradient = ctx.createRadialGradient(
           stroke.x,
