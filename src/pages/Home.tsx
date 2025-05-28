@@ -7,6 +7,7 @@ import { useRef } from 'react';
 import { useSpotifyData } from "../context/SpotifyDataContext";
 import { fetchTopTracks } from "../utils/spotify";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
+import SpotifyBar from '../components/SpotifyBar';
 
 
 function getRandomGreeting() {
@@ -79,8 +80,10 @@ function HomeContent() {
       </div>
 
       {/* Cloud Companion */}
-      <div className="sticky top-16 z-20 transition-transform duration-500 ease-out">
-        <div className="absolute top-[15%] right-[6%] animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
+      <div
+        className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none"
+      >
+        <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
           <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
             <div className="text-[2.75rem] animate-slow-float">☁️</div>
             <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">^‿^</div>
@@ -318,25 +321,27 @@ function HomeContent() {
         `}
       </style>
       {/* Now Playing Simulator */}
-      <div className="z-10 mt-12 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
-        <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
-          <img
-            src={topTracks?.[0]?.album?.images?.[0]?.url}
-            alt="Now Playing Album"
-            className="object-cover w-full h-full rounded-full"
-          />
+      <SpotifyBar>
+        <div className="z-10 mt-12 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
+            <img
+              src={topTracks?.[0]?.album?.images?.[0]?.url}
+              alt="Now Playing Album"
+              className="object-cover w-full h-full rounded-full"
+            />
+          </div>
+          <div className="text-sm text-gray-700">
+            <p className="font-semibold">Now Playing:</p>
+            <p>
+              {topTracks?.[0]?.name || "Unknown Track"} –{" "}
+              {topTracks?.[0]?.artists?.[0]?.name || "Unknown Artist"}
+            </p>
+          </div>
+          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
+          </div>
         </div>
-        <div className="text-sm text-gray-700">
-          <p className="font-semibold">Now Playing:</p>
-          <p>
-            {topTracks?.[0]?.name || "Unknown Track"} –{" "}
-            {topTracks?.[0]?.artists?.[0]?.name || "Unknown Artist"}
-          </p>
-        </div>
-        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
-        </div>
-      </div>
+      </SpotifyBar>
 
       {/* Daily Track Challenge */}
       <DailyTrackChallenge userProfile={userProfile} topTracks={topTracks} />
