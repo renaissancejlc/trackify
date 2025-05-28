@@ -25,7 +25,7 @@ const App = () => {
               <Route path="/spirit" element={<SpiritAnimal />} />
               <Route path="/guess" element={<AlbumGuess />} />
               <Route path="/tarot" element={<TarotReading />} />
-              <Route path="/match" element={<GuessAlbumYear />} />
+              <Route path="/year" element={<GuessAlbumYear />} />
               <Route path="/about" element={<AboutMe />} />
               <Route path="/callback" element={<Callback />} />
             </Routes>

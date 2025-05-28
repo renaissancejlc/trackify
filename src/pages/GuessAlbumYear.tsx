@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Polaroid from "../components/Polaroid";
 
 interface Album {
   name: string;
   image: string;
   releaseYear: number;
-  artist: string;
 }
 
 export default function GuessAlbumYearGame() {
@@ -28,12 +28,14 @@ export default function GuessAlbumYearGame() {
         });
         const data = await response.json();
 
-        const parsedAlbums = data.items.map((item: any) => ({
-          name: item.name || "Unknown Album",
-          image: item.image || item.images?.[0]?.url || "",
-          releaseYear: parseInt(item.release_date?.split("-")[0]) || 2000,
-          artist: item.artists?.[0]?.name || "Unknown Artist",
-        }));
+        const parsedAlbums = data.items.map((item: any) => {
+          const year = item.release_date?.split("-")[0];
+          return {
+            name: item.name || "Unknown Album",
+            image: item.image || item.images?.[0]?.url || "",
+            releaseYear: year ? parseInt(year) : null,
+          };
+        }).filter((album: Album) => album.releaseYear !== null);
 
         setAlbums(parsedAlbums);
       } catch (error) {
@@ -77,21 +79,16 @@ export default function GuessAlbumYearGame() {
       <div className="w-full max-w-2xl bg-white/50 backdrop-blur-md border border-purple-200 rounded-xl p-10 shadow-lg">
         {albums.length > 0 && currentIndex < albums.length ? (
           <>
-            <img
-              src={currentAlbum.image}
-              alt={currentAlbum.name}
-              className="w-48 h-48 mx-auto mb-4 rounded-lg shadow"
-            />
-            <h2 className="text-2xl font-semibold text-purple-800 mb-1">
-              {currentAlbum.name}
-            </h2>
-            <p className="text-md text-purple-600 mb-3">{currentAlbum.artist}</p>
+            <div className="flex justify-center mb-4">
+              <Polaroid image={currentAlbum.image} caption={currentAlbum.name} />
+            </div>
             <input
               type="number"
               placeholder="Enter year"
               value={guess}
               onChange={(e) => setGuess(e.target.value)}
               className="px-4 py-2 border rounded-md text-center mb-4"
+              readOnly={showResult}
             />
             {!showResult ? (
               <button

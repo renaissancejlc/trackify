@@ -10,7 +10,7 @@ const NavBar = () => {
     { name: 'Spirit Animal', path: '/spirit' },
     { name: 'Album Guess', path: '/guess' },
     { name: 'Tarot Reading', path: '/tarot' },
-    { name: 'Matching Game', path: '/match' },
+    { name: 'Guess Year', path: '/year' },
     { name: 'About', path: '/about' },
   ];
 
