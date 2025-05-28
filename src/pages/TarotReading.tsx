@@ -123,6 +123,10 @@ export default function TarotReading() {
   }, [accessToken]);
 
   const drawNextCard = () => {
+    if (!accessToken) {
+      alert("Please log in with Spotify to reveal your tarot reading.");
+      return;
+    }
     if (drawnCards.length >= 3 || topAlbums.length < 3) return;
     const next = topAlbums[drawnCards.length];
     setDrawnCards([...drawnCards, next]);
