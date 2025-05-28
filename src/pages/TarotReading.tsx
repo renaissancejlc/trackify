@@ -12,6 +12,7 @@ export default function TarotReading() {
   const [topAlbums, setTopAlbums] = useState<AlbumCard[]>([]);
   const [drawnCards, setDrawnCards] = useState<AlbumCard[]>([]);
   const [guideMessage, setGuideMessage] = useState("Seek the truth within... and your albums shall reveal it.");
+  const [guideGrowKey, setGuideGrowKey] = useState(0);
   const chimeRef = useRef<HTMLAudioElement>(null);
   const ambientRef = useRef<HTMLAudioElement>(null);
 
@@ -126,6 +127,7 @@ export default function TarotReading() {
   const drawNextCard = () => {
     if (!accessToken) {
       setGuideMessage("You must log in with Spotify before the spirits will speak.");
+      setGuideGrowKey((prev) => prev + 1);
       return;
     }
     if (drawnCards.length >= 3 || topAlbums.length < 3) return;
@@ -194,6 +196,7 @@ export default function TarotReading() {
         .animate-grow-guide {
           animation: growGuide 1s ease-in-out;
         }
+        [class*="key-"] {}
       `}</style>
       <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-t from-purple-950 via-indigo-900 to-black text-white px-4 py-10">
         {/* Twinkling stars background layer */}
@@ -272,7 +275,7 @@ export default function TarotReading() {
           <div className="absolute -top-4 -left-4 w-28 h-28 bg-purple-500 opacity-30 rounded-full blur-2xl z-0" />
           <div
             className={`relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${
-              guideMessage === "You must log in with Spotify before the spirits will speak." ? "animate-grow-guide" : ""
+              guideMessage === "You must log in with Spotify before the spirits will speak." ? `animate-grow-guide key-${guideGrowKey}` : ""
             }`}
           >
             {guideMessage}
