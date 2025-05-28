@@ -11,6 +11,7 @@ export default function TarotReading() {
   const accessToken = localStorage.getItem("spotify_access_token");
   const [topAlbums, setTopAlbums] = useState<AlbumCard[]>([]);
   const [drawnCards, setDrawnCards] = useState<AlbumCard[]>([]);
+  const [guideMessage, setGuideMessage] = useState("Seek the truth within... and your albums shall reveal it.");
   const chimeRef = useRef<HTMLAudioElement>(null);
   const ambientRef = useRef<HTMLAudioElement>(null);
 
@@ -124,7 +125,7 @@ export default function TarotReading() {
 
   const drawNextCard = () => {
     if (!accessToken) {
-      alert("Please log in with Spotify to reveal your tarot reading.");
+      setGuideMessage("You must log in with Spotify before the spirits will speak.");
       return;
     }
     if (drawnCards.length >= 3 || topAlbums.length < 3) return;
@@ -184,6 +185,14 @@ export default function TarotReading() {
           border: 2px solid rgba(255, 255, 255, 0.1);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
           border-radius: 0.5rem;
+        }
+        @keyframes growGuide {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.2); }
+          100% { transform: scale(1); }
+        }
+        .animate-grow-guide {
+          animation: growGuide 1s ease-in-out;
         }
       `}</style>
       <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-t from-purple-950 via-indigo-900 to-black text-white px-4 py-10">
@@ -261,11 +270,12 @@ export default function TarotReading() {
           </div>
           {/* Soft glow aura behind character */}
           <div className="absolute -top-4 -left-4 w-28 h-28 bg-purple-500 opacity-30 rounded-full blur-2xl z-0" />
-          <div className="relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center">
-            {!drawnCards.length && "Seek the truth within... and your albums shall reveal it."}
-            {drawnCards.length === 1 && "The past is a mirror. What do you see reflected?"}
-            {drawnCards.length === 2 && "Now is the moment that shapes all moments."}
-            {drawnCards.length === 3 && "Destiny whispers in riddles. Are you ready to listen?"}
+          <div
+            className={`relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${
+              guideMessage === "You must log in with Spotify before the spirits will speak." ? "animate-grow-guide" : ""
+            }`}
+          >
+            {guideMessage}
           </div>
         </div>
         {/* Audio elements for sound effects */}

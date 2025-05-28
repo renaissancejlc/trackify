@@ -198,21 +198,34 @@ export default function AlbumGuess() {
 
             {result === null ? (
               <>
-                <input
-                  list="guesses"
-                  placeholder="Your guess..."
-                  value={guess}
-                  onChange={(e) => setGuess(e.target.value)}
-                  className="px-4 py-2 rounded bg-white text-black w-64 border border-gray-400 mb-2"
-                />
-                <datalist id="guesses">
-                  {albums.map((album, idx) => (
-                    <option
-                      key={idx}
-                      value={useArtistMode ? album.artist || "" : album.title}
-                    />
-                  ))}
-                </datalist>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Your guess..."
+                    value={guess}
+                    onChange={(e) => setGuess(e.target.value)}
+                    className="px-4 py-2 rounded bg-white text-black w-64 border border-gray-400 mb-0"
+                  />
+                  <ul className="absolute left-0 top-full mt-1 w-full bg-white border border-gray-400 shadow-md z-10 max-h-40 overflow-y-auto text-sm">
+                    {albums
+                      .filter(album =>
+                        (useArtistMode ? album.artist ?? "" : album.title ?? "")
+                          .toLowerCase()
+                          .includes(guess.toLowerCase())
+                      )
+                      .map((album, idx) => (
+                        <li
+                          key={idx}
+                          className="px-3 py-1 hover:bg-gray-200 cursor-pointer"
+                          onClick={() =>
+                            setGuess(useArtistMode ? album.artist || "" : album.title)
+                          }
+                        >
+                          {useArtistMode ? album.artist : album.title}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
                 <div>
                   <button
                     onClick={handleGuess}
@@ -340,16 +353,6 @@ export default function AlbumGuess() {
           }
           .animate-pulse {
             animation: pulse 2s ease-in-out infinite;
-          }
-          /* Remove browser default dropdown arrow for datalist input */
-          input[list]::-webkit-calendar-picker-indicator {
-            display: none !important;
-          }
-          datalist option {
-            color: black;
-            background-color: white;
-            font-size: 14px;
-            padding: 4px;
           }
         `}</style>
       </div>
