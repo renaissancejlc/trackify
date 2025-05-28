@@ -63,9 +63,8 @@ export default function SpiritAnimal() {
       const trackId = items?.[0]?.id;
       if (!trackId) return;
       // Updated fetch call for audio features with Authorization header
-      const accessToken = localStorage.getItem("spotify_access_token");
       const res = await fetch(
-        `/.netlify/functions/audio-features?trackId=${trackId}`,
+        `https://api.spotify.com/v1/audio-features/${trackId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
