@@ -64,55 +64,44 @@ export default function SpiritAnimal() {
       const items = topTracksData.items || [];
       setTopTracks(items);
 
-      const trackId = items?.[0]?.id;
-      if (!trackId) return;
-
-      // Confirm the track is valid before requesting audio features
-      const trackRes = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!trackRes.ok) {
-        console.error("Track is invalid or restricted:", await trackRes.text());
-        return;
-      }
-      const trackInfo = await trackRes.json();
-      console.log("Track details:", trackInfo);
-
-      // Fetch audio features only after confirming track validity
-      const res = await fetch(
-        `https://api.spotify.com/v1/audio-features/${trackId}`,
-        {
+      let validFeatures = null;
+      for (const track of items) {
+        const trackId = track.id;
+        const trackRes = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
-      );
-      if (!res.ok) {
-        console.error("Failed to fetch audio features:", await res.text());
-        return;
-      }
-      const featuresData = await res.json();
-
-      if (featuresData.error) {
-        console.error("Spotify audio features error:", featuresData.error);
-        return;
-      }
-
-      if (
-        typeof featuresData.energy === "number" &&
-        typeof featuresData.valence === "number" &&
-        typeof featuresData.danceability === "number"
-      ) {
-        setFeatures({
-          energy: featuresData.energy,
-          valence: featuresData.valence,
-          danceability: featuresData.danceability,
         });
-      } else {
-        console.error("Invalid audio features response:", featuresData);
+        if (!trackRes.ok) continue;
+
+        const res = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (!res.ok) continue;
+
+        const featuresData = await res.json();
+        if (
+          typeof featuresData.energy === "number" &&
+          typeof featuresData.valence === "number" &&
+          typeof featuresData.danceability === "number"
+        ) {
+          validFeatures = {
+            energy: featuresData.energy,
+            valence: featuresData.valence,
+            danceability: featuresData.danceability,
+          };
+          break;
+        }
       }
+
+      if (!validFeatures) {
+        console.error("No valid audio features found for top tracks.");
+        return;
+      }
+
+      setFeatures(validFeatures);
 
       // Extract genres from artists
       const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
