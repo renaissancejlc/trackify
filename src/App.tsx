@@ -7,7 +7,7 @@ import AlbumGuess from './pages/AlbumGuess';
 import TarotReading from './pages/TarotReading';
 import NavBar from './components/NavBar';
 import Home from  './pages/Home';
-import MatchingGame from './pages/MatchingGame';
+import GuessAlbumYear from './pages/GuessAlbumYear';
 import AboutMe from './pages/AboutMe';
 import Callback from './pages/Callback';
 
@@ -25,7 +25,7 @@ const App = () => {
               <Route path="/spirit" element={<SpiritAnimal />} />
               <Route path="/guess" element={<AlbumGuess />} />
               <Route path="/tarot" element={<TarotReading />} />
-              <Route path="/match" element={<MatchingGame />} />
+              <Route path="/match" element={<GuessAlbumYear />} />
               <Route path="/about" element={<AboutMe />} />
               <Route path="/callback" element={<Callback />} />
             </Routes>

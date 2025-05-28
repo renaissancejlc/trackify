@@ -4,6 +4,7 @@ interface Album {
   name: string;
   image: string;
   releaseYear: number;
+  artist: string;
 }
 
 export default function GuessAlbumYearGame() {
@@ -31,6 +32,7 @@ export default function GuessAlbumYearGame() {
           name: item.name || "Unknown Album",
           image: item.image || item.images?.[0]?.url || "",
           releaseYear: parseInt(item.release_date?.split("-")[0]) || 2000,
+          artist: item.artists?.[0]?.name || "Unknown Artist",
         }));
 
         setAlbums(parsedAlbums);
@@ -80,9 +82,10 @@ export default function GuessAlbumYearGame() {
               alt={currentAlbum.name}
               className="w-48 h-48 mx-auto mb-4 rounded-lg shadow"
             />
-            <h2 className="text-2xl font-semibold text-purple-800 mb-2">
+            <h2 className="text-2xl font-semibold text-purple-800 mb-1">
               {currentAlbum.name}
             </h2>
+            <p className="text-md text-purple-600 mb-3">{currentAlbum.artist}</p>
             <input
               type="number"
               placeholder="Enter year"
