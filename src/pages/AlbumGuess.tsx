@@ -208,7 +208,11 @@ export default function AlbumGuess() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
-                          handleGuess();
+                          if (result === null) {
+                            handleGuess();
+                          } else {
+                            handleNext();
+                          }
                         }
                       }}
                       className="px-4 py-2 rounded bg-white text-black w-full border border-gray-400"

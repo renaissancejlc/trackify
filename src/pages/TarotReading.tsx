@@ -273,13 +273,16 @@ export default function TarotReading() {
           </div>
           {/* Soft glow aura behind character */}
           <div className="absolute -top-4 -left-4 w-28 h-28 bg-purple-500 opacity-30 rounded-full blur-2xl z-0" />
-          <div
-            className={`relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${
-              guideMessage === "You must log in with Spotify before the spirits will speak." ? `animate-grow-guide key-${guideGrowKey}` : ""
-            }`}
-          >
-            {guideMessage}
-          </div>
+          {(
+            <div
+              key={guideGrowKey}
+              className={`relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${
+                guideMessage === "You must log in with Spotify before the spirits will speak." ? "animate-grow-guide" : ""
+              }`}
+            >
+              {guideMessage}
+            </div>
+          )}
         </div>
         {/* Audio elements for sound effects */}
         <audio ref={chimeRef} src="/sounds/chime.mp3" preload="auto" />
