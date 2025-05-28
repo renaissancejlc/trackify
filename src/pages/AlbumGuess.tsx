@@ -157,7 +157,7 @@ export default function AlbumGuess() {
       ))}
 
       <div className="relative z-10 text-center">
-        {!gameStarted && timer === 60 ? (
+        {!gameStarted && (timer === 60 || timer === 0) ? (
           <>
             <h1 className="text-3xl font-bold mb-6 text-pink-700 drop-shadow">
               🎨 Guess That {useArtistMode ? "Artist" : "Album"}
@@ -257,6 +257,7 @@ export default function AlbumGuess() {
                   setGuess("");
                   setHistory([]);
                   setUseArtistMode(false);
+                  setAlbums([]); // trigger re-fetch
                 }}
                 className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
               >
@@ -272,6 +273,7 @@ export default function AlbumGuess() {
                   setGuess("");
                   setHistory([]);
                   setUseArtistMode(true);
+                  setAlbums([]); // trigger re-fetch
                 }}
                 className="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-pink-900 font-semibold rounded-full"
               >
