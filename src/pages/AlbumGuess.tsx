@@ -189,7 +189,7 @@ export default function AlbumGuess() {
                 <img
                   src={currentAlbum.image}
                   alt="Blurred Album"
-                  className={`w-60 h-60 object-cover rounded-md shadow ${result === null ? "blur-md" : ""}`}
+                  className={`w-60 h-60 object-cover rounded-md shadow ${result === null ? "blur-md" : ""} sepia contrast-125 saturate-50`}
                 />
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function AlbumGuess() {
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {history.map((album, i) => (
                 <div key={i} className="relative border-4 rounded-lg overflow-hidden shadow-lg" style={{ borderColor: album.result === "correct" ? "#10B981" : "#EF4444" }}>
-                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover" />
+                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover sepia contrast-125 saturate-50" />
                   <div className="absolute bottom-0 left-0 right-0 bg-white/80 text-center text-xs font-medium text-gray-700 py-1">
                     {useArtistMode ? album.artist : album.title}
                   </div>
