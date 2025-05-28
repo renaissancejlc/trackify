@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import './Polaroid.css';
+import '../styles/Polaroid.css';
 
 interface PolaroidProps {
   image: string;
