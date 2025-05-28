@@ -161,7 +161,7 @@ export default function AlbumGuess() {
             <div className="absolute top-4 right-4 text-right z-30">
               <button
                 onClick={() => setUseArtistMode(!useArtistMode)}
-                className="fixed bottom-4 right-4 px-3 py-1 bg-yellow-200 hover:bg-yellow-300 text-pink-800 rounded-full text-xs shadow-md opacity-80 hover:opacity-100 transition z-50"
+                className="fixed top-2 left-2 px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-pink-800 rounded text-[10px] shadow-sm opacity-50 hover:opacity-80 transition-all z-50"
               >
                 {useArtistMode ? "Album Mode" : "Too hard? Try Artist Guess"}
               </button>
