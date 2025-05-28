@@ -89,14 +89,14 @@ function HomeContent() {
             <p className="text-sm text-gray-700 italic mb-4">
               We missed your musical vibes in the clouds!
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 text-xs">
+              <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
                 🌟 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
-              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+              <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
                 🔁 Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
               </div>
-              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+              <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
                 🎤 Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
               </div>
             </div>
