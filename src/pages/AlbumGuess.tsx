@@ -199,12 +199,20 @@ export default function AlbumGuess() {
             {result === null ? (
               <>
                 <input
-                  type="text"
+                  list="guesses"
                   placeholder="Your guess..."
                   value={guess}
                   onChange={(e) => setGuess(e.target.value)}
                   className="px-4 py-2 rounded-lg bg-white text-gray-800 w-64 border border-pink-300 shadow-sm mb-2"
                 />
+                <datalist id="guesses">
+                  {albums.map((album, idx) => (
+                    <option
+                      key={idx}
+                      value={useArtistMode ? album.artist || "" : album.title}
+                    />
+                  ))}
+                </datalist>
                 <div>
                   <button
                     onClick={handleGuess}
