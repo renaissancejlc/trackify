@@ -11,25 +11,6 @@ return (
 <div className="relative w-full overflow-x-hidden pt-2 sm:pt-6 md:pt-10 lg:pt-12 xl:pt-16 pb-12 px-4 sm:px-6 md:px-10 max-w-full mx-auto text-white font-sans z-10">
   <CloudBackground />
           <TerminalFrame title="> whoami.sh">
-<pre className="text-green-400 font-mono text-xs leading-tight whitespace-pre overflow-x-auto text-center mb-6">{`
-███████╗██████╗ ███████╗ ██████╗███████╗
-██╔════╝██╔══██╗██╔════╝██╔════╝██╔════╝
-███████╗██████╔╝█████╗  ██║     ███████╗
-╚════██║██╔═══╝ ██╔══╝  ██║     ╚════██║
-███████║██║     ███████╗╚██████╗███████║
-╚══════╝╚═╝     ╚══════╝ ╚═════╝╚══════
-`}
-        </pre>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-lg text-slate-300 mb-12 max-w-2xl mx-auto text-center"
-        >
-          Initializing identity module… Here's a bit about the human behind the terminal.
-        </motion.p>
 
   <motion.div
     initial={{ opacity: 0, y: 20 }}
