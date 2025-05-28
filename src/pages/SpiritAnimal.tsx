@@ -66,7 +66,21 @@ export default function SpiritAnimal() {
 
       const trackId = items?.[0]?.id;
       if (!trackId) return;
-      // Updated fetch call for audio features with Authorization header
+
+      // Confirm the track is valid before requesting audio features
+      const trackRes = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!trackRes.ok) {
+        console.error("Track is invalid or restricted:", await trackRes.text());
+        return;
+      }
+      const trackInfo = await trackRes.json();
+      console.log("Track details:", trackInfo);
+
+      // Fetch audio features only after confirming track validity
       const res = await fetch(
         `https://api.spotify.com/v1/audio-features/${trackId}`,
         {
