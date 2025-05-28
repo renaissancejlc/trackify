@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import TarotCard from "../components/TarotCard";
+import TarotBackground from "../components/TarotBackground";
 
 interface AlbumCard {
   title: string;
@@ -199,6 +200,7 @@ export default function TarotReading() {
         [class*="key-"] {}
       `}</style>
       <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-t from-purple-950 via-indigo-900 to-black text-white px-4 py-10">
+        <TarotBackground />
         {/* Twinkling stars background layer */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           {Array.from({ length: 30 }).map((_, i) => (
