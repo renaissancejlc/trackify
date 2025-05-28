@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { loginWithSpotify } from "../utils/SpotifyAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SpotifyDataProvider } from "../context/SpotifyDataContext";
 import HomeBackground from "../components/HomeBackground";
-
+import { useRef } from 'react';
 import { useSpotifyData } from "../context/SpotifyDataContext";
+import { fetchTopTracks } from "../utils/spotify";
 import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 
@@ -27,12 +28,25 @@ export default function Home() {
   );
 }
 
+type Track = {
+  name: string;
+  preview_url: string | null;
+  album?: { images?: { url: string }[] };
+  artists?: { name: string }[];
+  popularity?: number;
+};
+
+async function getAccessToken(): Promise<string | null> {
+  // Try to get from localStorage (or implement your own logic)
+  return localStorage.getItem("spotify_access_token");
+}
+
 function HomeContent() {
   const navigate = useNavigate();
+  const { profile: userProfile, topGenre } = useSpotifyData();
+  const [topTracks, setTopTracks] = useState<Track[]>();
 
-  const { topTracks, profile: userProfile, topGenre } = useSpotifyData();
-
-  function calculatePopularityScore(tracks: any[]) {
+  function calculatePopularityScore(tracks: Track[] | undefined) {
     if (!tracks || tracks.length === 0) return "N/A";
     const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
     const avg = total / tracks.length;
@@ -40,10 +54,13 @@ function HomeContent() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("spotify_access_token");
-    if (!token) {
-      loginWithSpotify();
-    }
+    const getData = async () => {
+      const token = await getAccessToken();
+      if (!token) return;
+      const tracks = await fetchTopTracks(token);
+      setTopTracks(tracks);
+    };
+    getData();
   }, []);
 
   const handleLogin = () => {
@@ -322,18 +339,7 @@ function HomeContent() {
       </div>
 
       {/* Daily Track Challenge */}
-      <div className="z-10 mt-16 max-w-lg w-full p-6 bg-white/70 rounded-3xl shadow-xl text-center backdrop-blur-md border border-white/30">
-        <h3 className="text-lg font-semibold text-pink-700 mb-2">🎵 Daily Track Challenge</h3>
-        <p className="text-sm text-gray-700 mb-4">
-          Can you name this top song from just 5 seconds?
-        </p>
-        <button className="bg-[#1DB954] hover:bg-[#1ed760] text-white px-6 py-2 rounded-full text-sm font-semibold shadow">
-          Play Challenge
-        </button>
-        <p className="text-xs text-gray-600 mt-3 italic">
-          Earn badges like <strong>Cloudwalker</strong> and <strong>Vibe Oracle</strong>!
-        </p>
-      </div>
+      <DailyTrackChallenge userProfile={userProfile} topTracks={topTracks} />
 
       {/* Social footer */}
       <div className="w-full mt-24 flex flex-col items-center z-10 relative">
@@ -353,6 +359,138 @@ function HomeContent() {
           </a>
         </footer>
       </div>
+    </div>
+  );
+}
+
+function getRandomTrackWithPreview(tracks: Track[] | undefined): Track | null {
+  if (!tracks || tracks.length === 0) return null;
+  // Filter only tracks with preview_url
+  const available = tracks.filter((t) => !!t.preview_url);
+  if (available.length === 0) return null;
+  const idx = Math.floor(Math.random() * available.length);
+  return available[idx];
+}
+
+function DailyTrackChallenge({
+  userProfile,
+  topTracks,
+}: {
+  userProfile: any;
+  topTracks: Track[] | undefined;
+}) {
+  const [challengeStarted, setChallengeStarted] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [userGuess, setUserGuess] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Only show if logged in and at least one preview_url exists
+  const hasPreview = !!getRandomTrackWithPreview(topTracks);
+  if (!userProfile || !hasPreview) {
+    return (
+      <div className="z-10 mt-16 max-w-lg w-full p-6 bg-white/70 rounded-3xl shadow-xl text-center backdrop-blur-md border border-white/30">
+        <h3 className="text-lg font-semibold text-pink-700 mb-2">🎵 Daily Track Challenge</h3>
+        <p className="text-sm text-gray-700 mb-4">
+          Can you name this top song from just 5 seconds?
+        </p>
+        <p className="text-xs text-gray-600 mt-3 italic">
+          {userProfile
+            ? "No audio preview available for your top tracks today."
+            : <>Earn badges like <strong>Cloudwalker</strong> and <strong>Vibe Oracle</strong>!</>
+          }
+        </p>
+      </div>
+    );
+  }
+
+  // Start challenge: pick random track with preview, reset states
+  const startChallenge = () => {
+    const track = getRandomTrackWithPreview(topTracks);
+    setCurrentTrack(track);
+    setUserGuess("");
+    setFeedback("");
+    setChallengeStarted(true);
+    setTimeout(() => {
+      // Play audio when challenge starts
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+      }
+    }, 200);
+  };
+
+  const checkGuess = () => {
+    if (!currentTrack) return;
+    if (userGuess.trim().toLowerCase() === currentTrack.name.toLowerCase()) {
+      setFeedback("🎉 Correct! You're a Vibe Oracle!");
+    } else {
+      setFeedback("❌ Not quite. Try again!");
+    }
+  };
+
+  // Only play first 5 seconds
+  const handleAudioTimeUpdate = () => {
+    if (audioRef.current && audioRef.current.currentTime >= 5) {
+      audioRef.current.pause();
+    }
+  };
+
+  return (
+    <div className="z-10 mt-16 max-w-lg w-full p-6 bg-white/70 rounded-3xl shadow-xl text-center backdrop-blur-md border border-white/30">
+      <h3 className="text-lg font-semibold text-pink-700 mb-2">🎵 Daily Track Challenge</h3>
+      <p className="text-sm text-gray-700 mb-4">
+        Can you name this top song from just 5 seconds?
+      </p>
+      {!challengeStarted && (
+        <button
+          onClick={startChallenge}
+          className="bg-[#1DB954] hover:bg-[#1ed760] text-white px-6 py-2 rounded-full text-sm font-semibold shadow"
+        >
+          Play Challenge
+        </button>
+      )}
+      {challengeStarted && currentTrack && (
+        <div>
+          <audio
+            ref={audioRef}
+            src={currentTrack.preview_url ?? undefined}
+            onTimeUpdate={handleAudioTimeUpdate}
+            preload="auto"
+          />
+          <div className="mt-3">
+            <input
+              type="text"
+              value={userGuess}
+              onChange={(e) => setUserGuess(e.target.value)}
+              placeholder="Guess the song title"
+              className="p-2 border border-gray-300 rounded w-full mt-3"
+              onKeyDown={(e) => { if (e.key === "Enter") checkGuess(); }}
+            />
+            <button
+              onClick={checkGuess}
+              className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              Submit Guess
+            </button>
+            {feedback && (
+              <div className="mt-3 text-base font-medium">
+                {feedback}
+              </div>
+            )}
+            <button
+              className="mt-3 text-xs underline text-pink-700"
+              onClick={startChallenge}
+              type="button"
+            >
+              Try another track
+            </button>
+          </div>
+        </div>
+      )}
+      <p className="text-xs text-gray-600 mt-3 italic">
+        Earn badges like <strong>Cloudwalker</strong> and <strong>Vibe Oracle</strong>!
+      </p>
     </div>
   );
 }
