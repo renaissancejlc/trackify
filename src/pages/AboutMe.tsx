@@ -37,7 +37,7 @@ return (
 >
   {[
     {
-      label: 'Donate',
+      label: 'support me',
       url: 'https://www.buymeacoffee.com/renaissancecarr',
       icon: <HeartHandshake className="w-4 h-4 text-yellow-300 group-hover:scale-110 transition" />,
     },
