@@ -56,6 +56,10 @@ export default function SpiritAnimal() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      if (!topTrackRes.ok) {
+        console.error("Failed to fetch top tracks:", await topTrackRes.text());
+        return;
+      }
       const topTracksData = await topTrackRes.json();
       const items = topTracksData.items || [];
       setTopTracks(items);
@@ -71,7 +75,16 @@ export default function SpiritAnimal() {
           },
         }
       );
+      if (!res.ok) {
+        console.error("Failed to fetch audio features:", await res.text());
+        return;
+      }
       const featuresData = await res.json();
+
+      if (featuresData.error) {
+        console.error("Spotify audio features error:", featuresData.error);
+        return;
+      }
 
       if (
         typeof featuresData.energy === "number" &&
