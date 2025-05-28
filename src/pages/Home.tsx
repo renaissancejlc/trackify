@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { loginWithSpotify } from "../utils/SpotifyAuth";
 import { useEffect } from "react";
 import { SpotifyDataProvider } from "../context/SpotifyDataContext";
+import HomeBackground from "../components/HomeBackground";
 
 import { useSpotifyData } from "../context/SpotifyDataContext";
 
@@ -38,6 +39,7 @@ function HomeContent() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-t from-pink-100 via-white to-blue-100 px-4">
+      <HomeBackground />
       {/* Animated pink clouds background */}
       <div className="absolute inset-0 z-0 animate-clouds bg-[url('https://www.transparenttextures.com/patterns/clouds.png')] opacity-20 bg-repeat" />
 
