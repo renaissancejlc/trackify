@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import CloudBackground from '../components/CloudBackground';
+import ArtBackground from '../components/ArtBackground';
 
 interface Album {
   title: string;
@@ -115,7 +115,7 @@ export default function AlbumGuess() {
     return (
       <div className="font-spotify">
         <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
-          <CloudBackground />
+          <ArtBackground />
           {/* Paint splatter accents */}
           <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
@@ -150,7 +150,7 @@ export default function AlbumGuess() {
   return (
     <div className="font-spotify">
       <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
-        <CloudBackground />
+        <ArtBackground />
       {/* Dripping vertical time bar */}
       {gameStarted && timer > 0 && (
         <div className="absolute right-4 top-8 h-[80vh] w-3 bg-white/30 rounded-full border border-white/60 overflow-hidden z-20">
