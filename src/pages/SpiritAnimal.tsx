@@ -36,104 +36,65 @@ const spiritAnimals: AnimalProfile[] = [
 
 export default function SpiritAnimal() {
   const [animal, setAnimal] = useState<AnimalProfile | null>(null);
-  const [animalExplanation, setAnimalExplanation] = useState<string>("");
-  const [topTracks, setTopTracks] = useState<any[]>([]);
-  const [topGenres, setTopGenres] = useState<string[]>([]);
   const [mode, setMode] = useState<"overall" | "song" | "genre" | "mood">("overall");
   const [features, setFeatures] = useState<{ energy: number; valence: number; danceability: number } | null>(null);
   const accessToken = localStorage.getItem("spotify_access_token");
 
   useEffect(() => {
-    fetchTopTrackFeatures();
-  }, [accessToken, mode]);
+    const fetchTopTrackFeatures = async () => {
+      if (!accessToken) return;
 
-  async function fetchTopTrackFeatures() {
-    if (!accessToken) return;
-
-    try {
-      const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=5", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!topTrackRes.ok) {
-        console.error("Failed to fetch top tracks:", await topTrackRes.text());
-        return;
-      }
-      const topTracksData = await topTrackRes.json();
-      const items = topTracksData.items || [];
-      setTopTracks(items);
-
-      const trackId = items[0]?.id;
-      if (!trackId) {
-        console.error("No top track found.");
-        return;
-      }
-
-      const res = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (!res.ok) {
-        console.error("Failed to fetch audio features:", await res.text());
-        return;
-      }
-
-      const featuresData = await res.json();
-      setFeatures({
-        energy: featuresData.energy,
-        valence: featuresData.valence,
-        danceability: featuresData.danceability,
-      });
-
-      // Extract genres from artists
-      const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
-      const uniqueIds = [...new Set(artistIds)].slice(0, 5);
-      const genrePromises = (uniqueIds as string[]).map((id) =>
-        fetch(`https://api.spotify.com/v1/artists/${id}`, {
+      try {
+        const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=1", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }).then(res => res.json())
-      );
-      const artistData = await Promise.all(genrePromises);
-      const allGenres = artistData.flatMap(a => a.genres || []);
-      const uniqueGenres = [...new Set(allGenres)];
-      setTopGenres(uniqueGenres.slice(0, 5));
-      generateAnimal();
+        });
+        const topTracksData = await topTrackRes.json();
+        const trackId = topTracksData.items?.[0]?.id;
 
-    } catch (err) {
-      console.error("Error fetching Spotify data:", err);
-    }
-  }
+        if (!trackId) return;
+
+        const featuresRes = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const featuresData = await featuresRes.json();
+
+        setFeatures({
+          energy: featuresData.energy,
+          valence: featuresData.valence,
+          danceability: featuresData.danceability,
+        });
+      } catch (err) {
+        console.error("Error fetching Spotify audio features:", err);
+      }
+    };
+
+    fetchTopTrackFeatures();
+  }, [accessToken, mode]);
 
   const generateAnimal = () => {
     if (!features) return;
 
     const { energy, valence, danceability } = features;
+
     let selected: AnimalProfile;
-    let explanation = `Energy: ${energy.toFixed(2)}, Valence: ${valence.toFixed(2)}, Danceability: ${danceability.toFixed(2)}. `;
 
     if (energy > 0.7 && danceability > 0.6) {
       selected = spiritAnimals[0]; // Cheetah
-      explanation += "You love lively tracks with energy and rhythm — that's pure cheetah energy!";
     } else if (energy < 0.3 && valence < 0.4) {
       selected = spiritAnimals[3]; // Turtle
-      explanation += "Low energy and mood suggest a calm and introspective vibe — perfect for a Turtle.";
     } else if (valence > 0.7) {
       selected = spiritAnimals[2]; // Dolphin
-      explanation += "Your music taste is full of happy, high-valence songs — very Dolphin of you!";
     } else if (energy > 0.6) {
       selected = spiritAnimals[4]; // Tiger
-      explanation += "Powerful energy dominates your listening — Tiger spirit unleashed!";
     } else {
       selected = spiritAnimals[1]; // Owl
-      explanation += "You prefer deep lyrics and late-night tracks — wise as an Owl.";
     }
 
     setAnimal(selected);
-    setAnimalExplanation(explanation);
   };
 
   return (
@@ -204,7 +165,7 @@ export default function SpiritAnimal() {
               key={type}
               onClick={() => {
                 setMode(type);
-                fetchTopTrackFeatures();
+                generateAnimal();
               }}
               className={`px-4 py-2 rounded-full font-semibold shadow-md transition ${
                 mode === type
@@ -238,25 +199,6 @@ export default function SpiritAnimal() {
                 {mode} Spirit Animal: {animal.name}
               </h2>
               <p className="text-gray-700">{animal.description}</p>
-              <p className="text-green-700 mt-4">{animalExplanation}</p>
-              <div className="mt-6">
-                <h3 className="font-semibold text-green-800 mb-2">🎵 Your Top Tracks</h3>
-                <ul className="text-sm text-gray-800 list-disc list-inside space-y-1">
-                  {topTracks.map((track, index) => (
-                    <li key={index}>{track.name} – {track.artists?.[0]?.name}</li>
-                  ))}
-                </ul>
-                {topGenres.length > 0 && (
-                  <>
-                    <h3 className="font-semibold text-green-800 mt-4 mb-2">🎧 Your Top Genres</h3>
-                    <ul className="text-sm text-gray-800 list-disc list-inside space-y-1">
-                      {topGenres.map((genre, index) => (
-                        <li key={index}>{genre}</li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-              </div>
             </div>
           </div>
         )}
