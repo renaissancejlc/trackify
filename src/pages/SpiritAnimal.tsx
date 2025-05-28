@@ -64,44 +64,28 @@ export default function SpiritAnimal() {
       const items = topTracksData.items || [];
       setTopTracks(items);
 
-      let validFeatures = null;
-      for (const track of items) {
-        const trackId = track.id;
-        const trackRes = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        if (!trackRes.ok) continue;
-
-        const res = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        if (!res.ok) continue;
-
-        const featuresData = await res.json();
-        if (
-          typeof featuresData.energy === "number" &&
-          typeof featuresData.valence === "number" &&
-          typeof featuresData.danceability === "number"
-        ) {
-          validFeatures = {
-            energy: featuresData.energy,
-            valence: featuresData.valence,
-            danceability: featuresData.danceability,
-          };
-          break;
-        }
-      }
-
-      if (!validFeatures) {
-        console.error("No valid audio features found for top tracks.");
+      const trackId = items[0]?.id;
+      if (!trackId) {
+        console.error("No top track found.");
         return;
       }
 
-      setFeatures(validFeatures);
+      const res = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!res.ok) {
+        console.error("Failed to fetch audio features:", await res.text());
+        return;
+      }
+
+      const featuresData = await res.json();
+      setFeatures({
+        energy: featuresData.energy,
+        valence: featuresData.valence,
+        danceability: featuresData.danceability,
+      });
 
       // Extract genres from artists
       const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
