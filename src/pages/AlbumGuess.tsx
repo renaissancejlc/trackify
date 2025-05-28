@@ -283,12 +283,14 @@ export default function AlbumGuess() {
       </div>
 
       {/* "Easter egg" Artist/Album mode button, bottom-right */}
-      <button
-        onClick={() => setUseArtistMode(!useArtistMode)}
-        className="fixed bottom-2 right-2 px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-pink-800 rounded text-[10px] shadow-sm opacity-40 hover:opacity-90 transition-all z-50"
-      >
-        {useArtistMode ? "Album Mode" : "Too hard? Try Artist Mode"}
-      </button>
+      {!gameStarted && (
+        <button
+          onClick={() => setUseArtistMode(!useArtistMode)}
+          className="fixed bottom-2 right-2 px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-pink-800 rounded text-[10px] shadow-sm opacity-40 hover:opacity-90 transition-all z-50"
+        >
+          {useArtistMode ? "Album Mode" : "Too hard? Try Artist Mode"}
+        </button>
+      )}
 
       {/* Art Character Guide */}
       <div className="absolute bottom-8 left-6 z-20 animate-bounce-soft text-[2.75rem] select-none flex flex-col items-center space-y-2">
