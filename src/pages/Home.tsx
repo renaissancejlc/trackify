@@ -215,30 +215,30 @@ function HomeContent() {
           <p className="text-sm text-gray-600 text-center">Turn your top songs into cinematic visuals.</p>
         </div>
 
-        {/* Coming Soon / Mystery */}
-        <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
-          <div className="relative flex items-center justify-center mb-2">
-            <span className="glow-ring absolute w-20 h-20 rounded-full" />
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 via-white to-blue-100 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
-              ❓
-            </div>
-          </div>
-          <h3 className="text-lg font-semibold text-pink-700">Mystery Feature</h3>
-          <p className="text-sm text-gray-600 text-center">Something magical is on its way...</p>
-        </div>
-
         {/* Support the Developer */}
         <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-100 via-white to-yellow-200 flex items-center justify-center text-3xl shadow-inner border-2 border-white/60">
+              ❓
+            </div>
+          </div>
+          <h3 className="text-lg font-semibold text-pink-700">Mystery Feature</h3>
+          <p className="text-sm text-gray-600 text-center">Something magical is on its way..</p>
+        </div>
+      </div>
+
+        {/* Coming Soon / Mystery */}
+        <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
+          <div className="relative flex items-center justify-center mb-2">
+            <span className="glow-ring absolute w-20 h-20 rounded-full" />
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 via-white to-blue-100 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
               ☕
             </div>
           </div>
           <h3 className="text-lg font-semibold text-pink-700">Support the Developer</h3>
-          <p className="text-sm text-gray-600 text-center">Enjoying the vibes? Consider buying me a coffee!</p>
+          <p className="text-sm text-gray-600 text-center">Enjoying the vibes? Consider buying me a coffee!.</p>
         </div>
-      </div>
 
       <style>
         {`
