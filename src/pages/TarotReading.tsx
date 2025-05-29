@@ -218,12 +218,27 @@ export default function TarotReading() {
         <h1 className="text-4xl font-bold mb-3 text-white drop-shadow-xl animate-pulse-glow">🔮 Spotify Tarot Reading</h1>
         <p className="text-indigo-300 mb-6 text-sm">Let your top albums reveal the story of your past, present, and future.</p>
         {drawnCards.length < 3 && (
-          <button
-            onClick={drawNextCard}
-            className="px-6 py-3 bg-gradient-to-r from-purple-700 via-fuchsia-700 to-purple-800 hover:brightness-110 transition rounded-full text-white font-bold shadow-lg"
-          >
-            Reveal {["Past", "Present", "Future"][drawnCards.length]}
-          </button>
+          <div className="relative group">
+            <div className="absolute inset-0 z-10 pointer-events-none group-hover:opacity-0 transition-opacity duration-500">
+              {Array.from({ length: 15 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+                  style={{
+                    top: `${Math.random() * 100}%`,
+                    left: `${Math.random() * 100}%`,
+                    animation: `starTwinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
+                  }}
+                />
+              ))}
+            </div>
+            <button
+              onClick={drawNextCard}
+              className="relative z-20 px-6 py-3 bg-gradient-to-r from-purple-700 via-fuchsia-700 to-purple-800 hover:brightness-110 transition rounded-full text-white font-bold shadow-lg"
+            >
+              Reveal {["Past", "Present", "Future"][drawnCards.length]}
+            </button>
+          </div>
         )}
 
         {drawnCards.length > 0 && (
