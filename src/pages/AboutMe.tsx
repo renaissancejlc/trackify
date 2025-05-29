@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { BookOpen, FileText, Github, Linkedin, Music2, Youtube, Globe, HeartHandshake } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import CloudBackground from '../components/CloudBackground';
 import TerminalFrame from '../components/TerminalFrame';
 import NowPlayingCard from '../components/NowPlayingCard';
@@ -120,6 +121,28 @@ Date:   2024-05-15<br/><br/>
         </TerminalFrame>
         <div className="mt-20">
           {/* <TerminalAnalytics /> */}
+        </div>
+
+        {/* Social footer */}
+        <div className="w-full mt-24 flex flex-col items-center z-10 relative">
+          <p className="text-center text-xs italic text-gray-400 mb-2">Connect with me</p>
+          <footer className="mb-8 flex justify-center gap-6 text-gray-400 text-xl">
+            <a href="https://github.com/renaissancejlc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <Github className="hover:text-teal-300 transition-colors duration-300" />
+            </a>
+            <a href="https://youtube.com/nowbrowncow" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
+              <Youtube className="hover:text-teal-300 transition-colors duration-300" />
+            </a>
+            <a href="https://linkedin.com/in/renaissancejlc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <Linkedin className="hover:text-teal-300 transition-colors duration-300" />
+            </a>
+            <a href="mailto:renysportfolio@gmail.com" aria-label="Email">
+              <Mail className="hover:text-teal-300 transition-colors duration-300" />
+            </a>
+            <a href="https://renaissancecodes.wordpress.com/" aria-label="Blog">
+              <BookOpen className="hover:text-teal-300 transition-colors duration-300" />
+            </a>
+          </footer>
         </div>
       </div>
     </>
