@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
 import ArtBackground from '../components/ArtBackground';
-import { Github, Youtube, Linkedin, Mail, BookOpen } from 'lucide-react';
 
 interface Album {
   title: string;
@@ -391,27 +390,7 @@ export default function AlbumGuess() {
             animation: pulse 2s ease-in-out infinite;
           }
         `}</style>
-        {/* Social footer */}
-        <div className="w-full mt-24 flex flex-col items-center z-10 relative">
-          <p className="text-center text-xs italic text-gray-500 mb-2">Connect with me</p>
-          <footer className="mb-8 flex justify-center gap-6 text-gray-500 text-xl">
-            <a href="https://github.com/renaissancejlc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <Github className="hover:text-[#1DB954]" />
-            </a>
-            <a href="https://youtube.com/nowbrowncow" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
-              <Youtube className="hover:text-[#1DB954]" />
-            </a>
-            <a href="https://linkedin.com/in/renaissancejlc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <Linkedin className="hover:text-[#1DB954]" />
-            </a>
-            <a href="mailto:renysportfolio@gmail.com" aria-label="Email">
-              <Mail className="hover:text-[#1DB954]" />
-            </a>
-            <a href="https://renaissancecodes.wordpress.com/" aria-label="Blog">
-              <BookOpen className="hover:text-[#1DB954]" />
-            </a>
-          </footer>
-        </div>
+       
       </div>
     </div>
   );
