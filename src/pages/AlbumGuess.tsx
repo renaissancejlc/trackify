@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import ArtBackground from '../components/ArtBackground';
+import { Github, Youtube, Linkedin, Mail, BookOpen } from 'lucide-react';
 
 interface Album {
   title: string;
@@ -295,7 +296,7 @@ export default function AlbumGuess() {
             <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {history.map((album, i) => (
                 <div key={i} className="relative border-4 rounded-lg overflow-hidden shadow-lg" style={{ borderColor: album.result === "correct" ? "#10B981" : "#EF4444" }}>
-                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover sepia contrast-125 saturate-50" />
+                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover" />
                   <div className="absolute bottom-0 left-0 right-0 bg-white/80 text-center text-xs font-medium text-gray-700 py-1">
                     {useArtistMode ? album.artist : album.title}
                   </div>
@@ -390,6 +391,27 @@ export default function AlbumGuess() {
             animation: pulse 2s ease-in-out infinite;
           }
         `}</style>
+        {/* Social footer */}
+        <div className="w-full mt-24 flex flex-col items-center z-10 relative">
+          <p className="text-center text-xs italic text-gray-500 mb-2">Connect with me</p>
+          <footer className="mb-8 flex justify-center gap-6 text-gray-500 text-xl">
+            <a href="https://github.com/renaissancejlc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <Github className="hover:text-[#1DB954]" />
+            </a>
+            <a href="https://youtube.com/nowbrowncow" target="_blank" rel="noopener noreferrer" aria-label="Youtube">
+              <Youtube className="hover:text-[#1DB954]" />
+            </a>
+            <a href="https://linkedin.com/in/renaissancejlc" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <Linkedin className="hover:text-[#1DB954]" />
+            </a>
+            <a href="mailto:renysportfolio@gmail.com" aria-label="Email">
+              <Mail className="hover:text-[#1DB954]" />
+            </a>
+            <a href="https://renaissancecodes.wordpress.com/" aria-label="Blog">
+              <BookOpen className="hover:text-[#1DB954]" />
+            </a>
+          </footer>
+        </div>
       </div>
     </div>
   );
