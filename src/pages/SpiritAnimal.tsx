@@ -3,34 +3,34 @@ import AnimalBackground from "../components/AnimalBackground";
 
 interface AnimalProfile {
   name: string;
-  emoji: string;
+  image: string;
   description: string;
 }
 
 const spiritAnimals: AnimalProfile[] = [
   {
     name: "Cheetah",
-    emoji: "🐆",
+    image: "/assets/animals/cheetah.png",
     description: "Fast-paced and high-energy. You’re always on the move, thriving in danceable beats and bold vibes.",
   },
   {
     name: "Owl",
-    emoji: "🦉",
+    image: "/assets/animals/owl.png",
     description: "Mysterious and thoughtful. You gravitate toward deep lyrics and late-night playlists.",
   },
   {
     name: "Dolphin",
-    emoji: "🐬",
+    image: "/assets/animals/dolphin.png",
     description: "Playful and upbeat. You live for happy, high-valence tracks that make you smile.",
   },
   {
     name: "Turtle",
-    emoji: "🐢",
+    image: "/assets/animals/turtle.png",
     description: "Chill and introspective. You enjoy slow tempos, acoustic instruments, and calming melodies.",
   },
   {
     name: "Tiger",
-    emoji: "🐅",
+    image: "/assets/animals/tiger.png",
     description: "Intense and powerful. You love songs with driving bass and strong emotional energy.",
   },
 ];
@@ -212,6 +212,10 @@ export default function SpiritAnimal() {
               key={type}
               onClick={() => {
                 setMode(type);
+                // TEMPORARY: Random animal assignment for testing
+                const randomAnimal = spiritAnimals[Math.floor(Math.random() * spiritAnimals.length)];
+                setAnimal(randomAnimal);
+                setAnimalExplanation("🔮 This is a randomly chosen spirit animal for testing purposes.");
                 fetchTopTrackFeatures();
               }}
               className={`px-4 py-2 rounded-full font-semibold shadow-md transition ${
@@ -241,7 +245,7 @@ export default function SpiritAnimal() {
               key={`${mode}-${animal.name}`}
               className="relative bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl max-w-sm border border-green-200 z-20 animate-fadeInZoom"
             >
-              <div className="text-6xl mb-2 drop-shadow-lg">{animal.emoji}</div>
+              <img src={animal.image} alt={animal.name} className="w-24 h-24 object-contain mx-auto mb-2 drop-shadow-lg" />
               <h2 className="text-2xl font-bold text-green-800 mb-2 capitalize">
                 {mode} Spirit Animal: {animal.name}
               </h2>
