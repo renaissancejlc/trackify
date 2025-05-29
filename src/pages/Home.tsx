@@ -84,7 +84,7 @@ function HomeContent() {
         <div className="animate-bounce-soft select-none flex flex-col items-center space-y-2">
           <div className="drop-shadow flex flex-col items-center">
             <img
-              src="/assets/cloud-companion.png"
+              src="dist/assets/cloud-companion.png"
               alt="Cloud Companion"
               className="w-[110px] md:w-[130px] animate-slow-float"
             />
