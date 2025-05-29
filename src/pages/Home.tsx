@@ -79,14 +79,18 @@ function HomeContent() {
         🎵 🎶 🎧 🎼
       </div>
 
-      {/* Cloud Companion */}
-      <div
-        className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none"
-      >
-        <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
-          <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
-            <div className="text-[2.75rem] animate-slow-float">☁️</div>
-            <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">^‿^</div>
+      {/* Cloud Companion with PNG */}
+      <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
+        <div className="animate-bounce-soft select-none flex flex-col items-center space-y-2">
+          <div className="drop-shadow flex flex-col items-center">
+            <img
+              src="/assets/cloud-companion.png"
+              alt="Cloud Companion"
+              className="w-[110px] md:w-[130px] animate-slow-float"
+            />
+            <div className="-mt-3 text-sm text-yellow-200 hover:text-[#1DB954] transition-colors duration-300">
+              ^‿^
+            </div>
           </div>
           <div className="relative px-4 py-2 bg-white/80 text-pink-700 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
