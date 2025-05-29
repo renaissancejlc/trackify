@@ -48,10 +48,10 @@ function HomeContent() {
   const [topTracks, setTopTracks] = useState<Track[]>();
 
   function calculatePopularityScore(tracks: Track[] | undefined) {
-    if (!tracks || tracks.length === 0) return "N/A";
-    const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
-    const avg = total / tracks.length;
-    return `${Math.round(avg)} / 100`;
+      if (!tracks || tracks.length === 0) return "N/A";
+      const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
+      const avg = total / tracks.length;
+      return `${Math.round(avg)} / 100`;
   }
 
   useEffect(() => {
@@ -230,7 +230,7 @@ function HomeContent() {
       </div>
 
         {/* Coming Soon / Mystery */}
-        <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
+        {/* <div className="bg-white/40 backdrop-blur-md rounded-3xl shadow-xl p-7 hover:scale-[1.05] hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center space-y-3 border border-white/30">
           <div className="relative flex items-center justify-center mb-2">
             <span className="glow-ring absolute w-20 h-20 rounded-full" />
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-300 via-white to-blue-100 bg-opacity-90 flex items-center justify-center text-4xl shadow-inner border-2 border-white/60 contrast-125 brightness-110">
@@ -239,7 +239,7 @@ function HomeContent() {
           </div>
           <h3 className="text-lg font-semibold text-pink-700">Support the Developer</h3>
           <p className="text-sm text-gray-600 text-center">Enjoying the vibes? Consider buying me a coffee!.</p>
-        </div>
+        </div> */}
 
       <style>
         {`
@@ -322,8 +322,9 @@ function HomeContent() {
         `}
       </style>
       {/* Now Playing Simulator */}
+      <div className="mt-12" />
       <SpotifyBar>
-        <div className="z-10 mt-12 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
+        <div className="z-10 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
           <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
             <img
               src={topTracks?.[0]?.album?.images?.[0]?.url}
