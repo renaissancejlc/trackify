@@ -21,7 +21,7 @@ const ThisIsMePlaylistCard = () => {
       className="bg-[#1C1F26]/80 border border-white/10 backdrop-blur rounded-xl shadow-xl overflow-hidden max-w-xl mx-auto mb-12"
     >
       <div className="px-6 py-4 bg-gradient-to-r from-green-400/10 to-green-300/5 border-b border-white/10">
-        <h3 className="text-lg text-green-300 font-semibold font-sans">This Is the Developer</h3>
+        <h3 className="text-lg text-green-300 font-semibold font-sans">This Is The Developer</h3>
         <p className="text-xs text-slate-400">The background, in three tracks 🎶</p>
       </div>
 
