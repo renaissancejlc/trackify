@@ -1,413 +1,385 @@
-import { useState, useEffect, useMemo } from "react";
-import ArtBackground from '../components/ArtBackground';
+import { useState, useEffect } from "react";
+import AnimalBackground from "../components/AnimalBackground";
 
-interface Album {
-  title: string;
-  artist?: string;
-  image: string;
+interface AnimalProfile {
+  name: string;
+  emoji: string;
+  description: string;
 }
 
-// This will be dynamically loaded from user data
-// const albums: Album[] = [];
+const spiritAnimals: AnimalProfile[] = [
+  {
+    name: "Cheetah",
+    emoji: "🐆",
+    description: "Fast-paced and high-energy. You’re always on the move, thriving in danceable beats and bold vibes.",
+  },
+  {
+    name: "Owl",
+    emoji: "🦉",
+    description: "Mysterious and thoughtful. You gravitate toward deep lyrics and late-night playlists.",
+  },
+  {
+    name: "Dolphin",
+    emoji: "🐬",
+    description: "Playful and upbeat. You live for happy, high-valence tracks that make you smile.",
+  },
+  {
+    name: "Turtle",
+    emoji: "🐢",
+    description: "Chill and introspective. You enjoy slow tempos, acoustic instruments, and calming melodies.",
+  },
+  {
+    name: "Tiger",
+    emoji: "🐅",
+    description: "Intense and powerful. You love songs with driving bass and strong emotional energy.",
+  },
+];
 
-export default function AlbumGuess() {
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const [index, setIndex] = useState(0);
-  const [guess, setGuess] = useState("");
-  const [result, setResult] = useState<"correct" | "wrong" | null>(null);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [timer, setTimer] = useState(60);
-  const [score, setScore] = useState(0);
-  const [history, setHistory] = useState<{ title: string; image: string; artist?: string; result: "correct" | "wrong" }[]>([]);
-  const [useArtistMode, setUseArtistMode] = useState(false);
-  const [authError, setAuthError] = useState(false);
+export default function SpiritAnimal() {
+  const [animal, setAnimal] = useState<AnimalProfile | null>(null);
+  const [animalExplanation, setAnimalExplanation] = useState<string>("");
+  const [topTracks, setTopTracks] = useState<any[]>([]);
+  const [topGenres, setTopGenres] = useState<string[]>([]);
+  const [mode, setMode] = useState<"overall" | "song" | "genre" | "mood">("overall");
+  const [features, setFeatures] = useState<{ energy: number; valence: number; danceability: number } | null>(null);
+  const [guideMessage, setGuideMessage] = useState("🌿 Welcome, wanderer. Ready to meet your inner animal?");
+  const [guideGrowKey, setGuideGrowKey] = useState(0);
+  const accessToken = localStorage.getItem("spotify_access_token");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const accessToken = localStorage.getItem("spotify_access_token");
-        if (!accessToken) {
-          setAuthError(true);
-          return;
-        }
-        setAuthError(false);
-        const endpoint = useArtistMode ? "/.netlify/functions/top-artists" : "/.netlify/functions/top-albums";
-        const response = await fetch(`${endpoint}?limit=50`, {
+    fetchTopTrackFeatures();
+  }, [accessToken, mode]);
+
+  async function fetchTopTrackFeatures() {
+    if (!accessToken) {
+      setGuideMessage("🔒 Log in with Spotify to discover your spirit animal!");
+      setGuideGrowKey(prev => prev + 1);
+      return;
+    }
+
+    try {
+      const topTrackRes = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=5", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!topTrackRes.ok) {
+        console.error("Failed to fetch top tracks:", await topTrackRes.text());
+        return;
+      }
+      const topTracksData = await topTrackRes.json();
+      const items = topTracksData.items || [];
+      setTopTracks(items);
+
+      const trackId = items[0]?.id;
+      if (!trackId) {
+        console.error("No top track found.");
+        return;
+      }
+
+      const res = await fetch(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (!res.ok) {
+        console.error("Failed to fetch audio features:", await res.text());
+        return;
+      }
+
+      const featuresData = await res.json();
+      setFeatures({
+        energy: featuresData.energy,
+        valence: featuresData.valence,
+        danceability: featuresData.danceability,
+      });
+
+      // Extract genres from artists
+      const artistIds = items.flatMap((track: any) => track.artists.map((a: any) => a.id));
+      const uniqueIds = [...new Set(artistIds)].slice(0, 5);
+      const genrePromises = (uniqueIds as string[]).map((id) =>
+        fetch(`https://api.spotify.com/v1/artists/${id}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        });
-        const data = await response.json();
-        const parsedItems = data.items.map((item: any) => {
-          if (useArtistMode) {
-            return {
-              title: item.name || "Unknown Artist",
-              artist: item.name || "Unknown Artist",
-              image: item.image || "",
-            };
-          } else {
-            return {
-              title: item.name || "Unknown Album",
-              artist: item.artists?.[0]?.name || "Unknown Artist",
-              image: item.image || "",
-            };
-          }
-        });
-        setAlbums(parsedItems.sort(() => Math.random() - 0.5));
-        if (parsedItems.length === 0) {
-          console.warn("No items returned from Spotify.");
-        }
-      } catch (error) {
-        console.error("Failed to fetch data", error);
-      }
-    };
-    fetchData();
-  }, [useArtistMode]);
+        }).then(res => res.json())
+      );
+      const artistData = await Promise.all(genrePromises);
+      const allGenres = artistData.flatMap(a => a.genres || []);
+      const uniqueGenres = [...new Set(allGenres)];
+      setTopGenres(uniqueGenres.slice(0, 5));
+      generateAnimal();
 
-  const currentAlbum = albums[index] || { title: "", image: "", artist: "" };
-
-  useEffect(() => {
-    if (!gameStarted || timer <= 0) return;
-    const interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [gameStarted, timer]);
-
-  const handleGuess = () => {
-    if (!guess.trim()) return;
-    const normalizedGuess = guess.trim().toLowerCase();
-    const normalizedTitle = useArtistMode
-      ? (currentAlbum.artist?.toLowerCase() || "")
-      : currentAlbum.title.toLowerCase();
-
-    if (normalizedGuess === normalizedTitle) {
-      setResult("correct");
-      setScore((prev) => prev + 1);
-      setHistory((prev) => [...prev, { ...currentAlbum, result: "correct" }]);
-    } else {
-      setResult("wrong");
-      setHistory((prev) => [...prev, { ...currentAlbum, result: "wrong" }]);
+    } catch (err) {
+      console.error("Error fetching Spotify data:", err);
     }
-  };
-
-  const handleNext = () => {
-    setResult(null);
-    setGuess("");
-    setIndex((prev) => (prev + 1) % albums.length);
-  };
-
-  // Memoize splatter positions so they remain fixed in position and gently float without re-randomizing every render
-  const splatterPositions = useMemo(
-    () =>
-      Array.from({ length: 5 }).map((_, i) => ({
-        top: `${Math.random() * 80 + 10}%`,
-        left: `${Math.random() * 80 + 10}%`,
-        color: ["#f472b6", "#fcd34d", "#c4b5fd", "#fca5a5", "#f9a8d4"][i % 5],
-        delay: `${i * 2}s`,
-        scale: Math.random() * 0.6 + 0.7,
-        rotate: `${Math.random() * 360}deg`,
-      })),
-    []
-  );
-
-  if (!albums.length) {
-    return (
-      <div className="font-spotify">
-        <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
-          <ArtBackground />
-          {/* Paint splatter accents */}
-          <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
-
-          {/* Spirit Guide */}
-          <div className="absolute bottom-8 left-6 z-20 animate-bounce-soft text-[2.75rem] select-none flex flex-col items-center space-y-2">
-            <div className="drop-shadow text-white leading-none flex flex-col items-center">
-              🧑‍🎨
-              <div className="-mt-2 text-sm">＊◕‿◕＊</div>
-            </div>
-            <div className={`relative px-4 py-2 bg-white/80 text-pink-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${authError ? "animate-pulse" : ""}`}>
-              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-              {authError
-                ? "🎭 Log in with Spotify to begin your artful guessing journey!"
-                : "Mixing colors and vibes… loading your albums!"}
-            </div>
-          </div>
-
-          <div className="relative z-10 text-center">
-            <h1 className="text-3xl font-bold text-pink-600 drop-shadow mb-4 animate-pulse">
-              Loading your top albums...
-            </h1>
-            <div className="flex justify-center mt-8">
-              <div className="w-20 h-20 border-8 border-dashed border-pink-400 rounded-full animate-spin" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   }
 
+  const generateAnimal = () => {
+    if (!features) return;
+
+    const { energy, valence, danceability } = features;
+    let selected: AnimalProfile;
+    let explanation = `Energy: ${energy.toFixed(2)}, Valence: ${valence.toFixed(2)}, Danceability: ${danceability.toFixed(2)}. `;
+
+    if (energy > 0.7 && danceability > 0.6) {
+      selected = spiritAnimals[0]; // Cheetah
+      explanation += "You love lively tracks with energy and rhythm — that's pure cheetah energy!";
+    } else if (energy < 0.3 && valence < 0.4) {
+      selected = spiritAnimals[3]; // Turtle
+      explanation += "Low energy and mood suggest a calm and introspective vibe — perfect for a Turtle.";
+    } else if (valence > 0.7) {
+      selected = spiritAnimals[2]; // Dolphin
+      explanation += "Your music taste is full of happy, high-valence songs — very Dolphin of you!";
+    } else if (energy > 0.6) {
+      selected = spiritAnimals[4]; // Tiger
+      explanation += "Powerful energy dominates your listening — Tiger spirit unleashed!";
+    } else {
+      selected = spiritAnimals[1]; // Owl
+      explanation += "You prefer deep lyrics and late-night tracks — wise as an Owl.";
+    }
+
+    setAnimal(selected);
+    setAnimalExplanation(explanation);
+  };
+
   return (
-    <div className="font-spotify">
-      <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-200 overflow-hidden px-4">
-        <ArtBackground />
-      {/* Dripping vertical time bar */}
-      {gameStarted && timer > 0 && (
-        <div className="absolute right-4 top-8 h-[80vh] w-3 bg-white/30 rounded-full border border-white/60 overflow-hidden z-20">
-          <div
-            className="bg-pink-500 w-full transition-all duration-100"
-            style={{ height: `${(timer / 60) * 100}%` }}
-          />
-        </div>
-      )}
-      {/* Paint splatter accents */}
-      <div className="absolute top-0 left-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[url('https://www.transparenttextures.com/patterns/paint-splatter.png')] opacity-10 z-0" />
+    <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-t from-green-100 via-blue-100 to-purple-100 px-4">
+      <AnimalBackground />
+      {/* Dynamic sky and grassy hill background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-green-200 via-sky-100 to-blue-200" />
+        <div className="absolute bottom-0 w-full h-60 bg-green-300 rounded-t-[50%] blur-sm opacity-50 animate-hill" />
+      </div>
 
-      {/* Timed animated splatters */}
-      {splatterPositions.map((pos, i) => (
-        <div
-          key={i}
-          className="absolute w-12 h-12 rounded-full opacity-60 blur-sm animate-splat pointer-events-none"
-          style={{
-            top: pos.top,
-            left: pos.left,
-            backgroundColor: pos.color,
-            animationDelay: pos.delay,
-            transform: `rotate(${pos.rotate}) scale(${pos.scale})`,
-          }}
-        />
-      ))}
+      {/* Rainbow arc */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[120%] h-48 rounded-full bg-gradient-to-r from-red-400 via-yellow-300 to-blue-500 opacity-30 blur-2xl z-0" />
 
-      <div className="relative z-10 text-center">
-        {!gameStarted && (timer === 60 || timer === 0) ? (
-          <>
-            <h1 className="text-3xl font-bold mb-6 text-pink-700 drop-shadow">
-              🎨 Guess That {useArtistMode ? "Artist" : "Album"}
-            </h1>
-            <p className="text-gray-700 mb-4">Can you name the album based on its blurred cover?</p>
+      {/* Floating leaves */}
+      <div className="absolute w-full h-full pointer-events-none z-10 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-10 h-10 bg-green-300 rounded-full opacity-30 blur-sm animate-leaf float-delay-1" />
+        <div className="absolute top-1/3 left-2/3 w-8 h-8 bg-green-500 rounded-full opacity-20 blur-sm animate-leaf float-delay-2" />
+        <div className="absolute bottom-1/4 right-1/4 w-12 h-12 bg-green-400 rounded-full opacity-20 blur-md animate-leaf float-delay-3" />
+      </div>
+
+      {/* Animated butterflies */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span
+            key={i}
+            className={`absolute text-xl animate-butterfly pointer-events-none`}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 80}%`,
+              animationDelay: `${i * 2}s`,
+            }}
+          >
+            🦋
+          </span>
+        ))}
+      </div>
+
+      {/* Light mist layer */}
+      <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-50 z-10 pointer-events-none" />
+
+      {/* Animal footprints scattered */}
+      <div className="absolute bottom-0 left-0 w-full h-full z-10 pointer-events-none overflow-hidden">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <span
+            key={i}
+            className="absolute text-2xl animate-footprint"
+            style={{
+              left: `${i * 10 + Math.random() * 5}%`,
+              top: `${80 + Math.random() * 10}%`,
+              transform: `rotate(${Math.random() * 45 - 20}deg)`,
+              animationDelay: `${i * 1.5}s`,
+            }}
+          >
+            🐾
+          </span>
+        ))}
+      </div>
+
+      {/* Foreground content */}
+      <div className="relative z-20 text-center">
+        <h1 className="text-4xl font-bold text-green-900 drop-shadow mb-4">🦄 Your Spirit Animal Awaits</h1>
+        <p className="text-green-800 mb-6 text-lg">
+          Step into the wild — discover which animal reflects your inner rhythm.
+        </p>
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
+          {(["overall", "song", "genre", "mood"] as const).map((type) => (
             <button
-              onClick={() => setGameStarted(true)}
-              className="px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full"
+              key={type}
+              onClick={() => {
+                setMode(type);
+                fetchTopTrackFeatures();
+              }}
+              className={`px-4 py-2 rounded-full font-semibold shadow-md transition ${
+                mode === type
+                  ? "bg-green-600 text-white"
+                  : "bg-white/70 text-green-800 hover:bg-white"
+              }`}
             >
-              Start Game
+              {type === "overall" && "🌿 Overall"}
+              {type === "song" && "🎵 By Song"}
+              {type === "genre" && "🎧 By Genre"}
+              {type === "mood" && "🌈 By Mood"}
             </button>
-          </>
-        ) : timer > 0 ? (
-          <>
-            <h2 className="text-xl font-semibold text-pink-600 mb-2">Time Left: {timer}s</h2>
-            <h3 className="text-lg mb-4 text-purple-800">Score: {score}</h3>
-            {/* Paint bucket score meter */}
-            <div className="relative w-12 h-24 mx-auto mb-6">
-              <div className="absolute bottom-0 w-full bg-pink-500 transition-all duration-300 rounded-b-md"
-                style={{ height: `${Math.min(score * 10, 100)}%` }} />
-              <div className="absolute inset-0 border-4 border-pink-800 rounded-b-xl bg-white/40 backdrop-blur-sm" />
-              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-bold text-pink-800">
-                {score} 🎨
-              </div>
-            </div>
-            <p className="text-sm text-pink-700 mb-2">
-              You’re on Album {index + 1} of {albums.length}
-            </p>
-            <div className="mb-4">
-              <div className="p-2 border-8 border-yellow-200 rounded-xl shadow-lg bg-white/60 backdrop-blur-sm w-fit mx-auto" style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/canvas-fine.png')" }}>
-                <img
-                  src={currentAlbum.image}
-                  alt="Blurred Album"
-                  className={`w-60 h-60 object-cover rounded-md shadow ${result === null ? "blur-md" : ""}`}
-                />
-              </div>
-            </div>
+          ))}
+        </div>
 
-            {result === null ? (
-              <>
-                <div className="flex items-center justify-center w-full mb-2 space-x-2 max-w-xs">
-                  <div className="relative w-full">
-                    <input
-                      type="text"
-                      placeholder="Your guess..."
-                      value={guess}
-                      onChange={(e) => setGuess(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          if (result === null) {
-                            handleGuess();
-                          } else {
-                            handleNext();
-                          }
-                        }
-                      }}
-                      className="px-4 py-2 rounded bg-white text-black w-full border border-gray-400"
-                    />
-                    {guess.length > 0 && (
-                      <ul className="absolute left-0 top-full mt-1 w-full bg-white border border-gray-400 shadow-md z-10 max-h-40 overflow-y-auto text-sm">
-                        {albums
-                          .filter(album =>
-                            (useArtistMode ? album.artist ?? "" : album.title ?? "")
-                              .toLowerCase()
-                              .includes(guess.toLowerCase())
-                          )
-                          .map((album, idx) => (
-                            <li
-                              key={idx}
-                              className="px-3 py-1 hover:bg-gray-200 cursor-pointer text-black"
-                              onClick={() =>
-                                setGuess(useArtistMode ? album.artist || "" : album.title)
-                              }
-                            >
-                              {useArtistMode ? album.artist : album.title}
-                            </li>
-                          ))}
-                      </ul>
-                    )}
-                  </div>
-                  <button
-                    onClick={handleGuess}
-                    className="px-4 py-2 bg-pink-500 hover:bg-pink-600 rounded-full text-white font-semibold"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="mt-4">
-                <p className={`text-lg font-bold ${result === "correct" ? "text-green-600" : "text-red-500"}`}>
-                  {result === "correct"
-                    ? "Correct!"
-                    : useArtistMode
-                    ? `Oops! That artist was "${currentAlbum.artist}".`
-                    : `Oops! That was "${currentAlbum.title}".`}
-                </p>
-                <button
-                  onClick={handleNext}
-                  className="mt-3 px-6 py-2 bg-purple-500 hover:bg-purple-600 rounded-full text-white font-semibold"
-                >
-                  Next
-                </button>
+        {animal && (
+          <div className="relative mt-10 flex justify-center">
+            {/* Cave background behind the rock */}
+            <div className="absolute bottom-2 w-72 h-40 bg-gray-800/40 rounded-b-[50%] blur-sm z-0" />
+
+            {/* Rock base behind the card */}
+            <div className="absolute bottom-0 w-60 h-20 bg-gray-500/30 rounded-full blur-md z-10" />
+
+            {/* Animal card with reveal animation */}
+            <div
+              key={`${mode}-${animal.name}`}
+              className="relative bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl max-w-sm border border-green-200 z-20 animate-fadeInZoom"
+            >
+              <div className="text-6xl mb-2 drop-shadow-lg">{animal.emoji}</div>
+              <h2 className="text-2xl font-bold text-green-800 mb-2 capitalize">
+                {mode} Spirit Animal: {animal.name}
+              </h2>
+              <p className="text-gray-700">{animal.description}</p>
+              <p className="text-green-700 mt-4">{animalExplanation}</p>
+              <div className="mt-6">
+                <h3 className="font-semibold text-green-800 mb-2">🎵 Your Top Tracks</h3>
+                <ul className="text-sm text-gray-800 list-disc list-inside space-y-1">
+                  {topTracks.map((track, index) => (
+                    <li key={index}>{track.name} – {track.artists?.[0]?.name}</li>
+                  ))}
+                </ul>
+                {topGenres.length > 0 && (
+                  <>
+                    <h3 className="font-semibold text-green-800 mt-4 mb-2">🎧 Your Top Genres</h3>
+                    <ul className="text-sm text-gray-800 list-disc list-inside space-y-1">
+                      {topGenres.map((genre, index) => (
+                        <li key={index}>{genre}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
-            )}
-          </>
-        ) : (
-          <>
-            <h2 className="text-3xl font-bold text-pink-600 mb-4">⏰ Time's Up!</h2>
-            <p className="text-xl text-purple-700 mb-2">You scored {score} points!</p>
-            <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {history.map((album, i) => (
-                <div key={i} className="relative border-4 rounded-lg overflow-hidden shadow-lg" style={{ borderColor: album.result === "correct" ? "#10B981" : "#EF4444" }}>
-                  <img src={album.image} alt={album.title} className="w-full h-40 object-cover" />
-                  <div className="absolute bottom-0 left-0 right-0 bg-white/80 text-center text-xs font-medium text-gray-700 py-1">
-                    {useArtistMode ? album.artist : album.title}
-                  </div>
-                </div>
-              ))}
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 mt-6">
-              <button
-                onClick={() => {
-                  setGameStarted(false);
-                  setTimer(60);
-                  setScore(0);
-                  setIndex(0);
-                  setResult(null);
-                  setGuess("");
-                  setHistory([]);
-                  setUseArtistMode(false);
-                  setAlbums([]); // trigger re-fetch
-                }}
-                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full"
-              >
-                Play Again in Album Mode
-              </button>
-              <button
-                onClick={() => {
-                  setGameStarted(false);
-                  setTimer(60);
-                  setScore(0);
-                  setIndex(0);
-                  setResult(null);
-                  setGuess("");
-                  setHistory([]);
-                  setUseArtistMode(true);
-                  setAlbums([]); // trigger re-fetch
-                }}
-                className="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-pink-900 font-semibold rounded-full"
-              >
-                Play Again in Artist Mode
-              </button>
-            </div>
-          </>
+          </div>
         )}
       </div>
 
-      {/* "Easter egg" Artist/Album mode button, bottom-right */}
-      {!gameStarted && (
-        <button
-          onClick={() => setUseArtistMode(!useArtistMode)}
-          className="fixed bottom-2 right-2 px-2 py-1 bg-yellow-100 hover:bg-yellow-200 text-pink-800 rounded text-[10px] shadow-sm opacity-40 hover:opacity-90 transition-all z-50"
-        >
-          {useArtistMode ? "Album Mode" : "Too hard? Try Artist Mode"}
-        </button>
-      )}
-
-      {/* Art Character Guide */}
+      {/* Cloud Companion */}
       <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
         <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
-          <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
-            <div className="text-[2.75rem] animate-slow-float">🎨</div>
-            <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">＊◕‿◕＊</div>
+          <div className="drop-shadow text-white leading-none flex flex-col items-center">
+            <div className="text-[2.75rem] animate-slow-float">
+              {mode === "overall" && "🦊"}
+              {mode === "song" && "🐬"}
+              {mode === "genre" && "🦉"}
+              {mode === "mood" && "🐢"}
+            </div>
+            <div className="-mt-3 text-sm text-gray-800 hover:text-green-700 transition-colors duration-300">
+              {mode === "overall" && "^ᴥ^"}
+              {mode === "song" && "≋_≋"}
+              {mode === "genre" && "•ᴥ•"}
+              {mode === "mood" && "~ᴥ~"}
+            </div>
           </div>
-          <div className="relative px-4 py-2 bg-white/80 text-pink-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
+          <div
+            key={guideGrowKey}
+            className={`relative px-4 py-2 bg-white/80 text-green-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px] ${
+              guideMessage.includes("Log in with Spotify") ? "animate-guide-grow" : ""
+            }`}
+          >
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-            {timer === 60 && !gameStarted && "Guess the album by its vibe and blur. Let your art brain lead the way!"}
-            {gameStarted && result === null && timer > 0 && "Think fast — you've got this!"}
-            {gameStarted && result === "correct" && "🎉 Brilliant stroke!"}
-            {gameStarted && result === "wrong" && "🧑‍🎨 Oops, off the canvas…"}
-            {timer === 0 && "🖼 Let’s frame your final score!"}
+            {guideMessage}
           </div>
         </div>
       </div>
 
-        <style>{`
-          @keyframes floatPaint {
-            0%   { transform: translateY(0px) scale(1); opacity: 0.7; }
-            50%  { transform: translateY(-10px) scale(1.05); opacity: 1; }
-            100% { transform: translateY(0px) scale(1); opacity: 0.7; }
-          }
-          .animate-splat {
-            animation: floatPaint 8s ease-in-out infinite;
-          }
-          @keyframes bounceSoft {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-          }
-          .animate-bounce-soft {
-            animation: bounceSoft 4s ease-in-out infinite;
-          }
-          @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-          }
-          .animate-pulse {
-            animation: pulse 2s ease-in-out infinite;
-          }
-          @keyframes wiggle {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(4deg); }
-          }
-          .animate-wiggle {
-            animation: wiggle 3s ease-in-out infinite;
-          }
-          @keyframes slowFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-          }
-          .animate-slow-float {
-            animation: slowFloat 6s ease-in-out infinite;
-          }
-        `}</style>
-       
-      </div>
+      <style>{`
+        @keyframes guideGrow {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+        .animate-guide-grow {
+          animation: guideGrow 1s ease-in-out;
+        }
+        @keyframes fadeInZoom {
+          0% { transform: scale(0.8); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-fadeInZoom {
+          animation: fadeInZoom 0.8s ease-out;
+        }
+        @keyframes floatLeaf {
+          0% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(10deg); }
+          100% { transform: translateY(0) rotate(-5deg); }
+        }
+
+        .animate-leaf {
+          animation: floatLeaf 6s ease-in-out infinite;
+        }
+
+        .float-delay-1 { animation-delay: 0s; }
+        .float-delay-2 { animation-delay: 2s; }
+        .float-delay-3 { animation-delay: 4s; }
+
+        @keyframes gentleWave {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+
+        .animate-hill {
+          animation: gentleWave 6s ease-in-out infinite;
+        }
+
+        @keyframes spiritBounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .animate-spirit-bounce {
+          animation: spiritBounce 4s ease-in-out infinite;
+        }
+        @keyframes butterflyFloat {
+          0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+          50% { transform: translateY(-40px) rotate(10deg); opacity: 1; }
+          100% { transform: translateY(0) rotate(-10deg); opacity: 0.7; }
+        }
+
+        .animate-butterfly {
+          animation: butterflyFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes staggeredFootprints {
+          0% { opacity: 0; transform: translateY(10px) scale(0.9); }
+          50% { opacity: 0.8; transform: translateY(0) scale(1); }
+          100% { opacity: 0; transform: translateY(-10px) scale(0.9); }
+        }
+        .animate-footprint {
+          animation: staggeredFootprints 8s ease-in-out infinite;
+        }
+
+        @keyframes bounceSoft {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-soft {
+          animation: bounceSoft 4s ease-in-out infinite;
+        }
+
+        @keyframes slowFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .animate-slow-float {
+          animation: slowFloat 5s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
