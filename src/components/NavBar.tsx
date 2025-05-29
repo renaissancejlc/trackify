@@ -47,20 +47,20 @@ const NavBar = () => {
       {/* Mobile Dropdown */}
       {isOpen && (
         <div className="md:hidden px-4 pb-4 bg-white/70 backdrop-blur-xl border-t border-pink-200 rounded-b-xl">
-          <p className="text-purple-400 font-sans text-xs mb-2">~/fun-zone</p>
-          <ul className="text-sm space-y-1">
+          <p className="text-center font-light text-xs text-pink-400 italic mb-2">Choose your vibe</p>
+          <ul className="text-sm space-y-2 px-2">
             {links.map(({ name, path }) => (
               <li key={path}>
                 <Link
                   to={path}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-2 pl-4 py-1 rounded-full hover:bg-white/20 transition ${
+                  className={`block w-full text-center rounded-xl px-3 py-2 transition-all duration-200 ${
                     location.pathname === path
-                      ? 'text-pink-500 bg-white/40 font-semibold'
-                      : 'text-purple-300'
+                      ? 'bg-gradient-to-r from-pink-100 to-purple-100 text-pink-600 font-semibold shadow'
+                      : 'text-purple-400 hover:bg-white/30'
                   }`}
                 >
-                  {name.toLowerCase().replace(/ /g, '-').replace(/^[^a-z0-9]+/, '')}.vibe
+                  {name}
                 </Link>
               </li>
             ))}
