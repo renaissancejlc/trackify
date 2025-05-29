@@ -198,6 +198,7 @@ export default function AlbumGuess() {
             <h2 className="text-xl font-semibold text-pink-600 mb-2">Time Left: {timer}s</h2>
             <h3 className="text-lg mb-4 text-purple-800">Score: {score}</h3>
             {/* Paint bucket score meter */}
+            {/* 
             <div className="relative w-12 h-24 mx-auto mb-6">
               <div className="absolute bottom-0 w-full bg-pink-500 transition-all duration-300 rounded-b-md"
                 style={{ height: `${Math.min(score * 10, 100)}%` }} />
@@ -206,6 +207,8 @@ export default function AlbumGuess() {
                 {score} 🎨
               </div>
             </div>
+            */}
+            <p className="text-lg font-bold text-pink-700 mb-4">Score: {score} 🎨</p>
             <p className="text-sm text-pink-700 mb-2">
               You’re on Album {index + 1} of {albums.length}
             </p>
