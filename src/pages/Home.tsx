@@ -84,9 +84,9 @@ function HomeContent() {
         <div className="animate-bounce-soft select-none flex flex-col items-center space-y-2">
           <div className="drop-shadow flex flex-col items-center">
             <img
-              src="dist/assets/cloud-companion.png"
+              src="/cloud-companion.png"
               alt="Cloud Companion"
-              className="w-[110px] md:w-[130px] animate-slow-float"
+              className="w-28 h-auto drop-shadow-lg animate-slow-float"
             />
             <div className="-mt-3 text-sm text-yellow-200 hover:text-[#1DB954] transition-colors duration-300">
               ^‿^
