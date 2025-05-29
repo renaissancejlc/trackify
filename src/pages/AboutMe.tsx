@@ -57,10 +57,10 @@ const AboutMe = () => {
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="relative flex items-center gap-2 bg-[#1C1F26]/80 border border-white/10 backdrop-blur p-3 rounded-md shadow-md hover:bg-white/5 transition group"
+      className="relative flex items-center gap-3 bg-gradient-to-br from-[#1DB954]/10 to-[#1C1F26]/90 border border-green-500/10 backdrop-blur-md p-4 rounded-lg shadow-lg hover:shadow-green-500/10 transition group"
     >
-      <span className="absolute -inset-1 rounded-md bg-green-400/10 blur-md animate-pulse group-hover:blur-lg transition-all" />
-      <span className="absolute inset-0 rounded-md ring-1 ring-green-500/20 group-hover:ring-4 group-hover:ring-green-500/40 transition-all" />
+      <span className="absolute -inset-1 rounded-md bg-green-500/20 blur-md opacity-60 group-hover:blur-lg group-hover:opacity-90 transition-all" />
+      <span className="absolute inset-0 rounded-md ring-2 ring-green-500/30 group-hover:ring-4 group-hover:ring-green-400/50 transition-all" />
       {link.icon}
       <code className="text-green-400 text-sm group-hover:text-white">
         {'> ' + link.label.toLowerCase()}
