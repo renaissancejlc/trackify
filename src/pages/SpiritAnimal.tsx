@@ -274,22 +274,24 @@ export default function SpiritAnimal() {
         )}
       </div>
 
-      {/* Cloud Companion */}
+      {/* Guide Companion */}
       <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
         <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
           <div className="drop-shadow text-white leading-none flex flex-col items-center">
             <div className="text-[2.75rem] animate-slow-float">
-              {mode === "overall" && "🦊"}
-              {mode === "song" && "🐬"}
-              {mode === "genre" && "🦉"}
-              {mode === "mood" && "🐢"}
+              {mode === "overall" && <img src="/animals/fox.png" alt="Fox Guide" className="w-14 h-14 animate-slow-float" />}
+              {mode === "song" && <img src="/animals/dolphin.png" alt="Dolphin Guide" className="w-14 h-14 animate-slow-float" />}
+              {mode === "genre" && <img src="/animals/owl.png" alt="Owl Guide" className="w-14 h-14 animate-slow-float" />}
+              {mode === "mood" && <img src="/animals/turtle.png" alt="Turtle Guide" className="w-14 h-14 animate-slow-float" />}
             </div>
+            {/* 
             <div className="-mt-3 text-sm text-gray-800 hover:text-green-700 transition-colors duration-300">
               {mode === "overall" && "^ᴥ^"}
               {mode === "song" && "≋_≋"}
               {mode === "genre" && "•ᴥ•"}
               {mode === "mood" && "~ᴥ~"}
             </div>
+            */}
           </div>
           <div
             key={guideGrowKey}

@@ -88,9 +88,6 @@ function HomeContent() {
               alt="Cloud Companion"
               className="w-28 h-auto drop-shadow-lg animate-slow-float"
             />
-            <div className="-mt-3 text-sm text-yellow-200 hover:text-[#1DB954] transition-colors duration-300">
-              ^‿^
-            </div>
           </div>
           <div className="relative px-4 py-2 bg-white/80 text-pink-700 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />

@@ -354,7 +354,7 @@ export default function AlbumGuess() {
       <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
         <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
           <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
-            <div className="text-[2.75rem] animate-slow-float">🎨</div>
+            <img src="/artist.png" alt="Art Guide" className="w-10 h-10" />
             <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">＊◕‿◕＊</div>
           </div>
           <div className="relative px-4 py-2 bg-white/80 text-pink-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
