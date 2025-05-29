@@ -7,10 +7,21 @@ import ThisIsCard from '../components/ThisIsCard';
 import ThisIsMePlaylistCard from '../components/ThisIsMePlaylistCard';
 
 const AboutMe = () => {
-return (
-<div className="relative w-full overflow-x-hidden pt-2 sm:pt-6 md:pt-10 lg:pt-12 xl:pt-16 pb-12 px-4 sm:px-6 md:px-10 max-w-full mx-auto text-white font-sans z-10">
-  <CloudBackground />
-          <TerminalFrame title="> whoami.sh">
+  // Blinking cursor style for terminal prompt
+  // Inserted above the return statement
+  return (
+    <>
+      <style>{`
+        @keyframes blink {
+          50% { opacity: 0; }
+        }
+        .animate-blink {
+          animation: blink 1s step-start infinite;
+        }
+      `}</style>
+      <div className="relative w-full overflow-x-hidden pt-2 sm:pt-6 md:pt-10 lg:pt-12 xl:pt-16 pb-12 px-4 sm:px-6 md:px-10 max-w-full mx-auto text-white font-sans z-10">
+        <CloudBackground />
+        <TerminalFrame title="> whoami.sh">
 
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -48,6 +59,7 @@ return (
       rel="noopener noreferrer"
       className="relative flex items-center gap-2 bg-[#1C1F26]/80 border border-white/10 backdrop-blur p-3 rounded-md shadow-md hover:bg-white/5 transition group"
     >
+      <span className="absolute -inset-1 rounded-md bg-green-400/10 blur-md animate-pulse group-hover:blur-lg transition-all" />
       <span className="absolute inset-0 rounded-md ring-1 ring-green-500/20 group-hover:ring-4 group-hover:ring-green-500/40 transition-all" />
       {link.icon}
       <code className="text-green-400 text-sm group-hover:text-white">
@@ -102,18 +114,15 @@ Date:   2024-05-15<br/><br/>
   />
   <p className="text-green-400 mt-4 mb-2">{'> cd ..'}</p>
   <p className="text-green-400 mt-4 mb-2 font-mono text-sm">
-    {'> ~ $'}
-    <span className="ml-1 inline-block w-[0.6ch] bg-green-400 animate-pulse">
-      &nbsp;
-    </span>
+    {'> ~ $'}<span className="animate-blink">_</span>
   </p>
 </motion.div>
-      </TerminalFrame>
-
-      <div className="mt-20">
-        {/* <TerminalAnalytics /> */}
+        </TerminalFrame>
+        <div className="mt-20">
+          {/* <TerminalAnalytics /> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
