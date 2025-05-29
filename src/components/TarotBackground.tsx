@@ -1,5 +1,3 @@
-
-
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -27,6 +25,36 @@ const TarotBackground = () => {
       twinkleSpeed: Math.random() * 0.05 + 0.01,
     }));
 
+    const shootingStars: {
+      x: number;
+      y: number;
+      length: number;
+      speed: number;
+      active: boolean;
+      life: number;
+    }[] = Array.from({ length: 3 }, () => ({
+      x: 0,
+      y: 0,
+      length: 200,
+      speed: 8,
+      active: false,
+      life: 0,
+    }));
+
+    const triggerShootingStar = () => {
+      const star = shootingStars.find(s => !s.active);
+      if (star) {
+        star.x = Math.random() * canvas.width;
+        star.y = Math.random() * canvas.height * 0.5;
+        star.length = 150 + Math.random() * 100;
+        star.speed = 6 + Math.random() * 4;
+        star.life = 0;
+        star.active = true;
+      }
+    };
+
+    setInterval(triggerShootingStar, 5000);
+
     const draw = () => {
       ctx.fillStyle = "#0d021a"; // deep mystical purple background
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -41,6 +69,25 @@ const TarotBackground = () => {
         star.opacity += star.twinkleSpeed;
         if (star.opacity >= 1 || star.opacity <= 0) {
           star.twinkleSpeed *= -1;
+        }
+      });
+
+      shootingStars.forEach(star => {
+        if (star.active) {
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(star.x, star.y);
+          ctx.lineTo(star.x - star.length, star.y + star.length);
+          ctx.stroke();
+
+          star.x += star.speed;
+          star.y -= star.speed;
+          star.life += 1;
+
+          if (star.life > 60) {
+            star.active = false;
+          }
         }
       });
 

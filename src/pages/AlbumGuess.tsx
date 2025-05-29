@@ -231,9 +231,9 @@ export default function AlbumGuess() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
-                          if (!result) {
+                          if (result === null) {
                             handleGuess();
-                          } else if (result) {
+                          } else {
                             handleNext();
                           }
                         }
@@ -351,18 +351,20 @@ export default function AlbumGuess() {
       )}
 
       {/* Art Character Guide */}
-      <div className="absolute bottom-8 left-6 z-20 animate-bounce-soft text-[2.75rem] select-none flex flex-col items-center space-y-2">
-        <div className="drop-shadow text-white leading-none flex flex-col items-center">
-          🧑‍🎨
-          <div className="-mt-2 text-sm">＊◕‿◕＊</div>
-        </div>
-        <div className="relative px-4 py-2 bg-white/80 text-pink-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center">
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-          {timer === 60 && !gameStarted && "Guess the album by its vibe and blur. Let your art brain lead the way!"}
-          {gameStarted && result === null && timer > 0 && "Think fast — you've got this!"}
-          {gameStarted && result === "correct" && "🎉 Brilliant stroke!"}
-          {gameStarted && result === "wrong" && "🎨 Oops, off the canvas…"}
-          {timer === 0 && "🖼 Let’s frame your final score!"}
+      <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
+        <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
+          <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
+            <div className="text-[2.75rem] animate-slow-float">🧑‍🎨</div>
+            <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">＊◕‿◕＊</div>
+          </div>
+          <div className="relative px-4 py-2 bg-white/80 text-pink-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px]">
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
+            {timer === 60 && !gameStarted && "Guess the album by its vibe and blur. Let your art brain lead the way!"}
+            {gameStarted && result === null && timer > 0 && "Think fast — you've got this!"}
+            {gameStarted && result === "correct" && "🎉 Brilliant stroke!"}
+            {gameStarted && result === "wrong" && "🎨 Oops, off the canvas…"}
+            {timer === 0 && "🖼 Let’s frame your final score!"}
+          </div>
         </div>
       </div>
 
@@ -388,6 +390,20 @@ export default function AlbumGuess() {
           }
           .animate-pulse {
             animation: pulse 2s ease-in-out infinite;
+          }
+          @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(4deg); }
+          }
+          .animate-wiggle {
+            animation: wiggle 3s ease-in-out infinite;
+          }
+          @keyframes slowFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+          }
+          .animate-slow-float {
+            animation: slowFloat 6s ease-in-out infinite;
           }
         `}</style>
        
