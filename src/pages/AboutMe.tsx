@@ -46,8 +46,9 @@ return (
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 bg-[#1C1F26]/80 border border-white/10 backdrop-blur p-3 rounded-md shadow-md hover:bg-white/5 transition group"
+      className="relative flex items-center gap-2 bg-[#1C1F26]/80 border border-white/10 backdrop-blur p-3 rounded-md shadow-md hover:bg-white/5 transition group"
     >
+      <span className="absolute inset-0 rounded-md ring-1 ring-green-500/20 group-hover:ring-4 group-hover:ring-green-500/40 transition-all" />
       {link.icon}
       <code className="text-green-400 text-sm group-hover:text-white">
         {'> ' + link.label.toLowerCase()}

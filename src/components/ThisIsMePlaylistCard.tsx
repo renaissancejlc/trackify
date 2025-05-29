@@ -25,7 +25,7 @@ const ThisIsMePlaylistCard = () => {
         <p className="text-xs text-slate-400">The background, in three tracks 🎶</p>
       </div>
 
-      <PlaylistTrack title="This web app was a personal project — a creative playground to explore music data, aesthetic design, and interactive fun with the Spotify API." />
+      <PlaylistTrack title="This web app was an independent personal project — a creative playground to explore music data, aesthetic design, and interactive fun with the Spotify API." />
       <PlaylistTrack title="It's powered by modern web tech: React (Vite), TypeScript, Tailwind CSS, Framer Motion, Lucide Icons — and some good old-fashioned imagination." />
       <PlaylistTrack title="If you enjoyed the experience, your support means the world. I'd love to keep building beautiful, thoughtful projects like this." />
     </motion.div>
