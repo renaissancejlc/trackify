@@ -135,10 +135,8 @@ Date:   2024-05-15<br/><br/>
     }}
   />
   <p className="text-green-400 mt-4 mb-2">{'> cd ..'}</p>
-  <p className="text-green-400 mt-4 mb-2 font-mono text-sm">
-    <span className="text-green-400 font-mono text-sm">
-      {'> ~ $'}<span className="animate-blink">|</span>
-    </span>
+<p className="text-green-400 mt-4 mb-2 font-mono text-sm">
+    {'> ~ $'}<span className="animate-blink">_</span>
   </p>
 </motion.div>
       </TerminalFrame>
