@@ -17,7 +17,7 @@ return (
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.25, duration: 0.8 }}
     viewport={{ once: true }}
-    className="mb-12 max-w-xl mx-auto"
+    className="mb-12 max-w-xl mx-auto z-20 relative"
   >
     <ThisIsMePlaylistCard />
   </motion.div>
@@ -57,42 +57,7 @@ return (
   ))}
 </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-slate-300 text-base max-w-xl mx-auto text-center mb-6"
-        >
-          Connect with me:
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.9 }}
-          viewport={{ once: true }}
-          className="mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 max-w-5xl mx-auto"
-        >
-          {[
-            { label: 'LinkedIn', url: 'https://www.linkedin.com/in/renaissancejlc/', icon: <Linkedin className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
-            { label: 'GitHub', url: 'https://github.com/renaissancejlc', icon: <Github className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
-            { label: 'Blog', url: 'https://renaissancecodes.wordpress.com/', icon: <BookOpen className="w-4 h-4 text-green-300 group-hover:scale-110 transition" /> },
-          ].map((link) => (
-            <a
-              key={link.label}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#1C1F26]/80 border border-white/10 backdrop-blur p-3 rounded-md shadow-md hover:bg-white/5 transition group"
-            >
-              {link.icon}
-              <code className="text-green-400 text-sm group-hover:text-white">
-                {'> ' + link.label.toLowerCase().replace(/\s+/g, '')}
-              </code>
-            </a>
-          ))}
-        </motion.div>
-        <motion.div
+<motion.div
   initial={{ opacity: 0, y: 40 }}
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ delay: 0.4, duration: 0.9 }}
@@ -136,8 +101,11 @@ Date:   2024-05-15<br/><br/>
     }}
   />
   <p className="text-green-400 mt-4 mb-2">{'> cd ..'}</p>
-<p className="text-green-400 mt-4 mb-2 font-mono text-sm">
-    {'> ~ $'}<span className="animate-blink">_</span>
+  <p className="text-green-400 mt-4 mb-2 font-mono text-sm">
+    {'> ~ $'}
+    <span className="ml-1 inline-block w-[0.6ch] bg-green-400 animate-pulse">
+      &nbsp;
+    </span>
   </p>
 </motion.div>
       </TerminalFrame>
