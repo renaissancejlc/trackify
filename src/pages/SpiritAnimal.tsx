@@ -270,30 +270,32 @@ export default function SpiritAnimal() {
         )}
       </div>
 
-      {/* Spirit Guide Character */}
-      <div className="absolute top-[25%] right-[6%] z-30 animate-spirit-bounce text-[3rem] select-none flex flex-col items-center space-y-2">
-        <div className="drop-shadow text-white leading-none flex flex-col items-center">
-          <div className="text-[2.75rem]">
-            {mode === "overall" && "🦊"}
-            {mode === "song" && "🐬"}
-            {mode === "genre" && "🦉"}
-            {mode === "mood" && "🐢"}
+      {/* Cloud Companion */}
+      <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
+        <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
+          <div className="drop-shadow text-white leading-none flex flex-col items-center">
+            <div className="text-[2.75rem] animate-slow-float">
+              {mode === "overall" && "🦊"}
+              {mode === "song" && "🐬"}
+              {mode === "genre" && "🦉"}
+              {mode === "mood" && "🐢"}
+            </div>
+            <div className="-mt-3 text-sm text-gray-800 hover:text-green-700 transition-colors duration-300">
+              {mode === "overall" && "^ᴥ^"}
+              {mode === "song" && "≋_≋"}
+              {mode === "genre" && "•ᴥ•"}
+              {mode === "mood" && "~ᴥ~"}
+            </div>
           </div>
-          <div className="-mt-2 text-sm">
-            {mode === "overall" && "^ᴥ^"}
-            {mode === "song" && "≋_≋"}
-            {mode === "genre" && "•ᴥ•"}
-            {mode === "mood" && "~ᴥ~"}
+          <div
+            key={guideGrowKey}
+            className={`relative px-4 py-2 bg-white/80 text-green-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px] ${
+              guideMessage.includes("Log in with Spotify") ? "animate-guide-grow" : ""
+            }`}
+          >
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
+            {guideMessage}
           </div>
-        </div>
-        <div
-          key={guideGrowKey}
-          className={`relative px-4 py-2 bg-white/80 text-green-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[160px] ${
-            guideMessage.includes("Log in with Spotify") ? "animate-guide-grow" : ""
-          }`}
-        >
-          <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
-          {guideMessage}
         </div>
       </div>
 
@@ -360,6 +362,22 @@ export default function SpiritAnimal() {
         }
         .animate-footprint {
           animation: staggeredFootprints 8s ease-in-out infinite;
+        }
+
+        @keyframes bounceSoft {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-soft {
+          animation: bounceSoft 4s ease-in-out infinite;
+        }
+
+        @keyframes slowFloat {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .animate-slow-float {
+          animation: slowFloat 5s ease-in-out infinite;
         }
       `}</style>
     </div>

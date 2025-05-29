@@ -283,23 +283,22 @@ export default function TarotReading() {
         )}
 
         {/* Mystical Guide Character */}
-        <div className="absolute top-10 right-6 z-20 animate-bounce-soft text-[2.75rem] select-none flex flex-col items-center space-y-2">
-          <div className="drop-shadow text-white leading-none flex flex-col items-center">
-            🔮
-            <div className="-mt-2 text-sm">◉‿◉</div>
-          </div>
-          {/* Soft glow aura behind character */}
-          <div className="absolute -top-4 -left-4 w-28 h-28 bg-purple-500 opacity-30 rounded-full blur-2xl z-0" />
-          {(
+        <div className="fixed bottom-6 left-6 z-50 max-w-[150px] sm:max-w-[180px] md:max-w-[220px] pointer-events-none">
+          <div className="animate-bounce-soft text-[3rem] select-none flex flex-col items-center space-y-2">
+            <div className="animate-wiggle drop-shadow text-white leading-none flex flex-col items-center">
+              <div className="text-[2.75rem] animate-slow-float">🔮</div>
+              <div className="-mt-3 text-sm text-gray-800 hover:text-[#1DB954] transition-colors duration-300">◉‿◉</div>
+            </div>
             <div
               key={guideGrowKey}
               className={`relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center ${
                 guideMessage === "You must log in with Spotify before the spirits will speak." ? "animate-grow-guide" : ""
               }`}
             >
+              <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
               {guideMessage}
             </div>
-          )}
+          </div>
         </div>
         {/* Audio elements for sound effects */}
         <audio ref={chimeRef} src="/sounds/chime.mp3" preload="auto" />
