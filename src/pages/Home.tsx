@@ -163,8 +163,8 @@ function HomeContent() {
                 Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
               </div>
             </div>
-            <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">Add commentMore actions
-                📊 Popularity Score: <strong>{calculatePopularityScore(topTracks)}</strong>
+            <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+                Popularity Score: <strong>{calculatePopularityScore(topTracks)}</strong>
               </div>
             <p className="text-sm text-gray-600 mt-2">
               This score reflects how <strong>popular</strong> or <strong>obscure</strong> your top tracks are compared to global streaming trends.
