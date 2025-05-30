@@ -70,21 +70,21 @@ const PetPlaylist = () => {
 
   return (
     <div className="min-h-screen bg-black text-white p-8 relative">
-      <div className="bg-yellow-300 text-black text-center py-2 font-semibold rounded mb-4 shadow-md">
-        🚧 This page is a work in progress — more paw-some features coming soon! 🛠️
+      <div className="bg-gradient-to-r from-yellow-200 to-yellow-100 text-black text-center py-3 font-bold rounded mb-6 shadow-md tracking-wide border border-yellow-300">
+        Pet Oracle Playlist — A Personalized Soundtrack from Your Furry Companion
       </div>
       <PetBackground />
       {!playlistCreated ? (
         <div className="max-w-xl mx-auto text-center">
-          <h1 className="text-3xl font-bold mb-1">🐾 Pet Oracle Playlist</h1>
-          <p className="text-lg mb-6">Your top albums, fetched by your furry friend.</p>
-          <div className="bg-gray-900 rounded-xl p-6 shadow-md">
-            <p className="text-lg mb-4">{questions[step].question}</p>
+          <h1 className="text-4xl font-extrabold mb-2 text-white drop-shadow-lg">Pet Oracle Playlist</h1>
+          <p className="text-lg mb-8 text-gray-300">An expertly curated mix inspired by your pet’s unique personality.</p>
+          <div className="bg-white/10 border border-white/20 backdrop-blur-md rounded-2xl p-6 shadow-lg">
+            <p className="text-xl font-medium text-white mb-4">{questions[step].question}</p>
             <div className="grid grid-cols-2 gap-4">
               {questions[step].options.map((opt) => (
                 <button
                   key={opt}
-                  className="bg-green-600 rounded p-2 hover:bg-green-500 transition"
+                  className="bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold rounded-lg py-2 px-3 hover:from-green-400 hover:to-green-500 transition shadow-md"
                   onClick={() => handleAnswer(opt)}
                 >
                   {opt}
@@ -95,15 +95,15 @@ const PetPlaylist = () => {
         </div>
       ) : (
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-4">🎉 Your Pet Oracle Playlist is Ready!</h2>
+          <h2 className="text-3xl font-bold mb-6 text-white">Your Pet's Custom Playlist Awaits</h2>
           <img src={imageUrl} alt="Pet Playlist Cover" className="rounded-xl w-full mb-4" />
           <a
             href={playlistUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-green-600 px-4 py-2 rounded hover:bg-green-500"
+            className="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 px-5 py-3 rounded-lg text-white font-semibold shadow-md hover:from-purple-500 hover:to-indigo-500 transition"
           >
-            Open on Spotify
+            Listen on Spotify
           </a>
         </div>
       )}
@@ -114,11 +114,11 @@ const PetPlaylist = () => {
             <div className="text-[2.75rem] animate-slow-float">🐶</div>
             <div className="-mt-3 text-sm text-yellow-200">｡＾･ｪ･＾｡</div>
           </div>
-          <div className="relative px-4 py-2 bg-white/80 text-purple-800 backdrop-blur-lg rounded-2xl shadow-lg text-xs max-w-[180px] text-center">
+          <div className="relative px-4 py-2 bg-gradient-to-br from-white/80 to-white/60 text-purple-900 font-medium backdrop-blur-md rounded-2xl shadow-xl text-xs max-w-[200px] text-center">
             <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-white/80" />
             {playlistCreated
-              ? "Woof! Playlist is ready. Let’s vibe 🐾"
-              : "Tell me about your pet, I’ll fetch the perfect tunes!"}
+              ? "Woof! Playlist created. Press play and unleash the vibes."
+              : "Answer a few fun questions and I’ll craft the perfect mix!"}
           </div>
         </div>
       </div>

@@ -24,14 +24,15 @@ const AnimalBackground = () => {
       angle: Math.random() * 2 * Math.PI,
       speed: Math.random() * 0.4 + 0.2,
       opacity: 0,
-      hue: Math.random() < 0.5 ? 90 + Math.random() * 40 : 20 + Math.random() * 20, // green or brown
+      hue: Math.random() < 0.5 ? 180 + Math.random() * 60 : 30 + Math.random() * 30, // ocean blues or golden sunset
     }));
 
     const draw = () => {
       // Sky gradient
       const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      skyGradient.addColorStop(0, "#b3e5fc"); // light blue sky
-      skyGradient.addColorStop(0.6, "#fdf8ef"); // fade to ground color
+      skyGradient.addColorStop(0, "#a0e7e5"); // soft tropical teal
+      skyGradient.addColorStop(0.5, "#fef9ef"); // creamy peach fade
+      skyGradient.addColorStop(1, "#ffd6a5"); // sandy bottom
       ctx.fillStyle = skyGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
