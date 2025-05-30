@@ -20,9 +20,9 @@ const SpotifyBar = ({
     <div className="bg-[#181818] border border-[#282828] rounded-xl shadow-lg backdrop-blur-md overflow-hidden p-4 mb-8">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gray-700 rounded shadow-inner flex items-center justify-center text-white text-xs font-bold">
+          {/* <div className="w-12 h-12 bg-gray-700 rounded shadow-inner flex items-center justify-center text-white text-xs font-bold">
             ♫
-          </div>
+          </div> */}
           <div className="w-40 overflow-hidden">
             <p className="text-white text-sm font-semibold truncate">{trackTitle}</p>
             <p className="text-gray-400 text-xs truncate">{artist}</p>
