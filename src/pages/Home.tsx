@@ -60,11 +60,11 @@ function HomeContent() {
   const [topTracks, setTopTracks] = useState<Track[]>();
   const [streak, setStreak] = useState<number | null>(null);
 
-  function calculatePopularityScore(tracks: Track[] | undefined) {
-      if (!tracks || tracks.length === 0) return "N/A";
-      const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
-      const avg = total / tracks.length;
-      return `${Math.round(avg)} / 100`;
+  function calculatePopularityScore(tracks: any[] | undefined) {
+    if (!tracks || tracks.length === 0) return "N/A";
+    const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
+    const avg = total / tracks.length;
+    return `${Math.round(avg)} / 100`;
   }
 
   useEffect(() => {
@@ -159,13 +159,13 @@ function HomeContent() {
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
                 🔁 Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
               </div>
-              <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
+              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 🎤 Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
               </div>
             </div>
-            <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800 mt-4">
-              📊 Popularity Score: <strong>{calculatePopularityScore(topTracks)}</strong>
-            </div>
+            <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">Add commentMore actions
+                📊 Popularity Score: <strong>{calculatePopularityScore(topTracks)}</strong>
+              </div>
             <p className="text-sm text-gray-600 mt-2">
               This score reflects how <strong>popular</strong> or <strong>obscure</strong> your top tracks are compared to global streaming trends.
             </p>
