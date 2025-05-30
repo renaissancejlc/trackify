@@ -24,11 +24,11 @@ async function fetchUserStreak(userId: string): Promise<{ streak: number } | nul
 
 function getRandomGreeting() {
   const greetings = [
-    "☁️ Long time no float!",
-    "🎧 Let’s spin some vibes!",
-    "✨ Your soundtrack awaits!",
-    "🎶 Back in the groove!",
-    "🌈 Welcome to your vibe zone!",
+    "Long time no float!",
+    "Let’s spin some vibes!",
+    "Your soundtrack awaits!",
+    "Back in the groove!",
+    "Welcome to your vibe zone!",
   ];
   return greetings[Math.floor(Math.random() * greetings.length)];
 }
@@ -154,13 +154,13 @@ function HomeContent() {
             )}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 text-xs">
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
-                🌟 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
+                Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
-                🔁 Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
+                Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
-                🎤 Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
+                Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
               </div>
             </div>
             <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">Add commentMore actions
