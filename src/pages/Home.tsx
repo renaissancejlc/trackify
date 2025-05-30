@@ -397,10 +397,10 @@ function HomeContent() {
                 </div>
                 <div className="text-sm text-gray-700">
                   <p className="font-semibold">Now Playing:</p>
-                  <p>
+                  {/* <p>
                     {currentTrack?.name || "Unknown Track"} –{" "}
                     {currentTrack?.artists?.[0]?.name || "Unknown Artist"}
-                  </p>
+                  </p> */}
                 </div>
                 <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
