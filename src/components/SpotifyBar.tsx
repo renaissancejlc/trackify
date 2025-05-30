@@ -42,7 +42,7 @@ const SpotifyBar = ({
         <div className="flex items-center space-x-2 text-white">
           <Volume2 className="w-4 h-4" />
           <div className="w-24 h-1 bg-gray-600 rounded">
-            <div className="h-1 bg-green-500 rounded w-1/2"></div>
+            <div className="h-1 bg-green-500 rounded w-1/2 transition-all duration-1000 ease-in-out"></div>
           </div>
         </div>
       </div>
