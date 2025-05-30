@@ -85,6 +85,8 @@ export const SpotifyDataProvider: React.FC<{ children: React.ReactNode }> = ({ c
         setTopTracks(tracksData.items);
         setTopArtists(artistsData.items);
 
+        console.log("toptracks: " + topTracks[0]);
+
         if (tracksData.items.length > 0) {
           const topArtistId = tracksData.items[0].artists[0].id;
 
