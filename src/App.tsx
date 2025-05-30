@@ -10,6 +10,7 @@ import Home from  './pages/Home';
 import GuessAlbumYear from './pages/GuessAlbumYear';
 import AboutMe from './pages/AboutMe';
 import Callback from './pages/Callback';
+import PetPlaylist from './pages/PetPlaylist';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
               <Route path="/tarot" element={<TarotReading />} />
               <Route path="/year" element={<GuessAlbumYear />} />
               <Route path="/about" element={<AboutMe />} />
+              <Route path="/pet" element={<PetPlaylist />} />
               <Route path="/callback" element={<Callback />} />
             </Routes>
           </main>

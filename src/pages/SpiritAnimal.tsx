@@ -145,6 +145,9 @@ export default function SpiritAnimal() {
 
   return (
     <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-t from-green-100 via-blue-100 to-purple-100 px-4">
+      <div className="bg-yellow-300 text-black text-center py-2 font-semibold rounded mb-6 shadow-md z-20 relative">
+        🚧 This page is a work in progress — spirit upgrades coming soon! 🛠️
+      </div>
       <AnimalBackground />
       {/* Dynamic sky and grassy hill background */}
       <div className="absolute inset-0 z-0">
