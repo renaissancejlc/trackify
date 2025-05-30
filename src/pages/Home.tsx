@@ -60,10 +60,14 @@ function HomeContent() {
   const [topTracks, setTopTracks] = useState<Track[]>();
   const [streak, setStreak] = useState<number | null>(null);
 
-  function calculatePopularityScore(tracks: any[] | undefined) {
+  function calculatePopularityScore(tracks: Track[] | undefined) {
     if (!tracks || tracks.length === 0) return "N/A";
-    const total = tracks.reduce((sum, track) => sum + (track.popularity || 0), 0);
-    const avg = total / tracks.length;
+    // Guard against missing popularity values
+    const validTracks = tracks.filter((track) => typeof track.popularity === "number");
+    if (validTracks.length === 0) return "N/A";
+    console.log("🎯 Popularity values:", tracks.map(t => t.popularity));
+    const total = validTracks.reduce((sum, track) => sum + (track.popularity ?? 0), 0);
+    const avg = total / validTracks.length;
     return `${Math.round(avg)} / 100`;
   }
 
@@ -157,7 +161,7 @@ function HomeContent() {
                 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
-                Favorite Track: <strong>{useSpotifyData().topTracks?.[0]?.name || "Not available"}</strong>
+                Favorite Track: <strong>{topTracks?.[0]?.name || "Not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 Top Artist: <strong>{useSpotifyData().topArtists?.[0]?.name || "Not available"}</strong>
