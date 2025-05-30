@@ -6,10 +6,10 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const links = [
-    { name: 'Spirit Animal', path: '/spirit' },
+    { name: '🚧 Spirit Animal', path: '/spirit' },
     { name: 'Album Guess', path: '/guess' },
     { name: 'Tarot Reading', path: '/tarot' },
-    { name: 'Pet Playlist', path: '/pet' },
+    { name: '🚧 Pet Playlist', path: '/pet' },
     { name: 'About', path: '/about' },
   ];
 
