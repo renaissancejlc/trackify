@@ -65,7 +65,8 @@ function HomeContent() {
     // Guard against missing popularity values
     const validTracks = tracks.filter((track) => typeof track.popularity === "number");
     if (validTracks.length === 0) return "N/A";
-    console.log("🎯 Popularity values:", tracks.map(t => t.popularity));
+    console.log("All tracks:", tracks);
+    console.log("Valid popularity values:", validTracks.map(t => t.popularity));
     const total = validTracks.reduce((sum, track) => sum + (track.popularity ?? 0), 0);
     const avg = total / validTracks.length;
     return `${Math.round(avg)} / 100`;
@@ -161,7 +162,17 @@ function HomeContent() {
                 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
-                Favorite Track: <strong>{topTracks?.[0]?.name || "Not available"}</strong>
+                {(() => {
+                  // Log for debugging to check if the favorite track's name is being confused with the artist
+                  if (topTracks && topTracks.length > 0) {
+                    console.log("Favorite Track candidate:", topTracks[0]);
+                  }
+                  return (
+                    <>
+                      Favorite Track: <strong>{topTracks && topTracks.length > 0 ? topTracks[0].name : "Not available"}</strong>
+                    </>
+                  );
+                })()}
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 Top Artist: <strong>{useSpotifyData().topArtists?.[0]?.name || "Not available"}</strong>
