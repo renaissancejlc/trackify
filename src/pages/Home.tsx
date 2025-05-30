@@ -157,7 +157,7 @@ function HomeContent() {
                 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
-                Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
+                Favorite Track: <strong>{useSpotifyData().topTracks?.[0]?.name || "Not available"}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 Top Artist: <strong>{useSpotifyData().topArtists?.[0]?.name || "Not available"}</strong>
@@ -351,27 +351,34 @@ function HomeContent() {
       </style>
       {/* Now Playing Simulator */}
       <div className="mt-12" />
-      <SpotifyBar>
-        <div className="z-10 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
-            <img
-              src={topTracks?.[0]?.album?.images?.[0]?.url}
-              alt="Now Playing Album"
-              className="object-cover w-full h-full rounded-full"
-            />
-          </div>
-          <div className="text-sm text-gray-700">
-            <p className="font-semibold">Now Playing:</p>
-            <p>
-              {topTracks?.[0]?.name || "Unknown Track"} –{" "}
-              {topTracks?.[0]?.artists?.[0]?.name || "Unknown Artist"}
-            </p>
-          </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
-          </div>
-        </div>
-      </SpotifyBar>
+      {(() => {
+        const currentTrack = topTracks?.[0];
+        return (
+          currentTrack && (
+            <SpotifyBar>
+              <div className="z-10 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
+                  <img
+                    src={currentTrack?.album?.images?.[0]?.url}
+                    alt="Now Playing Album"
+                    className="object-cover w-full h-full rounded-full"
+                  />
+                </div>
+                <div className="text-sm text-gray-700">
+                  <p className="font-semibold">Now Playing:</p>
+                  <p>
+                    {currentTrack?.name || "Unknown Track"} –{" "}
+                    {currentTrack?.artists?.[0]?.name || "Unknown Artist"}
+                  </p>
+                </div>
+                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-[#1DB954] animate-playbar w-1/3" />
+                </div>
+              </div>
+            </SpotifyBar>
+          )
+        );
+      })()}
 
       {/* Daily Track Challenge */}
       <DailyTrackChallenge userProfile={userProfile} topTracks={topTracks} />

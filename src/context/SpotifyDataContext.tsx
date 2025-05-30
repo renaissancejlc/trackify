@@ -22,6 +22,7 @@ interface SpotifyTrack {
     images: { url: string }[];
   };
   artists: { name: string; id: string }[];
+  popularity: number;
 }
 
 interface SpotifyData {
