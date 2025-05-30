@@ -13,12 +13,5 @@ export const fetchTopTracks = async (token: string): Promise<Track[]> => {
 
   const data = await res.json();
 
-  return data.items.map((track: any) => ({
-    id: track.id,
-    name: track.name,
-    artist: track.artists?.[0]?.name || '',
-    album: track.album?.name || '',
-    image: track.album?.images?.[0]?.url || '',
-    preview_url: track.preview_url || '',
-  }));
+  return data.items;
 };

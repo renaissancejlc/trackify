@@ -41,13 +41,7 @@ export default function Home() {
   );
 }
 
-type Track = {
-  name: string;
-  preview_url: string | null;
-  album: { images: { url: string }[] };
-  artists: { name: string }[];
-  popularity: number;
-};
+import type { Track } from "../types/Track";
 
 async function getAccessToken(): Promise<string | null> {
   // Try to get from localStorage (or implement your own logic)

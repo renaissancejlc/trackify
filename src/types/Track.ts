@@ -8,4 +8,5 @@ export type Track = {
     images: { url: string }[];
   };
   preview_url: string | null;
+  popularity: number;
 };
