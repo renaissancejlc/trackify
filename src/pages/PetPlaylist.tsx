@@ -69,7 +69,7 @@ const PetPlaylist = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 relative">
+    <div className="min-h-screen text-white p-8 relative">
      <div className="bg-yellow-300 text-black text-center py-2 font-semibold rounded mb-4 shadow-md">
         🚧 This page is a work in progress — more paw-some features coming soon! 🛠️
     </div>
