@@ -23,9 +23,9 @@ const SpotifyBar = ({
           <div className="w-12 h-12 bg-gray-700 rounded shadow-inner flex items-center justify-center text-white text-xs font-bold">
             ♫
           </div>
-          <div>
-            <p className="text-white text-sm font-semibold">{trackTitle}</p>
-            <p className="text-gray-400 text-xs">{artist}</p>
+          <div className="w-40 overflow-hidden">
+            <p className="text-white text-sm font-semibold truncate">{trackTitle}</p>
+            <p className="text-gray-400 text-xs truncate">{artist}</p>
           </div>
         </div>
 
@@ -42,7 +42,7 @@ const SpotifyBar = ({
         <div className="flex items-center space-x-2 text-white">
           <Volume2 className="w-4 h-4" />
           <div className="w-24 h-1 bg-gray-600 rounded">
-            <div className="h-1 bg-green-500 rounded animate-playbar"></div>
+            <div className="h-1 bg-green-500 rounded w-1/2"></div>
           </div>
         </div>
       </div>
@@ -52,16 +52,6 @@ const SpotifyBar = ({
           {children}
         </div>
       )}
-      <style>{`
-        @keyframes playbar {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
-
-        .animate-playbar {
-          animation: playbar 5s linear infinite;
-        }
-      `}</style>
     </div>
   );
 };
