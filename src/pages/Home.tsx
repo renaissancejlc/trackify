@@ -210,9 +210,6 @@ function HomeContent() {
             <p className="text-xs text-gray-500 italic mt-1">
               {getPopularityMessage(calculatePopularityScore(topTracks))}
             </p>
-            <p className="text-sm text-gray-600 mt-2">
-              This score reflects how <strong>popular</strong> or <strong>obscure</strong> your top tracks are compared to global streaming trends.
-            </p>
             <button
               onClick={() => {
                 localStorage.removeItem("spotify_access_token");
