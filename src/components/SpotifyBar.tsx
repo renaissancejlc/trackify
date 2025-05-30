@@ -6,11 +6,15 @@ const SpotifyBar = ({
   artist = 'Artist Name',
   isPlaying = true,
   children,
+  onSkipForward,
+  onSkipBack,
 }: {
   trackTitle?: string;
   artist?: string;
   isPlaying?: boolean;
   children?: React.ReactNode;
+  onSkipForward?: () => void;
+  onSkipBack?: () => void;
 }) => {
   return (
     <div className="bg-[#181818] border border-[#282828] rounded-xl shadow-lg backdrop-blur-md overflow-hidden p-4 mb-8">
@@ -26,19 +30,19 @@ const SpotifyBar = ({
         </div>
 
         <div className="flex items-center space-x-4 text-white">
-          <SkipBack className="w-4 h-4 cursor-pointer" />
+          <SkipBack className="w-4 h-4 cursor-pointer" onClick={onSkipBack} />
           {isPlaying ? (
             <Pause className="w-6 h-6 cursor-pointer" />
           ) : (
             <Play className="w-6 h-6 cursor-pointer" />
           )}
-          <SkipForward className="w-4 h-4 cursor-pointer" />
+          <SkipForward className="w-4 h-4 cursor-pointer" onClick={onSkipForward} />
         </div>
 
         <div className="flex items-center space-x-2 text-white">
           <Volume2 className="w-4 h-4" />
           <div className="w-24 h-1 bg-gray-600 rounded">
-            <div className="h-1 bg-green-500 rounded w-1/2"></div>
+            <div className="h-1 bg-green-500 rounded animate-playbar"></div>
           </div>
         </div>
       </div>
@@ -48,6 +52,16 @@ const SpotifyBar = ({
           {children}
         </div>
       )}
+      <style>{`
+        @keyframes playbar {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+
+        .animate-playbar {
+          animation: playbar 5s linear infinite;
+        }
+      `}</style>
     </div>
   );
 };

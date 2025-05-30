@@ -53,6 +53,8 @@ function HomeContent() {
   const { profile: userProfile, topGenre } = useSpotifyData();
   const [topTracks, setTopTracks] = useState<Track[]>();
   const [streak, setStreak] = useState<number | null>(null);
+  // Track current playing song index for SpotifyBar
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
   function calculatePopularityScore(tracks: Track[] | undefined) {
     if (!tracks || tracks.length === 0) return "N/A";
@@ -87,6 +89,20 @@ function HomeContent() {
 
   const handleLogin = () => {
     loginWithSpotify();
+  };
+
+  // Handler to skip to next track in the SpotifyBar
+  const handleSkipForward = () => {
+    if (!topTracks) return;
+    setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % topTracks.length);
+  };
+
+  // Handler to skip to previous track in the SpotifyBar
+  const handleSkipBack = () => {
+    if (!topTracks) return;
+    setCurrentTrackIndex((prevIndex) =>
+      prevIndex === 0 ? topTracks.length - 1 : prevIndex - 1
+    );
   };
 
   return (
@@ -361,13 +377,15 @@ function HomeContent() {
       {/* Now Playing Simulator */}
       <div className="mt-12" />
       {(() => {
-        const currentTrack = topTracks?.[0];
+        const currentTrack = topTracks?.[currentTrackIndex];
         return (
           currentTrack && (
             <SpotifyBar
               trackTitle={currentTrack?.name || "Unknown Track"}
               artist={currentTrack?.artists?.[0]?.name || "Unknown Artist"}
               isPlaying={true}
+              onSkipForward={handleSkipForward}
+              onSkipBack={handleSkipBack}
             >
               <div className="z-10 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
