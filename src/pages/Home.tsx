@@ -184,7 +184,7 @@ function HomeContent() {
                   );
                 })()}
               </div>
-              <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
+              <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
                 Top Artist: <strong>{useSpotifyData().topArtists?.[0]?.name || "Not available"}</strong>
               </div>
             </div>
