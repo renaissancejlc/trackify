@@ -9,6 +9,18 @@ import { fetchTopTracks } from "../utils/spotify";
 import { BookOpen, FileText, Music2, Youtube, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import SpotifyBar from '../components/SpotifyBar';
 
+// Helper for fetching user streak from backend (DynamoDB)
+async function fetchUserStreak(userId: string): Promise<{ streak: number } | null> {
+  try {
+    const resp = await fetch(`/api/user-stats?userId=${encodeURIComponent(userId)}`);
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    return { streak: data.streak };
+  } catch {
+    return null;
+  }
+}
+
 
 function getRandomGreeting() {
   const greetings = [
@@ -46,6 +58,7 @@ function HomeContent() {
   const navigate = useNavigate();
   const { profile: userProfile, topGenre } = useSpotifyData();
   const [topTracks, setTopTracks] = useState<Track[]>();
+  const [streak, setStreak] = useState<number | null>(null);
 
   function calculatePopularityScore(tracks: Track[] | undefined) {
       if (!tracks || tracks.length === 0) return "N/A";
@@ -63,6 +76,15 @@ function HomeContent() {
     };
     getData();
   }, []);
+
+  // Fetch streak if userProfile exists
+  useEffect(() => {
+    if (userProfile?.id) {
+      fetchUserStreak(userProfile.id).then((res) => {
+        if (res && typeof res.streak === "number") setStreak(res.streak);
+      });
+    }
+  }, [userProfile]);
 
   const handleLogin = () => {
     loginWithSpotify();
@@ -124,6 +146,12 @@ function HomeContent() {
             <p className="text-sm text-gray-700 italic mb-4">
               We missed your musical vibes in the clouds!
             </p>
+            {/* Streak display */}
+            {typeof streak === "number" && (
+              <div className="mb-3 text-base flex items-center justify-center gap-2 text-orange-500 font-semibold">
+                <span role="img" aria-label="fire">🔥</span> {streak}-day streak
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 text-xs">
               <div className="bg-white/70 rounded-2xl px-5 py-4 shadow text-gray-800 min-h-[72px] flex items-center justify-center text-center">
                 🌟 Top Genre: <strong>{topGenre || "Genre not available"}</strong>
@@ -393,10 +421,32 @@ function DailyTrackChallenge({
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [userGuess, setUserGuess] = useState("");
   const [feedback, setFeedback] = useState("");
+  const [hasPlayedToday, setHasPlayedToday] = useState<boolean>(false);
+  const [showStreakUpdate, setShowStreakUpdate] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Only show if logged in and at least one preview_url exists
   const hasPreview = !!getRandomTrackWithPreview(topTracks);
+  // Use userProfile.id for userId
+  const userId = userProfile?.id;
+
+  // On mount, check if user has played today
+  useEffect(() => {
+    async function checkPlayed() {
+      if (!userId) return;
+      try {
+        const resp = await fetch(`/api/user-stats?userId=${encodeURIComponent(userId)}`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        // lastPlayed is ISO date string (yyyy-mm-dd)
+        const today = new Date().toISOString().split('T')[0];
+        if (data.lastPlayed === today) setHasPlayedToday(true);
+        else setHasPlayedToday(false);
+      } catch {}
+    }
+    if (userId) checkPlayed();
+  }, [userId]);
+
   if (!userProfile || !hasPreview) {
     return (
       <div className="z-10 mt-16 max-w-lg w-full p-6 bg-white/70 rounded-3xl shadow-xl text-center backdrop-blur-md border border-white/30">
@@ -430,10 +480,28 @@ function DailyTrackChallenge({
     }, 200);
   };
 
+  // Call backend to update streak on correct answer
+  async function updateStreak() {
+    if (!userId) return;
+    try {
+      const resp = await fetch('/api/update-streak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      if (resp.ok) {
+        setShowStreakUpdate(true);
+        setHasPlayedToday(true);
+      }
+    } catch {}
+  }
+
   const checkGuess = () => {
     if (!currentTrack) return;
     if (userGuess.trim().toLowerCase() === currentTrack.name.toLowerCase()) {
       setFeedback("🎉 Correct! You're a Vibe Oracle!");
+      // Only update streak if not played today
+      if (!hasPlayedToday) updateStreak();
     } else {
       setFeedback("❌ Not quite. Try again!");
     }
@@ -452,14 +520,19 @@ function DailyTrackChallenge({
       <p className="text-sm text-gray-700 mb-4">
         Can you name this top song from just 5 seconds?
       </p>
-      {!challengeStarted && (
+      {/* If already played today, prevent replay */}
+      {hasPlayedToday && !challengeStarted ? (
+        <div className="text-green-600 font-semibold my-3">
+          You already played today's challenge! Come back tomorrow to keep your streak going.
+        </div>
+      ) : !challengeStarted ? (
         <button
           onClick={startChallenge}
           className="bg-[#1DB954] hover:bg-[#1ed760] text-white px-6 py-2 rounded-full text-sm font-semibold shadow"
         >
           Play Challenge
         </button>
-      )}
+      ) : null}
       {challengeStarted && currentTrack && (
         <div>
           <audio
@@ -476,22 +549,31 @@ function DailyTrackChallenge({
               placeholder="Guess the song title"
               className="p-2 border border-gray-300 rounded w-full mt-3"
               onKeyDown={(e) => { if (e.key === "Enter") checkGuess(); }}
+              disabled={hasPlayedToday}
             />
             <button
               onClick={checkGuess}
               className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              disabled={hasPlayedToday}
             >
               Submit Guess
             </button>
             {feedback && (
               <div className="mt-3 text-base font-medium">
                 {feedback}
+                {/* Optionally show streak update message */}
+                {feedback.startsWith("🎉") && showStreakUpdate && (
+                  <div className="text-orange-500 text-sm mt-2">
+                    🔥 Streak updated!
+                  </div>
+                )}
               </div>
             )}
             <button
               className="mt-3 text-xs underline text-pink-700"
               onClick={startChallenge}
               type="button"
+              disabled={hasPlayedToday}
             >
               Try another track
             </button>

@@ -202,7 +202,7 @@ export default function SpiritAnimal() {
 
       {/* Foreground content */}
       <div className="relative z-20 text-center">
-        <h1 className="text-4xl font-bold text-green-900 drop-shadow mb-4">🦄 Your Spirit Animal Awaits</h1>
+        <h1 className="text-4xl font-bold text-green-900 drop-shadow mb-4">Your Spirit Animal Awaits</h1>
         <p className="text-green-800 mb-6 text-lg">
           Step into the wild — discover which animal reflects your inner rhythm.
         </p>

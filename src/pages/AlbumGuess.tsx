@@ -196,7 +196,7 @@ export default function AlbumGuess() {
         ) : timer > 0 ? (
           <>
             <h2 className="text-xl font-semibold text-pink-600 mb-2">Time Left: {timer}s</h2>
-            <h3 className="text-lg mb-4 text-purple-800">Score: {score}</h3>
+            {/* <h3 className="text-lg mb-4 text-purple-800">Score: {score}</h3> */}
             {/* Paint bucket score meter */}
             {/* 
             <div className="relative w-12 h-24 mx-auto mb-6">
