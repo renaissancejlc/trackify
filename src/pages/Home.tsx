@@ -364,7 +364,11 @@ function HomeContent() {
         const currentTrack = topTracks?.[0];
         return (
           currentTrack && (
-            <SpotifyBar>
+            <SpotifyBar
+              trackTitle={currentTrack?.name || "Unknown Track"}
+              artist={currentTrack?.artists?.[0]?.name || "Unknown Artist"}
+              isPlaying={true}
+            >
               <div className="z-10 max-w-xl w-full flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="relative w-36 h-36 rounded-full border-4 border-[#1DB954] shadow-lg animate-spin-slow overflow-hidden">
                   <img

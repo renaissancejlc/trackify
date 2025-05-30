@@ -1,10 +1,7 @@
-
-
-
 import React from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
 
-const SpotifyPlayBarFrame = ({
+const SpotifyBar = ({
   trackTitle = 'Track Title',
   artist = 'Artist Name',
   isPlaying = true,
@@ -17,7 +14,6 @@ const SpotifyPlayBarFrame = ({
 }) => {
   return (
     <div className="bg-[#181818] border border-[#282828] rounded-xl shadow-lg backdrop-blur-md overflow-hidden p-4 mb-8">
-      {/* Playback Row */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
           <div className="w-12 h-12 bg-gray-700 rounded shadow-inner flex items-center justify-center text-white text-xs font-bold">
@@ -47,7 +43,6 @@ const SpotifyPlayBarFrame = ({
         </div>
       </div>
 
-      {/* Children content */}
       {children && (
         <div className="mt-4 p-4 bg-[#121212] rounded-lg text-sm text-gray-300 font-mono">
           {children}
@@ -57,4 +52,4 @@ const SpotifyPlayBarFrame = ({
   );
 };
 
-export default SpotifyPlayBarFrame;
+export default SpotifyBar;
