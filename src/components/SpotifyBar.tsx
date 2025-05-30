@@ -36,7 +36,7 @@ const SpotifyBar = ({
           ) : (
             <Play className="w-6 h-6 cursor-pointer" />
           )}
-          <SkipForward className="w-4 h-4 cursor-pointer" onClick={onSkipForward} />
+          <SkipForward className="w-4 h-4 cursor-pointer mr-4" onClick={onSkipForward} />
         </div>
 
         <div className="flex items-center space-x-2 text-white">

@@ -396,7 +396,7 @@ function HomeContent() {
                   />
                 </div>
                 <div className="text-sm text-gray-700">
-                  <p className="font-semibold">Now Playing:</p>
+                  {/* <p className="font-semibold">Now Playing:</p> */}
                   {/* <p>
                     {currentTrack?.name || "Unknown Track"} –{" "}
                     {currentTrack?.artists?.[0]?.name || "Unknown Artist"}
