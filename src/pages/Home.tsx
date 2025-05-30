@@ -160,7 +160,7 @@ function HomeContent() {
                 Favorite Track: <strong>{topTracks?.[0]?.name}</strong>
               </div>
               <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
-                Top Artist: <strong>{topTracks?.[0]?.artists?.[0]?.name}</strong>
+                Top Artist: <strong>{useSpotifyData().topArtists?.[0]?.name || "Not available"}</strong>
               </div>
             </div>
             <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
