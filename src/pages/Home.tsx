@@ -44,9 +44,9 @@ export default function Home() {
 type Track = {
   name: string;
   preview_url: string | null;
-  album?: { images?: { url: string }[] };
-  artists?: { name: string }[];
-  popularity?: number;
+  album: { images: { url: string }[] };
+  artists: { name: string }[];
+  popularity: number;
 };
 
 async function getAccessToken(): Promise<string | null> {
