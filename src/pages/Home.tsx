@@ -68,6 +68,22 @@ function HomeContent() {
     return `${Math.round(avg)} / 100`;
   }
 
+  function getPopularityMessage(scoreStr: string): string {
+    const match = scoreStr.match(/\d+/);
+    if (!match) return "Your taste is uniquely undefinable.";
+    const score = parseInt(match[0], 10);
+    if (score >= 90) return "You're a chart chaser — all hits, all the time.";
+    if (score >= 80) return "You ride the mainstream waves with style.";
+    if (score >= 70) return "You enjoy popular picks but throw in surprises.";
+    if (score >= 60) return "You balance hits with hidden gems.";
+    if (score >= 50) return "You're in the middle — a little of everything.";
+    if (score >= 40) return "You lean toward deep cuts and artist tracks.";
+    if (score >= 30) return "You love underrated tracks and indie energy.";
+    if (score >= 20) return "You're a certified crate digger.";
+    if (score >= 10) return "Your taste is niche and intentionally off-radar.";
+    return "You defy the algorithm — obscurity is your vibe.";
+  }
+
   useEffect(() => {
     const getData = async () => {
       const token = await getAccessToken();
@@ -190,7 +206,10 @@ function HomeContent() {
             </div>
             <div className="bg-white/70 rounded-2xl px-4 py-3 shadow text-sm text-gray-800">
                 Popularity Score: <strong>{calculatePopularityScore(topTracks)}</strong>
-              </div>
+            </div>
+            <p className="text-xs text-gray-500 italic mt-1">
+              {getPopularityMessage(calculatePopularityScore(topTracks))}
+            </p>
             <p className="text-sm text-gray-600 mt-2">
               This score reflects how <strong>popular</strong> or <strong>obscure</strong> your top tracks are compared to global streaming trends.
             </p>
