@@ -169,25 +169,24 @@ function HomeContent() {
             >
               Log in with Spotify
             </button>
-            {/* Spotify Login Alert Banner */}
-            <div className="mt-4 p-4 rounded-lg border border-yellow-400 bg-yellow-100 animate-pulse">
-              <h2 className="text-yellow-800 font-bold mb-2">⚠️ Spotify Login Notice</h2>
-              <p className="text-yellow-800 text-sm mb-2">
-                As of <strong>May 15, 2025</strong>, Spotify restricts login access for apps in <strong>Development Mode</strong>.
+            <div className="mt-6 animate-fade-in-up text-white bg-gradient-to-br from-[#1DB954]/80 to-[#121212]/90 rounded-lg p-4 border border-[#2e2e2e] shadow-lg max-w-xl mx-auto">
+              <h2 className="text-lg font-semibold mb-2">🚧 Spotify Login Access Update</h2>
+              <p className="text-sm mb-2">
+                As of <strong>May 15 2025</strong>, Spotify has restricted public access to apps using their Web API. Only approved test users can sign in unless the app has over 250k monthly users and a business entity.
               </p>
-              <ul className="text-yellow-800 text-sm list-disc ml-5 mb-2">
-                <li>Only <strong>allowlisted users</strong> can sign in.</li>
-                <li>Non-approved accounts will fail silently.</li>
-              </ul>
-              <p className="text-yellow-800 text-sm mb-2">
-                Spotify now only grants public access to <strong>verified organizations</strong> through "Extended Quota Mode."
+              <p className="text-sm mb-2">
+                <strong>Trackify</strong> is fully functional — but for now, login only works for whitelisted users.
               </p>
-              <p className="text-yellow-800 text-sm mb-2">
-                Apps in Development Mode are limited to 25 users and may return <code>403</code> errors even after login.
+              <p className="text-sm">
+                Want access? Send me your <strong>Spotify email</strong> and I’ll add you to the test list.
+                <br />
+                📩 <a href="mailto:renysportfolio@gmail.com" className="text-green-400 hover:underline">renysportfolio@gmail.com</a>
               </p>
-              <p className="text-yellow-800 text-sm">
-                <strong>Want Access?</strong> Email the developer with your Spotify email to be added to the allowlist.
-              </p>
+            </div>
+            {/* Animated Banner Notice */}
+            <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-6 rounded shadow animate-pulse transition-opacity duration-500 ease-in-out">
+              <p className="font-semibold">Notice: Spotify login is restricted to whitelisted users due to recent API changes.</p>
+              <p className="mt-2 text-sm">Thanks for your support 💚</p>
             </div>
           </div>
         )}
