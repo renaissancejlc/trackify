@@ -162,13 +162,51 @@ function HomeContent() {
           predict your music future, and test your album knowledge.
         </p>
         {!userProfile && (
-          <button
-            onClick={handleLogin}
-            className="bg-[#1DB954] hover:bg-[#1ed760] transition text-white px-6 py-3 rounded-full font-semibold shadow-lg"
-          >
-            Log in with Spotify
-          </button>
+          <div className="flex flex-col items-center space-y-6">
+            <button
+              onClick={handleLogin}
+              className="bg-[#1DB954] hover:bg-[#1ed760] transition text-white px-6 py-3 rounded-full font-semibold shadow-lg"
+            >
+              Log in with Spotify
+            </button>
+            <div className="mt-6 animate-fade-in-up text-white bg-gradient-to-br from-[#1DB954]/80 to-[#121212]/90 rounded-lg p-4 border border-[#2e2e2e] shadow-lg max-w-xl mx-auto">
+              <h2 className="text-lg font-semibold mb-2">🚧 Spotify Login Access Update</h2>
+              <p className="text-sm mb-2">
+                As of <strong>May 2024</strong>, Spotify has restricted public access to apps using their Web API. Only approved test users can sign in unless the app has over 250k monthly users and a business entity.
+              </p>
+              <p className="text-sm mb-2">
+                <strong>Trackify</strong> is fully functional — but for now, login only works for whitelisted users.
+              </p>
+              <p className="text-sm">
+                Want access? Send me your <strong>Spotify email</strong> and I’ll add you to the test list.
+                <br />
+                📩 <a href="mailto:renysportfolio@gmail.com" className="text-green-400 hover:underline">renysportfolio@gmail.com</a>
+              </p>
+            </div>
+            {/* Animated Banner Notice */}
+            <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mt-6 rounded shadow animate-pulse transition-opacity duration-500 ease-in-out">
+              <p className="font-semibold">Notice: Spotify login is restricted to whitelisted users due to recent API changes.</p>
+              <p className="mt-2 text-sm">Thanks for your support 💚</p>
+            </div>
+          </div>
         )}
+      <style>
+        {`
+          @keyframes fade-in-up {
+            0% {
+              opacity: 0;
+              transform: translateY(10px);
+            }
+            100% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+          .animate-fade-in-up {
+            animation: fade-in-up 0.5s ease-out both;
+          }
+        `}
+      </style>
         {userProfile && (
           <div className="mt-8 bg-white/60 rounded-3xl p-6 shadow-xl text-center max-w-lg w-full backdrop-blur-md">
             <h2 className="text-2xl font-bold text-pink-700 mb-2">
