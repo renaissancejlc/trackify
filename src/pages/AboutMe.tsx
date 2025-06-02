@@ -43,11 +43,6 @@ const AboutMe = () => {
 >
   {[
     {
-      label: 'support me',
-      url: 'https://www.buymeacoffee.com/renaissancecarr',
-      icon: <HeartHandshake className="w-4 h-4 text-yellow-300 group-hover:scale-110 transition" />,
-    },
-    {
       label: 'Portfolio',
       url: 'https://renaissancecarr.com',
       icon: <Globe className="w-4 h-4 text-pink-300 group-hover:scale-110 transition" />,
