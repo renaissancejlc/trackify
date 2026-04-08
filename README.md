@@ -1,4 +1,4 @@
-# 🎵Trackify
+# Trackify
 
 Trackify is an interactive, music-personality app that uses your Spotify data to create fun, visual experiences like:
 
